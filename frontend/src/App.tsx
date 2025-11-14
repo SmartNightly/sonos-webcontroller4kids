@@ -84,7 +84,7 @@ useEffect(() => {
     }
   }
 
-  const hadCache = loadFromCache()
+  loadFromCache()
   // Egal ob Cache da war oder nicht → im Hintergrund aktualisieren
   fetchFromBackend()
 }, [])
@@ -931,8 +931,10 @@ const styles: Record<string, React.CSSProperties> = {
   cover: {
     width: '100%',
     borderRadius: '8px',
-    flexGrow: 1,
     objectFit: 'cover',
+    // Ensure covers keep a 1:1 aspect ratio so single items don't become non-square
+    aspectRatio: '1 / 1',
+    height: 'auto',
   },
   cardTitle: {
     marginTop: '4px',
