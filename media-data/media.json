@@ -1,0 +1,1860 @@
+[
+  {
+    "id": "pingu_01",
+    "title": "Pingu – Folge 1",
+    "kind": "hoerspiel",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu – Folge 1",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/ce/e6/c1/cee6c1cb-b569-489d-a224-adc32fac8632/886446549200.jpg/600x600bb.jpg",
+    "sonosUri": "favorite/Kinderlieder%20Gute%20Nacht",
+    "appleId": "1234567890"
+  },
+  {
+    "id": "conni_lieder_01",
+    "title": "Conni – Lieblingslieder",
+    "kind": "music",
+    "service": "appleMusic",
+    "artist": "Conni",
+    "album": "Conni Lieblingslieder",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/c5/be/06/c5be06db-7d80-5ddc-cd7a-7baddc645057/cover.jpg/600x600bb.jpg",
+    "sonosUri": "favorite/Globi%20bei%20der%20Rettungsflugwacht",
+    "appleId": "9876543210"
+  },
+  {
+    "id": "album_1721851439",
+    "title": "Bart aber herzlich (Deluxe Edition)",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Bligg",
+    "album": "Bart aber herzlich (Deluxe Edition)",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/b0/7e/7d/b07e7d50-e4ef-b5b8-2315-91f26cd37ce7/196871696708.jpg/600x600bb.jpg",
+    "appleId": "1721851439",
+    "tracks": [
+      {
+        "id": "album_1721851439_track_1721851441",
+        "title": "Exklusiv Introview (feat. Samurai)",
+        "appleSongId": "1721851441",
+        "trackNumber": 1,
+        "durationMs": 231973
+      },
+      {
+        "id": "album_1721851439_track_1721851442",
+        "title": "Chef",
+        "appleSongId": "1721851442",
+        "trackNumber": 2,
+        "durationMs": 197253
+      },
+      {
+        "id": "album_1721851439_track_1721851443",
+        "title": "Legändä & Heldä",
+        "appleSongId": "1721851443",
+        "trackNumber": 3,
+        "durationMs": 219720
+      },
+      {
+        "id": "album_1721851439_track_1721851446",
+        "title": "Romeo & Julia",
+        "appleSongId": "1721851446",
+        "trackNumber": 4,
+        "durationMs": 186947
+      },
+      {
+        "id": "album_1721851439_track_1721851447",
+        "title": "Spiegel (feat. Xavier Naidoo)",
+        "appleSongId": "1721851447",
+        "trackNumber": 5,
+        "durationMs": 247213
+      },
+      {
+        "id": "album_1721851439_track_1721851448",
+        "title": "Stadt / Land",
+        "appleSongId": "1721851448",
+        "trackNumber": 6,
+        "durationMs": 247373
+      },
+      {
+        "id": "album_1721851439_track_1721851450",
+        "title": "Annie May",
+        "appleSongId": "1721851450",
+        "trackNumber": 7,
+        "durationMs": 258280
+      },
+      {
+        "id": "album_1721851439_track_1721851451",
+        "title": "Manhattan",
+        "appleSongId": "1721851451",
+        "trackNumber": 8,
+        "durationMs": 194760
+      },
+      {
+        "id": "album_1721851439_track_1721851453",
+        "title": "I'd Kill For You (feat. Jessy Howe)",
+        "appleSongId": "1721851453",
+        "trackNumber": 9,
+        "durationMs": 178760
+      },
+      {
+        "id": "album_1721851439_track_1721851454",
+        "title": "Fahr e Mal",
+        "appleSongId": "1721851454",
+        "trackNumber": 10,
+        "durationMs": 174000
+      },
+      {
+        "id": "album_1721851439_track_1721851455",
+        "title": "Rendezvous",
+        "appleSongId": "1721851455",
+        "trackNumber": 11,
+        "durationMs": 219493
+      },
+      {
+        "id": "album_1721851439_track_1721851517",
+        "title": "S.O.S",
+        "appleSongId": "1721851517",
+        "trackNumber": 12,
+        "durationMs": 218893
+      },
+      {
+        "id": "album_1721851439_track_1721851519",
+        "title": "Okay",
+        "appleSongId": "1721851519",
+        "trackNumber": 13,
+        "durationMs": 246627
+      },
+      {
+        "id": "album_1721851439_track_1721851521",
+        "title": "Vergässlich",
+        "appleSongId": "1721851521",
+        "trackNumber": 14,
+        "durationMs": 181587
+      },
+      {
+        "id": "album_1721851439_track_1721851522",
+        "title": "Schwarzi Witwe",
+        "appleSongId": "1721851522",
+        "trackNumber": 15,
+        "durationMs": 187693
+      },
+      {
+        "id": "album_1721851439_track_1721851523",
+        "title": "Exklusiv Introview (Instrumental)",
+        "appleSongId": "1721851523",
+        "trackNumber": 16,
+        "durationMs": 231987
+      },
+      {
+        "id": "album_1721851439_track_1721851525",
+        "title": "Chef (Instrumental)",
+        "appleSongId": "1721851525",
+        "trackNumber": 17,
+        "durationMs": 196907
+      },
+      {
+        "id": "album_1721851439_track_1721851527",
+        "title": "Legändä & Heldä (Instrumental)",
+        "appleSongId": "1721851527",
+        "trackNumber": 18,
+        "durationMs": 198507
+      },
+      {
+        "id": "album_1721851439_track_1721851529",
+        "title": "Romeo & Julia (Instrumental)",
+        "appleSongId": "1721851529",
+        "trackNumber": 19,
+        "durationMs": 186667
+      },
+      {
+        "id": "album_1721851439_track_1721851531",
+        "title": "Spiegel (Instrumental)",
+        "appleSongId": "1721851531",
+        "trackNumber": 20,
+        "durationMs": 246813
+      },
+      {
+        "id": "album_1721851439_track_1721851532",
+        "title": "Stadt / Land (Instrumental)",
+        "appleSongId": "1721851532",
+        "trackNumber": 21,
+        "durationMs": 247253
+      },
+      {
+        "id": "album_1721851439_track_1721851534",
+        "title": "Annie May (Instrumental)",
+        "appleSongId": "1721851534",
+        "trackNumber": 22,
+        "durationMs": 258320
+      },
+      {
+        "id": "album_1721851439_track_1721851535",
+        "title": "Manhattan (Instrumental)",
+        "appleSongId": "1721851535",
+        "trackNumber": 23,
+        "durationMs": 194013
+      },
+      {
+        "id": "album_1721851439_track_1721851537",
+        "title": "I'd Kill For You (Instrumental)",
+        "appleSongId": "1721851537",
+        "trackNumber": 24,
+        "durationMs": 178867
+      },
+      {
+        "id": "album_1721851439_track_1721851538",
+        "title": "Fahr e Mal (Instrumental)",
+        "appleSongId": "1721851538",
+        "trackNumber": 25,
+        "durationMs": 173653
+      },
+      {
+        "id": "album_1721851439_track_1721851539",
+        "title": "Rendezvous (Instrumental)",
+        "appleSongId": "1721851539",
+        "trackNumber": 26,
+        "durationMs": 219493
+      },
+      {
+        "id": "album_1721851439_track_1721851540",
+        "title": "S.O.S (Instrumental)",
+        "appleSongId": "1721851540",
+        "trackNumber": 27,
+        "durationMs": 218853
+      },
+      {
+        "id": "album_1721851439_track_1721851541",
+        "title": "Okay (Instrumental)",
+        "appleSongId": "1721851541",
+        "trackNumber": 28,
+        "durationMs": 246347
+      }
+    ]
+  },
+  {
+    "id": "album_1542625408",
+    "title": "Heimspiel",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "BLAY, Bligg & Marc Sway",
+    "album": "Heimspiel",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/28/23/27/28232786-b919-64d1-996b-63921ec8f879/886448948988.jpg/600x600bb.jpg",
+    "appleId": "1542625408",
+    "tracks": [
+      {
+        "id": "album_1542625408_track_1542625628",
+        "title": "Denkmal",
+        "appleSongId": "1542625628",
+        "trackNumber": 1,
+        "durationMs": 219227
+      },
+      {
+        "id": "album_1542625408_track_1542625632",
+        "title": "D'Schueh",
+        "appleSongId": "1542625632",
+        "trackNumber": 2,
+        "durationMs": 182640
+      },
+      {
+        "id": "album_1542625408_track_1542625634",
+        "title": "Rägetanz",
+        "appleSongId": "1542625634",
+        "trackNumber": 3,
+        "durationMs": 204560
+      },
+      {
+        "id": "album_1542625408_track_1542625636",
+        "title": "D'Wüsseschaft",
+        "appleSongId": "1542625636",
+        "trackNumber": 4,
+        "durationMs": 182893
+      },
+      {
+        "id": "album_1542625408_track_1542625638",
+        "title": "Papa",
+        "appleSongId": "1542625638",
+        "trackNumber": 5,
+        "durationMs": 224160
+      },
+      {
+        "id": "album_1542625408_track_1542625639",
+        "title": "Geiler",
+        "appleSongId": "1542625639",
+        "trackNumber": 6,
+        "durationMs": 187400
+      },
+      {
+        "id": "album_1542625408_track_1542625643",
+        "title": "Wiederseh",
+        "appleSongId": "1542625643",
+        "trackNumber": 7,
+        "durationMs": 183187
+      },
+      {
+        "id": "album_1542625408_track_1542625645",
+        "title": "Liebesbrief",
+        "appleSongId": "1542625645",
+        "trackNumber": 8,
+        "durationMs": 196533
+      },
+      {
+        "id": "album_1542625408_track_1542625648",
+        "title": "Sanduhr",
+        "appleSongId": "1542625648",
+        "trackNumber": 9,
+        "durationMs": 242800
+      },
+      {
+        "id": "album_1542625408_track_1542625649",
+        "title": "Wind",
+        "appleSongId": "1542625649",
+        "trackNumber": 10,
+        "durationMs": 149893
+      }
+    ]
+  },
+  {
+    "id": "album_1483523950",
+    "title": "Globi am Flughafen",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Globi",
+    "album": "Globi am Flughafen",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/6e/06/3c/6e063ce9-a8a8-ef0c-b00d-c2e3b6c76479/cover.jpg/600x600bb.jpg",
+    "appleId": "1483523950",
+    "tracks": [
+      {
+        "id": "album_1483523950_track_1483523952",
+        "title": "D' Aakunft us Brasilie",
+        "appleSongId": "1483523952",
+        "trackNumber": 1,
+        "durationMs": 99720
+      },
+      {
+        "id": "album_1483523950_track_1483523965",
+        "title": "S' gaat wiiter mit D' Aakunft us Brasilie",
+        "appleSongId": "1483523965",
+        "trackNumber": 2,
+        "durationMs": 80827
+      },
+      {
+        "id": "album_1483523950_track_1483524210",
+        "title": "S' Äffli chunnt en Name über",
+        "appleSongId": "1483524210",
+        "trackNumber": 3,
+        "durationMs": 80147
+      },
+      {
+        "id": "album_1483523950_track_1483524214",
+        "title": "S' gaat wiiter mit S' Äffli chunnt en Name über",
+        "appleSongId": "1483524214",
+        "trackNumber": 4,
+        "durationMs": 148520
+      },
+      {
+        "id": "album_1483523950_track_1483524227",
+        "title": "D' Gepäck-Sortieraalaag spukt",
+        "appleSongId": "1483524227",
+        "trackNumber": 5,
+        "durationMs": 145907
+      },
+      {
+        "id": "album_1483523950_track_1483524300",
+        "title": "S' gaat wiiter mit D' Gepäck-Sortieraalaag spukt",
+        "appleSongId": "1483524300",
+        "trackNumber": 6,
+        "durationMs": 139240
+      },
+      {
+        "id": "album_1483523950_track_1483524307",
+        "title": "Bi me Haar im Flüüger iigschpeert",
+        "appleSongId": "1483524307",
+        "trackNumber": 7,
+        "durationMs": 134693
+      },
+      {
+        "id": "album_1483523950_track_1483524319",
+        "title": "S' gaat wiiter mit Bi me Haar im Flüüger iigschpeert",
+        "appleSongId": "1483524319",
+        "trackNumber": 8,
+        "durationMs": 142880
+      },
+      {
+        "id": "album_1483523950_track_1483524455",
+        "title": "En Bsuech bi de Pflänzli-Zöllner",
+        "appleSongId": "1483524455",
+        "trackNumber": 9,
+        "durationMs": 175813
+      },
+      {
+        "id": "album_1483523950_track_1483524458",
+        "title": "S' gaat wiiter mit En Bsuech bi de Pflänzli-Zöllner",
+        "appleSongId": "1483524458",
+        "trackNumber": 10,
+        "durationMs": 144187
+      },
+      {
+        "id": "album_1483523950_track_1483524475",
+        "title": "Uf em Fundbüro",
+        "appleSongId": "1483524475",
+        "trackNumber": 11,
+        "durationMs": 93947
+      },
+      {
+        "id": "album_1483523950_track_1483524628",
+        "title": "S' gaat wiiter mit Uf em Fundbüro",
+        "appleSongId": "1483524628",
+        "trackNumber": 12,
+        "durationMs": 170880
+      },
+      {
+        "id": "album_1483523950_track_1483524631",
+        "title": "Na mee vo Uf em Fundbüro",
+        "appleSongId": "1483524631",
+        "trackNumber": 13,
+        "durationMs": 79427
+      },
+      {
+        "id": "album_1483523950_track_1483524634",
+        "title": "I de Skymetro",
+        "appleSongId": "1483524634",
+        "trackNumber": 14,
+        "durationMs": 132640
+      },
+      {
+        "id": "album_1483523950_track_1483524642",
+        "title": "S' gaat wiiter mit I de Skymetro",
+        "appleSongId": "1483524642",
+        "trackNumber": 15,
+        "durationMs": 99453
+      },
+      {
+        "id": "album_1483523950_track_1483524644",
+        "title": "S' Flüüger-Lied (Lied)",
+        "appleSongId": "1483524644",
+        "trackNumber": 16,
+        "durationMs": 288640
+      },
+      {
+        "id": "album_1483523950_track_1483524648",
+        "title": "En feine Dessert",
+        "appleSongId": "1483524648",
+        "trackNumber": 17,
+        "durationMs": 144573
+      },
+      {
+        "id": "album_1483523950_track_1483524649",
+        "title": "S' gaat wiiter mit En feine Dessert",
+        "appleSongId": "1483524649",
+        "trackNumber": 18,
+        "durationMs": 91640
+      },
+      {
+        "id": "album_1483523950_track_1483524651",
+        "title": "Mit em Lotti uf Paris",
+        "appleSongId": "1483524651",
+        "trackNumber": 19,
+        "durationMs": 93427
+      },
+      {
+        "id": "album_1483523950_track_1483524986",
+        "title": "S' gaat wiiter mit Mit em Lotti uf Paris",
+        "appleSongId": "1483524986",
+        "trackNumber": 20,
+        "durationMs": 61680
+      },
+      {
+        "id": "album_1483523950_track_1483524995",
+        "title": "Alles abgä",
+        "appleSongId": "1483524995",
+        "trackNumber": 21,
+        "durationMs": 82133
+      },
+      {
+        "id": "album_1483523950_track_1483525002",
+        "title": "S' gaat wiiter mit Alles abgä",
+        "appleSongId": "1483525002",
+        "trackNumber": 22,
+        "durationMs": 60747
+      },
+      {
+        "id": "album_1483523950_track_1483525007",
+        "title": "S' Gaschtspiil im Cockpit",
+        "appleSongId": "1483525007",
+        "trackNumber": 23,
+        "durationMs": 123733
+      },
+      {
+        "id": "album_1483523950_track_1483525010",
+        "title": "S' gaat wiiter mit S' Gaschtspiil im Cockpit",
+        "appleSongId": "1483525010",
+        "trackNumber": 24,
+        "durationMs": 141147
+      },
+      {
+        "id": "album_1483523950_track_1483525013",
+        "title": "De Globi als Flugverchehrsleiter",
+        "appleSongId": "1483525013",
+        "trackNumber": 25,
+        "durationMs": 194107
+      },
+      {
+        "id": "album_1483523950_track_1483525230",
+        "title": "S' gaat wiiter mit De Globi als Flugverchehrsleiter",
+        "appleSongId": "1483525230",
+        "trackNumber": 26,
+        "durationMs": 164867
+      },
+      {
+        "id": "album_1483523950_track_1483525234",
+        "title": "En Super-Füürwehr-Iisatz",
+        "appleSongId": "1483525234",
+        "trackNumber": 27,
+        "durationMs": 127853
+      },
+      {
+        "id": "album_1483523950_track_1483525237",
+        "title": "S' gaat wiiter mit En Super-Füürwehr-Iisatz",
+        "appleSongId": "1483525237",
+        "trackNumber": 28,
+        "durationMs": 102453
+      },
+      {
+        "id": "album_1483523950_track_1483525247",
+        "title": "De Leo dörf in Zoo",
+        "appleSongId": "1483525247",
+        "trackNumber": 29,
+        "durationMs": 80493
+      },
+      {
+        "id": "album_1483523950_track_1483525248",
+        "title": "S' gaat wiiter mit De Leo dörf in Zoo",
+        "appleSongId": "1483525248",
+        "trackNumber": 30,
+        "durationMs": 85027
+      },
+      {
+        "id": "album_1483523950_track_1483525411",
+        "title": "Die gross Überraschig",
+        "appleSongId": "1483525411",
+        "trackNumber": 31,
+        "durationMs": 91267
+      },
+      {
+        "id": "album_1483523950_track_1483525414",
+        "title": "S' gaat wiiter mit Die gross Überraschig",
+        "appleSongId": "1483525414",
+        "trackNumber": 32,
+        "durationMs": 163627
+      }
+    ]
+  },
+  {
+    "id": "album_1483669865",
+    "title": "Globi bei der Feuerwehr",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Globi",
+    "album": "Globi bei der Feuerwehr",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/3d/51/0c/3d510c0d-cea1-1361-feda-92f250c1ecdc/cover.jpg/600x600bb.jpg",
+    "appleId": "1483669865",
+    "tracks": [
+      {
+        "id": "album_1483669865_track_1483669877",
+        "title": "De Globi bim Fische",
+        "appleSongId": "1483669877",
+        "trackNumber": 1,
+        "durationMs": 54280
+      },
+      {
+        "id": "album_1483669865_track_1483670366",
+        "title": "S' gaat wiiter mit De Globi bim Fische",
+        "appleSongId": "1483670366",
+        "trackNumber": 2,
+        "durationMs": 50053
+      },
+      {
+        "id": "album_1483669865_track_1483670371",
+        "title": "Na mee vo De Globi bim Fische",
+        "appleSongId": "1483670371",
+        "trackNumber": 3,
+        "durationMs": 50253
+      },
+      {
+        "id": "album_1483669865_track_1483670523",
+        "title": "Brand i de Konditorei Tanner",
+        "appleSongId": "1483670523",
+        "trackNumber": 4,
+        "durationMs": 64093
+      },
+      {
+        "id": "album_1483669865_track_1483670530",
+        "title": "S' gaat wiiter mit Brand i de Konditorei Tanner",
+        "appleSongId": "1483670530",
+        "trackNumber": 5,
+        "durationMs": 64293
+      },
+      {
+        "id": "album_1483669865_track_1483670545",
+        "title": "Na mee vo Brand i de Konditorei Tanner",
+        "appleSongId": "1483670545",
+        "trackNumber": 6,
+        "durationMs": 136320
+      },
+      {
+        "id": "album_1483669865_track_1483670671",
+        "title": "Di erscht Führwehrüebig",
+        "appleSongId": "1483670671",
+        "trackNumber": 7,
+        "durationMs": 135693
+      },
+      {
+        "id": "album_1483669865_track_1483670681",
+        "title": "S' gaat wiiter mit Di erscht Führwehrüebig",
+        "appleSongId": "1483670681",
+        "trackNumber": 8,
+        "durationMs": 268907
+      },
+      {
+        "id": "album_1483669865_track_1483670907",
+        "title": "Na mee vo Di erscht Führwehrüebig",
+        "appleSongId": "1483670907",
+        "trackNumber": 9,
+        "durationMs": 107907
+      },
+      {
+        "id": "album_1483669865_track_1483670917",
+        "title": "De Globi rettet es Büsi und en Hund",
+        "appleSongId": "1483670917",
+        "trackNumber": 10,
+        "durationMs": 57480
+      },
+      {
+        "id": "album_1483669865_track_1483670927",
+        "title": "S' gaat wiiter mit De Globi rettet es Büsi und en Hund",
+        "appleSongId": "1483670927",
+        "trackNumber": 11,
+        "durationMs": 161173
+      },
+      {
+        "id": "album_1483669865_track_1483670931",
+        "title": "Na mee vo De Globi rettet es Büsi und en Hund",
+        "appleSongId": "1483670931",
+        "trackNumber": 12,
+        "durationMs": 59587
+      },
+      {
+        "id": "album_1483669865_track_1483671151",
+        "title": "De Globi löscht en Brand",
+        "appleSongId": "1483671151",
+        "trackNumber": 13,
+        "durationMs": 90720
+      },
+      {
+        "id": "album_1483669865_track_1483671162",
+        "title": "S' gaat wiiter mit De Globi löscht en Brand",
+        "appleSongId": "1483671162",
+        "trackNumber": 14,
+        "durationMs": 93507
+      },
+      {
+        "id": "album_1483669865_track_1483671272",
+        "title": "Na mee vo De Globi löscht en Brand",
+        "appleSongId": "1483671272",
+        "trackNumber": 15,
+        "durationMs": 74387
+      },
+      {
+        "id": "album_1483669865_track_1483671285",
+        "title": "Mit em Führwehrschluch im Garte",
+        "appleSongId": "1483671285",
+        "trackNumber": 16,
+        "durationMs": 125387
+      },
+      {
+        "id": "album_1483669865_track_1483671407",
+        "title": "S' gaat wiiter mit Mit em Führwehrschluch im Garte",
+        "appleSongId": "1483671407",
+        "trackNumber": 17,
+        "durationMs": 141013
+      },
+      {
+        "id": "album_1483669865_track_1483671484",
+        "title": "Na mee vo Mit em Führwehrschluch im Garte",
+        "appleSongId": "1483671484",
+        "trackNumber": 18,
+        "durationMs": 131333
+      },
+      {
+        "id": "album_1483669865_track_1483671487",
+        "title": "Wasserschade",
+        "appleSongId": "1483671487",
+        "trackNumber": 19,
+        "durationMs": 47320
+      },
+      {
+        "id": "album_1483669865_track_1483671490",
+        "title": "S' gaat wiiter mit Wasserschade",
+        "appleSongId": "1483671490",
+        "trackNumber": 20,
+        "durationMs": 86533
+      },
+      {
+        "id": "album_1483669865_track_1483671496",
+        "title": "Na mee vo Wasserschade",
+        "appleSongId": "1483671496",
+        "trackNumber": 21,
+        "durationMs": 62347
+      },
+      {
+        "id": "album_1483669865_track_1483671505",
+        "title": "D' Führwehr hilft inere Entefamilie",
+        "appleSongId": "1483671505",
+        "trackNumber": 22,
+        "durationMs": 195773
+      },
+      {
+        "id": "album_1483669865_track_1483671691",
+        "title": "S' gaat wiiter mit D' Führwehr hilft inere Entefamilie",
+        "appleSongId": "1483671691",
+        "trackNumber": 23,
+        "durationMs": 179440
+      },
+      {
+        "id": "album_1483669865_track_1483671699",
+        "title": "Na mee vo D' Führwehr hilft inere Entefamilie",
+        "appleSongId": "1483671699",
+        "trackNumber": 24,
+        "durationMs": 200600
+      },
+      {
+        "id": "album_1483669865_track_1483671703",
+        "title": "En Ibrächer i de Leihkassebank",
+        "appleSongId": "1483671703",
+        "trackNumber": 25,
+        "durationMs": 58733
+      },
+      {
+        "id": "album_1483669865_track_1483671709",
+        "title": "S' gaat wiiter mit En Ibrächer i de Leihkassebank",
+        "appleSongId": "1483671709",
+        "trackNumber": 26,
+        "durationMs": 33973
+      },
+      {
+        "id": "album_1483669865_track_1483672139",
+        "title": "Na mee vo En Ibrächer i de Leihkassebank",
+        "appleSongId": "1483672139",
+        "trackNumber": 27,
+        "durationMs": 63520
+      },
+      {
+        "id": "album_1483669865_track_1483672148",
+        "title": "De Globi am Führwehrfäscht",
+        "appleSongId": "1483672148",
+        "trackNumber": 28,
+        "durationMs": 141573
+      }
+    ]
+  },
+  {
+    "id": "album_1483664441",
+    "title": "Globis Zoo",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Globi",
+    "album": "Globis Zoo",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/92/18/aa/9218aa73-eafc-8076-2d55-e94bff92845c/cover.jpg/600x600bb.jpg",
+    "appleId": "1483664441",
+    "tracks": [
+      {
+        "id": "album_1483664441_track_1483664443",
+        "title": "De Pip schlüüfft us",
+        "appleSongId": "1483664443",
+        "trackNumber": 1,
+        "durationMs": 154307
+      },
+      {
+        "id": "album_1483664441_track_1483664445",
+        "title": "S' gaat wiiter De Pip schlüüfft us",
+        "appleSongId": "1483664445",
+        "trackNumber": 2,
+        "durationMs": 176867
+      },
+      {
+        "id": "album_1483664441_track_1483664446",
+        "title": "Bim Profässer Federkiel",
+        "appleSongId": "1483664446",
+        "trackNumber": 3,
+        "durationMs": 165000
+      },
+      {
+        "id": "album_1483664441_track_1483664448",
+        "title": "S' gaat wiiter Bim Profässer Federkiel",
+        "appleSongId": "1483664448",
+        "trackNumber": 4,
+        "durationMs": 107427
+      },
+      {
+        "id": "album_1483664441_track_1483664451",
+        "title": "En Plasticsack voll Zierfisch",
+        "appleSongId": "1483664451",
+        "trackNumber": 5,
+        "durationMs": 159480
+      },
+      {
+        "id": "album_1483664441_track_1483664452",
+        "title": "S' gaat wiiter En Plasticsack voll Zierfisch",
+        "appleSongId": "1483664452",
+        "trackNumber": 6,
+        "durationMs": 97120
+      },
+      {
+        "id": "album_1483664441_track_1483664453",
+        "title": "E Chischte mit Tropevögel",
+        "appleSongId": "1483664453",
+        "trackNumber": 7,
+        "durationMs": 172773
+      },
+      {
+        "id": "album_1483664441_track_1483664906",
+        "title": "S' gaat wiiter E Chischte mit Tropevögel",
+        "appleSongId": "1483664906",
+        "trackNumber": 8,
+        "durationMs": 109333
+      },
+      {
+        "id": "album_1483664441_track_1483664909",
+        "title": "D' Schildchrott Ismelda",
+        "appleSongId": "1483664909",
+        "trackNumber": 9,
+        "durationMs": 153173
+      },
+      {
+        "id": "album_1483664441_track_1483664910",
+        "title": "S' gaat wiiter D' Schildchrott Ismelda",
+        "appleSongId": "1483664910",
+        "trackNumber": 10,
+        "durationMs": 91307
+      },
+      {
+        "id": "album_1483664441_track_1483664911",
+        "title": "En Golfplatz isch z' verchaufe",
+        "appleSongId": "1483664911",
+        "trackNumber": 11,
+        "durationMs": 156080
+      },
+      {
+        "id": "album_1483664441_track_1483664914",
+        "title": "S' gaat wiiter En Golfplatz isch z' verchaufe",
+        "appleSongId": "1483664914",
+        "trackNumber": 12,
+        "durationMs": 48080
+      },
+      {
+        "id": "album_1483664441_track_1483664917",
+        "title": "Bsuech i me ne Tierpark",
+        "appleSongId": "1483664917",
+        "trackNumber": 13,
+        "durationMs": 92413
+      },
+      {
+        "id": "album_1483664441_track_1483664918",
+        "title": "S' gaat wiiter Bsuech i me ne Tierpark",
+        "appleSongId": "1483664918",
+        "trackNumber": 14,
+        "durationMs": 107613
+      },
+      {
+        "id": "album_1483664441_track_1483664919",
+        "title": "Us em Golfplatz wird en Zoo",
+        "appleSongId": "1483664919",
+        "trackNumber": 15,
+        "durationMs": 62440
+      },
+      {
+        "id": "album_1483664441_track_1483664922",
+        "title": "S' gaat wiiter Us em Golfplatz wird en Zoo",
+        "appleSongId": "1483664922",
+        "trackNumber": 16,
+        "durationMs": 34573
+      },
+      {
+        "id": "album_1483664441_track_1483664925",
+        "title": "De 'Zirkus Gämperli' brännt",
+        "appleSongId": "1483664925",
+        "trackNumber": 17,
+        "durationMs": 88053
+      },
+      {
+        "id": "album_1483664441_track_1483664932",
+        "title": "S' gaat wiiter De 'Zirkus Gämperli' brännt",
+        "appleSongId": "1483664932",
+        "trackNumber": 18,
+        "durationMs": 87307
+      },
+      {
+        "id": "album_1483664441_track_1483664935",
+        "title": "De Gorilla Jimmy het Heiweh",
+        "appleSongId": "1483664935",
+        "trackNumber": 19,
+        "durationMs": 72427
+      },
+      {
+        "id": "album_1483664441_track_1483665176",
+        "title": "S' gaat wiiter De Gorilla Jimmy het Heiweh",
+        "appleSongId": "1483665176",
+        "trackNumber": 20,
+        "durationMs": 96280
+      },
+      {
+        "id": "album_1483664441_track_1483665178",
+        "title": "Us em Jimmy wird en Flugpassagier",
+        "appleSongId": "1483665178",
+        "trackNumber": 21,
+        "durationMs": 158187
+      },
+      {
+        "id": "album_1483664441_track_1483665180",
+        "title": "S' gaat wiiter Us em Jimmy wird en Flugpassagier",
+        "appleSongId": "1483665180",
+        "trackNumber": 22,
+        "durationMs": 143533
+      },
+      {
+        "id": "album_1483664441_track_1483665185",
+        "title": "Affe als Öpfelpflücker",
+        "appleSongId": "1483665185",
+        "trackNumber": 23,
+        "durationMs": 59733
+      },
+      {
+        "id": "album_1483664441_track_1483665186",
+        "title": "S' gaat wiiter Affe als Öpfelpflücker",
+        "appleSongId": "1483665186",
+        "trackNumber": 24,
+        "durationMs": 92173
+      },
+      {
+        "id": "album_1483664441_track_1483665193",
+        "title": "De Elifant Jumbo tuet wie-n-e Sau",
+        "appleSongId": "1483665193",
+        "trackNumber": 25,
+        "durationMs": 72947
+      },
+      {
+        "id": "album_1483664441_track_1483665197",
+        "title": "S' gaat wiiter De Elifant Jumbo tuet wie-n-e Sau",
+        "appleSongId": "1483665197",
+        "trackNumber": 26,
+        "durationMs": 62693
+      },
+      {
+        "id": "album_1483664441_track_1483665236",
+        "title": "S' Chamäleon als Flügefänger",
+        "appleSongId": "1483665236",
+        "trackNumber": 27,
+        "durationMs": 153773
+      },
+      {
+        "id": "album_1483664441_track_1483665242",
+        "title": "Uf de Suechi nach em Näbelparder",
+        "appleSongId": "1483665242",
+        "trackNumber": 28,
+        "durationMs": 133173
+      },
+      {
+        "id": "album_1483664441_track_1483665258",
+        "title": "S' gaat wiiter Uf de Suechi nach em Näbelparder",
+        "appleSongId": "1483665258",
+        "trackNumber": 29,
+        "durationMs": 108360
+      },
+      {
+        "id": "album_1483664441_track_1483665261",
+        "title": "En gschpässige Bsuech",
+        "appleSongId": "1483665261",
+        "trackNumber": 30,
+        "durationMs": 84333
+      },
+      {
+        "id": "album_1483664441_track_1483665262",
+        "title": "S' gaat wiiter En gschpässige Bsuech",
+        "appleSongId": "1483665262",
+        "trackNumber": 31,
+        "durationMs": 103880
+      },
+      {
+        "id": "album_1483664441_track_1483665263",
+        "title": "De Gorilla Jimmy isch wieder da (Lied)",
+        "appleSongId": "1483665263",
+        "trackNumber": 32,
+        "durationMs": 118773
+      }
+    ]
+  },
+  {
+    "id": "album_1721851095",
+    "title": "Service Publigg (Deluxe Edition)",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Bligg",
+    "album": "Service Publigg (Deluxe Edition)",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/e0/7c/e8/e07ce803-0538-17ea-962b-36b8d381b6f5/196871716659.jpg/600x600bb.jpg",
+    "appleId": "1721851095",
+    "tracks": [
+      {
+        "id": "album_1721851095_track_1721851096",
+        "title": "Service Publigg Intro",
+        "appleSongId": "1721851096",
+        "trackNumber": 1,
+        "durationMs": 85224
+      },
+      {
+        "id": "album_1721851095_track_1721851487",
+        "title": "Chopfkino",
+        "appleSongId": "1721851487",
+        "trackNumber": 2,
+        "durationMs": 210176
+      },
+      {
+        "id": "album_1721851095_track_1721851488",
+        "title": "Ohrwurm",
+        "appleSongId": "1721851488",
+        "trackNumber": 3,
+        "durationMs": 219693
+      },
+      {
+        "id": "album_1721851095_track_1721851489",
+        "title": "Wer isch dä Mörder?",
+        "appleSongId": "1721851489",
+        "trackNumber": 4,
+        "durationMs": 211893
+      },
+      {
+        "id": "album_1721851095_track_1721851490",
+        "title": "Mamacita",
+        "appleSongId": "1721851490",
+        "trackNumber": 5,
+        "durationMs": 190813
+      },
+      {
+        "id": "album_1721851095_track_1721851491",
+        "title": "MundART",
+        "appleSongId": "1721851491",
+        "trackNumber": 6,
+        "durationMs": 200493
+      },
+      {
+        "id": "album_1721851095_track_1721851492",
+        "title": "Sigi",
+        "appleSongId": "1721851492",
+        "trackNumber": 7,
+        "durationMs": 205720
+      },
+      {
+        "id": "album_1721851095_track_1721851493",
+        "title": "Hilf mir",
+        "appleSongId": "1721851493",
+        "trackNumber": 8,
+        "durationMs": 261693
+      },
+      {
+        "id": "album_1721851095_track_1721851495",
+        "title": "Morn dänn",
+        "appleSongId": "1721851495",
+        "trackNumber": 9,
+        "durationMs": 235560
+      },
+      {
+        "id": "album_1721851095_track_1721851497",
+        "title": "Ayleen's Song",
+        "appleSongId": "1721851497",
+        "trackNumber": 10,
+        "durationMs": 22413
+      },
+      {
+        "id": "album_1721851095_track_1721851500",
+        "title": "Ikarus",
+        "appleSongId": "1721851500",
+        "trackNumber": 11,
+        "durationMs": 221640
+      },
+      {
+        "id": "album_1721851095_track_1721851501",
+        "title": "D'Idee .-",
+        "appleSongId": "1721851501",
+        "trackNumber": 12,
+        "durationMs": 224333
+      },
+      {
+        "id": "album_1721851095_track_1721851502",
+        "title": "S'Füür",
+        "appleSongId": "1721851502",
+        "trackNumber": 13,
+        "durationMs": 215013
+      },
+      {
+        "id": "album_1721851095_track_1721851505",
+        "title": "Miss Trau",
+        "appleSongId": "1721851505",
+        "trackNumber": 14,
+        "durationMs": 216693
+      },
+      {
+        "id": "album_1721851095_track_1721851507",
+        "title": "Träne lüged nöd",
+        "appleSongId": "1721851507",
+        "trackNumber": 15,
+        "durationMs": 258000
+      },
+      {
+        "id": "album_1721851095_track_1721851510",
+        "title": "Bye Bye",
+        "appleSongId": "1721851510",
+        "trackNumber": 16,
+        "durationMs": 302653
+      },
+      {
+        "id": "album_1721851095_track_1721851513",
+        "title": "Mademoiselle Dezi Belle",
+        "appleSongId": "1721851513",
+        "trackNumber": 17,
+        "durationMs": 187240
+      },
+      {
+        "id": "album_1721851095_track_1721851515",
+        "title": "Chopfkino (Instrumental)",
+        "appleSongId": "1721851515",
+        "trackNumber": 18,
+        "durationMs": 210320
+      },
+      {
+        "id": "album_1721851095_track_1721851516",
+        "title": "Ohrwurm (Instrumental)",
+        "appleSongId": "1721851516",
+        "trackNumber": 19,
+        "durationMs": 205040
+      },
+      {
+        "id": "album_1721851095_track_1721851727",
+        "title": "Wer isch dä Mörder? (Instrumental)",
+        "appleSongId": "1721851727",
+        "trackNumber": 20,
+        "durationMs": 212560
+      },
+      {
+        "id": "album_1721851095_track_1721851728",
+        "title": "Mamacita (Instrumental)",
+        "appleSongId": "1721851728",
+        "trackNumber": 21,
+        "durationMs": 194147
+      },
+      {
+        "id": "album_1721851095_track_1721851731",
+        "title": "MundART (Instrumental)",
+        "appleSongId": "1721851731",
+        "trackNumber": 22,
+        "durationMs": 199227
+      },
+      {
+        "id": "album_1721851095_track_1721851732",
+        "title": "Sigi (Instrumental)",
+        "appleSongId": "1721851732",
+        "trackNumber": 23,
+        "durationMs": 204853
+      },
+      {
+        "id": "album_1721851095_track_1721851739",
+        "title": "Hilf mir (Instrumental)",
+        "appleSongId": "1721851739",
+        "trackNumber": 24,
+        "durationMs": 261067
+      },
+      {
+        "id": "album_1721851095_track_1721851748",
+        "title": "Morn dänn (Instrumental)",
+        "appleSongId": "1721851748",
+        "trackNumber": 25,
+        "durationMs": 239987
+      },
+      {
+        "id": "album_1721851095_track_1721851750",
+        "title": "Ikarus (Instrumental)",
+        "appleSongId": "1721851750",
+        "trackNumber": 26,
+        "durationMs": 221707
+      },
+      {
+        "id": "album_1721851095_track_1721851753",
+        "title": "D'Idee .- (Instrumental)",
+        "appleSongId": "1721851753",
+        "trackNumber": 27,
+        "durationMs": 223413
+      },
+      {
+        "id": "album_1721851095_track_1721851818",
+        "title": "S'Füür (Instrumental)",
+        "appleSongId": "1721851818",
+        "trackNumber": 28,
+        "durationMs": 214493
+      },
+      {
+        "id": "album_1721851095_track_1721851819",
+        "title": "Miss Trau (Instrumental)",
+        "appleSongId": "1721851819",
+        "trackNumber": 29,
+        "durationMs": 215173
+      },
+      {
+        "id": "album_1721851095_track_1721851822",
+        "title": "Träne lüged nöd (Instrumental)",
+        "appleSongId": "1721851822",
+        "trackNumber": 30,
+        "durationMs": 256227
+      },
+      {
+        "id": "album_1721851095_track_1721851823",
+        "title": "Bye Bye (Instrumental)",
+        "appleSongId": "1721851823",
+        "trackNumber": 31,
+        "durationMs": 301667
+      },
+      {
+        "id": "album_1721851095_track_1721851825",
+        "title": "Mademoiselle Dezi Belle (Instrumental)",
+        "appleSongId": "1721851825",
+        "trackNumber": 32,
+        "durationMs": 185093
+      }
+    ]
+  },
+  {
+    "id": "album_1759987625",
+    "title": "Tavolata",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Bligg",
+    "album": "Tavolata",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f9/82/d5/f982d5e6-58cb-0e54-0fd2-b79c8ff30589/196872095463.jpg/600x600bb.jpg",
+    "appleId": "1759987625",
+    "tracks": [
+      {
+        "id": "album_1759987625_track_1759987638",
+        "title": "B.L.I. Doppel G (Tavolata Version)",
+        "appleSongId": "1759987638",
+        "trackNumber": 1,
+        "durationMs": 182360
+      },
+      {
+        "id": "album_1759987625_track_1759987852",
+        "title": "Rosalie (Tavolata Version)",
+        "appleSongId": "1759987852",
+        "trackNumber": 2,
+        "durationMs": 247240
+      },
+      {
+        "id": "album_1759987625_track_1759987858",
+        "title": "Mosaik (Tavolata Version)",
+        "appleSongId": "1759987858",
+        "trackNumber": 3,
+        "durationMs": 223027
+      },
+      {
+        "id": "album_1759987625_track_1759987859",
+        "title": "Manhattan (Tavolata Version)",
+        "appleSongId": "1759987859",
+        "trackNumber": 4,
+        "durationMs": 216133
+      },
+      {
+        "id": "album_1759987625_track_1759987862",
+        "title": "Signal (Tavolata Version)",
+        "appleSongId": "1759987862",
+        "trackNumber": 5,
+        "durationMs": 222040
+      },
+      {
+        "id": "album_1759987625_track_1759987864",
+        "title": "Us Mänsch (Tavolata Version)",
+        "appleSongId": "1759987864",
+        "trackNumber": 6,
+        "durationMs": 239320
+      },
+      {
+        "id": "album_1759987625_track_1759987867",
+        "title": "Musigg i dä Schwiiz (Tavolata Version)",
+        "appleSongId": "1759987867",
+        "trackNumber": 7,
+        "durationMs": 244667
+      },
+      {
+        "id": "album_1759987625_track_1759987870",
+        "title": "Alles scho mal ghört (Tavolata Version)",
+        "appleSongId": "1759987870",
+        "trackNumber": 8,
+        "durationMs": 228973
+      },
+      {
+        "id": "album_1759987625_track_1759987873",
+        "title": "Chef (Tavolata Version)",
+        "appleSongId": "1759987873",
+        "trackNumber": 9,
+        "durationMs": 228480
+      },
+      {
+        "id": "album_1759987625_track_1759987875",
+        "title": "Legändä & Heldä (Tavolata Version)",
+        "appleSongId": "1759987875",
+        "trackNumber": 10,
+        "durationMs": 217667
+      },
+      {
+        "id": "album_1759987625_track_1759988059",
+        "title": "Milchstrass (Tavolata Version)",
+        "appleSongId": "1759988059",
+        "trackNumber": 11,
+        "durationMs": 256080
+      }
+    ]
+  },
+  {
+    "id": "album_1721856727",
+    "title": "Brass aber herzlich (Deluxe Edition)",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Bligg",
+    "album": "Brass aber herzlich (Deluxe Edition)",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/52/51/b2/5251b2f2-42b3-66cc-b37c-28016d884b7b/196871703338.jpg/600x600bb.jpg",
+    "appleId": "1721856727",
+    "tracks": [
+      {
+        "id": "album_1721856727_track_1721856731",
+        "title": "Mit Paukä & Trompetä",
+        "appleSongId": "1721856731",
+        "trackNumber": 1,
+        "durationMs": 193640
+      },
+      {
+        "id": "album_1721856727_track_1721856918",
+        "title": "Chef (YBBB Version)",
+        "appleSongId": "1721856918",
+        "trackNumber": 2,
+        "durationMs": 216133
+      },
+      {
+        "id": "album_1721856727_track_1721856920",
+        "title": "Stadt / Land (YBBB Version)",
+        "appleSongId": "1721856920",
+        "trackNumber": 3,
+        "durationMs": 241093
+      },
+      {
+        "id": "album_1721856727_track_1721856923",
+        "title": "Romeo und Julia (YBBB Version)",
+        "appleSongId": "1721856923",
+        "trackNumber": 4,
+        "durationMs": 205693
+      },
+      {
+        "id": "album_1721856727_track_1721856925",
+        "title": "Okay (YBBB Version)",
+        "appleSongId": "1721856925",
+        "trackNumber": 5,
+        "durationMs": 253587
+      },
+      {
+        "id": "album_1721856727_track_1721856927",
+        "title": "Legändä & Heldä (YBBB Version)",
+        "appleSongId": "1721856927",
+        "trackNumber": 6,
+        "durationMs": 212493
+      },
+      {
+        "id": "album_1721856727_track_1721856928",
+        "title": "Spiegel (feat. Xavier Naidoo) [YBBB Version]",
+        "appleSongId": "1721856928",
+        "trackNumber": 7,
+        "durationMs": 229827
+      },
+      {
+        "id": "album_1721856727_track_1721856931",
+        "title": "Manhattan (YBBB Version)",
+        "appleSongId": "1721856931",
+        "trackNumber": 8,
+        "durationMs": 188040
+      },
+      {
+        "id": "album_1721856727_track_1721856935",
+        "title": "Annie May (YBBB Version)",
+        "appleSongId": "1721856935",
+        "trackNumber": 9,
+        "durationMs": 229547
+      },
+      {
+        "id": "album_1721856727_track_1721856937",
+        "title": "I'd Kill For You (feat. Jessy Howe) [YBBB Version]",
+        "appleSongId": "1721856937",
+        "trackNumber": 10,
+        "durationMs": 178027
+      },
+      {
+        "id": "album_1721856727_track_1721856941",
+        "title": "Abfahrt (Intermezzo)",
+        "appleSongId": "1721856941",
+        "trackNumber": 11,
+        "durationMs": 52133
+      },
+      {
+        "id": "album_1721856727_track_1721857099",
+        "title": "Fahr e Mal (YBBB Version)",
+        "appleSongId": "1721857099",
+        "trackNumber": 12,
+        "durationMs": 174213
+      },
+      {
+        "id": "album_1721856727_track_1721857109",
+        "title": "Rendezvous (YBBB Version)",
+        "appleSongId": "1721857109",
+        "trackNumber": 13,
+        "durationMs": 220573
+      },
+      {
+        "id": "album_1721856727_track_1721857113",
+        "title": "S.O.S (YBBB Version)",
+        "appleSongId": "1721857113",
+        "trackNumber": 14,
+        "durationMs": 223760
+      },
+      {
+        "id": "album_1721856727_track_1721857116",
+        "title": "Mit Paukä & Trompetä (Instrumental)",
+        "appleSongId": "1721857116",
+        "trackNumber": 15,
+        "durationMs": 183973
+      },
+      {
+        "id": "album_1721856727_track_1721857117",
+        "title": "Chef (YBBB Version - Instrumental)",
+        "appleSongId": "1721857117",
+        "trackNumber": 16,
+        "durationMs": 215187
+      },
+      {
+        "id": "album_1721856727_track_1721857119",
+        "title": "Stadt / Land (YBBB Version - Instrumental)",
+        "appleSongId": "1721857119",
+        "trackNumber": 17,
+        "durationMs": 239413
+      },
+      {
+        "id": "album_1721856727_track_1721857121",
+        "title": "Romeo und Julia (YBBB Version - Instrumental)",
+        "appleSongId": "1721857121",
+        "trackNumber": 18,
+        "durationMs": 204893
+      },
+      {
+        "id": "album_1721856727_track_1721857123",
+        "title": "Okay (YBBB Version - Instrumental)",
+        "appleSongId": "1721857123",
+        "trackNumber": 19,
+        "durationMs": 252520
+      },
+      {
+        "id": "album_1721856727_track_1721857126",
+        "title": "Legändä & Heldä (YBBB Version - Instrumental)",
+        "appleSongId": "1721857126",
+        "trackNumber": 20,
+        "durationMs": 210547
+      },
+      {
+        "id": "album_1721856727_track_1721857277",
+        "title": "Spiegel (feat. Xavier Naidoo) [YBBB Version - Instrumental]",
+        "appleSongId": "1721857277",
+        "trackNumber": 21,
+        "durationMs": 232080
+      },
+      {
+        "id": "album_1721856727_track_1721857281",
+        "title": "Manhattan (YBBB Version - Instrumental)",
+        "appleSongId": "1721857281",
+        "trackNumber": 22,
+        "durationMs": 186307
+      },
+      {
+        "id": "album_1721856727_track_1721857282",
+        "title": "Annie May (YBBB Version - Instrumental)",
+        "appleSongId": "1721857282",
+        "trackNumber": 23,
+        "durationMs": 227867
+      },
+      {
+        "id": "album_1721856727_track_1721857285",
+        "title": "I'd Kill For You (feat. Jessy Howe) [YBBB Version - Instrumental]",
+        "appleSongId": "1721857285",
+        "trackNumber": 24,
+        "durationMs": 177320
+      },
+      {
+        "id": "album_1721856727_track_1721857286",
+        "title": "Fahr e Mal (YBBB Version - Instrumental)",
+        "appleSongId": "1721857286",
+        "trackNumber": 25,
+        "durationMs": 225667
+      },
+      {
+        "id": "album_1721856727_track_1721857290",
+        "title": "Rendezvous (YBBB Version - Instrumental)",
+        "appleSongId": "1721857290",
+        "trackNumber": 26,
+        "durationMs": 220253
+      },
+      {
+        "id": "album_1721856727_track_1721857296",
+        "title": "S.O.S (YBBB Version - Instrumental)",
+        "appleSongId": "1721857296",
+        "trackNumber": 27,
+        "durationMs": 221627
+      }
+    ]
+  },
+  {
+    "id": "album_1628609463",
+    "title": "Finale",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "BLAY, Bligg & Marc Sway",
+    "album": "Finale",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/5f/0f/ad/5f0fad14-fdaf-77d5-1b23-22f4b0d0f918/196589053480.jpg/600x600bb.jpg",
+    "appleId": "1628609463",
+    "tracks": [
+      {
+        "id": "album_1628609463_track_1628609676",
+        "title": "Berge versetze",
+        "appleSongId": "1628609676",
+        "trackNumber": 1,
+        "durationMs": 207400
+      },
+      {
+        "id": "album_1628609463_track_1628609681",
+        "title": "Jetzt mal ehrlich",
+        "appleSongId": "1628609681",
+        "trackNumber": 2,
+        "durationMs": 178187
+      },
+      {
+        "id": "album_1628609463_track_1628609684",
+        "title": "Mit dir",
+        "appleSongId": "1628609684",
+        "trackNumber": 3,
+        "durationMs": 212133
+      },
+      {
+        "id": "album_1628609463_track_1628609685",
+        "title": "Grau & Lila",
+        "appleSongId": "1628609685",
+        "trackNumber": 4,
+        "durationMs": 159667
+      },
+      {
+        "id": "album_1628609463_track_1628609689",
+        "title": "Mona Lisa",
+        "appleSongId": "1628609689",
+        "trackNumber": 5,
+        "durationMs": 196413
+      },
+      {
+        "id": "album_1628609463_track_1628609692",
+        "title": "Lebowski",
+        "appleSongId": "1628609692",
+        "trackNumber": 6,
+        "durationMs": 151750
+      },
+      {
+        "id": "album_1628609463_track_1628609694",
+        "title": "Roger",
+        "appleSongId": "1628609694",
+        "trackNumber": 7,
+        "durationMs": 166024
+      },
+      {
+        "id": "album_1628609463_track_1628609695",
+        "title": "Bin dänn mal Wäg",
+        "appleSongId": "1628609695",
+        "trackNumber": 8,
+        "durationMs": 166720
+      }
+    ]
+  },
+  {
+    "id": "album_1483747704",
+    "title": "Globi im Europa-Park",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Globi",
+    "album": "Globi im Europa-Park",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/5b/a5/12/5ba5120c-b7bd-20dc-0130-0568740944b9/cover.jpg/600x600bb.jpg",
+    "appleId": "1483747704",
+    "tracks": [
+      {
+        "id": "album_1483747704_track_1483747873",
+        "title": "Sali mitenand",
+        "appleSongId": "1483747873",
+        "trackNumber": 1,
+        "durationMs": 104240
+      },
+      {
+        "id": "album_1483747704_track_1483747880",
+        "title": "Bim Zmittag",
+        "appleSongId": "1483747880",
+        "trackNumber": 2,
+        "durationMs": 112493
+      },
+      {
+        "id": "album_1483747704_track_1483747885",
+        "title": "S' gaat wiiter mit Bim Zmittag",
+        "appleSongId": "1483747885",
+        "trackNumber": 3,
+        "durationMs": 131667
+      },
+      {
+        "id": "album_1483747704_track_1483747982",
+        "title": "D' Fahrt uf Basel",
+        "appleSongId": "1483747982",
+        "trackNumber": 4,
+        "durationMs": 42560
+      },
+      {
+        "id": "album_1483747704_track_1483747984",
+        "title": "S' gaat wiiter mit D' Fahrt uf Basel",
+        "appleSongId": "1483747984",
+        "trackNumber": 5,
+        "durationMs": 74613
+      },
+      {
+        "id": "album_1483747704_track_1483747986",
+        "title": "Zeerscht dur de Schwiizer Zoll",
+        "appleSongId": "1483747986",
+        "trackNumber": 6,
+        "durationMs": 63040
+      },
+      {
+        "id": "album_1483747704_track_1483747991",
+        "title": "S' gaat wiiter mit Zeerscht dur de Schwiizer Zoll",
+        "appleSongId": "1483747991",
+        "trackNumber": 7,
+        "durationMs": 77507
+      },
+      {
+        "id": "album_1483747704_track_1483747996",
+        "title": "Na mee vo Zeerscht dur de Schwiizer Zoll",
+        "appleSongId": "1483747996",
+        "trackNumber": 8,
+        "durationMs": 91427
+      },
+      {
+        "id": "album_1483747704_track_1483748221",
+        "title": "Und dänn dur de Düütsch",
+        "appleSongId": "1483748221",
+        "trackNumber": 9,
+        "durationMs": 66267
+      },
+      {
+        "id": "album_1483747704_track_1483748226",
+        "title": "S' gaat wiiter mit und dänn dur de Düütsch",
+        "appleSongId": "1483748226",
+        "trackNumber": 10,
+        "durationMs": 81280
+      },
+      {
+        "id": "album_1483747704_track_1483748244",
+        "title": "Aakunft im Europa-Park: Und scho die erschte Probleem",
+        "appleSongId": "1483748244",
+        "trackNumber": 11,
+        "durationMs": 160960
+      },
+      {
+        "id": "album_1483747704_track_1483748355",
+        "title": "S' gaat wiiter mit Aakunft im Europa-Park: Und scho die erschte Probleem",
+        "appleSongId": "1483748355",
+        "trackNumber": 12,
+        "durationMs": 207960
+      },
+      {
+        "id": "album_1483747704_track_1483748364",
+        "title": "Was isch au mit em Charly los",
+        "appleSongId": "1483748364",
+        "trackNumber": 13,
+        "durationMs": 105573
+      },
+      {
+        "id": "album_1483747704_track_1483748498",
+        "title": "S' gaat wiiter mit Was isch au mit em Charly los",
+        "appleSongId": "1483748498",
+        "trackNumber": 14,
+        "durationMs": 125947
+      },
+      {
+        "id": "album_1483747704_track_1483748506",
+        "title": "De Clown Peppino redt plötzli hinderschi",
+        "appleSongId": "1483748506",
+        "trackNumber": 15,
+        "durationMs": 114293
+      },
+      {
+        "id": "album_1483747704_track_1483748515",
+        "title": "S' gaat wiiter mit De Clown Peppino redt plötzli hinderschi",
+        "appleSongId": "1483748515",
+        "trackNumber": 16,
+        "durationMs": 160547
+      },
+      {
+        "id": "album_1483747704_track_1483748625",
+        "title": "Na mee vo De Clown Peppino redt plötzli hinderschi",
+        "appleSongId": "1483748625",
+        "trackNumber": 17,
+        "durationMs": 115160
+      },
+      {
+        "id": "album_1483747704_track_1483748762",
+        "title": "Europa-Park-Lied",
+        "appleSongId": "1483748762",
+        "trackNumber": 18,
+        "durationMs": 146107
+      },
+      {
+        "id": "album_1483747704_track_1483748773",
+        "title": "De gheimnisvoll Matterhorn-Felse",
+        "appleSongId": "1483748773",
+        "trackNumber": 19,
+        "durationMs": 81387
+      },
+      {
+        "id": "album_1483747704_track_1483748779",
+        "title": "S' gaat wiiter mit De gheimnisvoll Matterhorn-Felse",
+        "appleSongId": "1483748779",
+        "trackNumber": 20,
+        "durationMs": 80693
+      },
+      {
+        "id": "album_1483747704_track_1483748782",
+        "title": "Uf Raabe-Jagd",
+        "appleSongId": "1483748782",
+        "trackNumber": 21,
+        "durationMs": 96987
+      },
+      {
+        "id": "album_1483747704_track_1483748996",
+        "title": "S' gaat wiiter mit Uf Raabe-Jagd",
+        "appleSongId": "1483748996",
+        "trackNumber": 22,
+        "durationMs": 114680
+      },
+      {
+        "id": "album_1483747704_track_1483749007",
+        "title": "I de spanische Arena",
+        "appleSongId": "1483749007",
+        "trackNumber": 23,
+        "durationMs": 118080
+      },
+      {
+        "id": "album_1483747704_track_1483749010",
+        "title": "S' gaat wiiter mit I de spanische Arena",
+        "appleSongId": "1483749010",
+        "trackNumber": 24,
+        "durationMs": 114307
+      },
+      {
+        "id": "album_1483747704_track_1483749015",
+        "title": "D' Begägnig mit em Geischterfräulein Gisela",
+        "appleSongId": "1483749015",
+        "trackNumber": 25,
+        "durationMs": 127773
+      },
+      {
+        "id": "album_1483747704_track_1483749217",
+        "title": "S' gaat wiiter mit D' Begägnig mit em Geischterfräulein Gisela",
+        "appleSongId": "1483749217",
+        "trackNumber": 26,
+        "durationMs": 130147
+      },
+      {
+        "id": "album_1483747704_track_1483749220",
+        "title": "De Matterhorn-Geischt isch gschuld an allem",
+        "appleSongId": "1483749220",
+        "trackNumber": 27,
+        "durationMs": 211080
+      },
+      {
+        "id": "album_1483747704_track_1483749224",
+        "title": "S' gaat wiiter mit De Matterhorn-Geischt isch gschuld an allem",
+        "appleSongId": "1483749224",
+        "trackNumber": 28,
+        "durationMs": 199160
+      },
+      {
+        "id": "album_1483747704_track_1483749231",
+        "title": "Heizue: Zrugg i d' Schwiiz",
+        "appleSongId": "1483749231",
+        "trackNumber": 29,
+        "durationMs": 51347
+      },
+      {
+        "id": "album_1483747704_track_1483749235",
+        "title": "S' gaat wiiter mit Heizue: Zrugg i d' Schwiiz",
+        "appleSongId": "1483749235",
+        "trackNumber": 30,
+        "durationMs": 76760
+      },
+      {
+        "id": "album_1483747704_track_1483749388",
+        "title": "Europa-Park-Lied (Abspann)",
+        "appleSongId": "1483749388",
+        "trackNumber": 31,
+        "durationMs": 141040
+      },
+      {
+        "id": "album_1483747704_track_1483749390",
+        "title": "Es gwundrigs ändi",
+        "appleSongId": "1483749390",
+        "trackNumber": 32,
+        "durationMs": 121187
+      }
+    ]
+  },
+  {
+    "id": "album_1824166604",
+    "title": "Besch ready für die Liebi vo mer? - Single",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Hecht",
+    "album": "Besch ready für die Liebi vo mer? - Single",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/53/af/6d/53af6d49-bb70-a4e0-3940-e08969cafe7d/7619949822869_3000.jpg/600x600bb.jpg",
+    "appleId": "1824166604",
+    "tracks": [
+      {
+        "id": "album_1824166604_track_1824166609",
+        "title": "Besch ready für die Liebi vo mer?",
+        "appleSongId": "1824166609",
+        "trackNumber": 1,
+        "durationMs": 208338
+      }
+    ]
+  },
+  {
+    "id": "album_1850418332",
+    "title": "HECKISTIIGER (feat. Tina Weirather, Michael Schweizer & Marc Berthod) - Single",
+    "kind": "album",
+    "service": "appleMusic",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/48/79/fc/4879fc3d-3ae5-29f1-b37c-fdf79876c556/7649995049415_3000.jpg/600x600bb.jpg",
+    "appleId": "1850418332",
+    "tracks": [
+      {
+        "id": "song_1850418335",
+        "title": "HECKISTIIGER (feat. Tina Weirather, Michael Schweizer & Marc Berthod)",
+        "appleSongId": "1850418335"
+      }
+    ],
+    "artist": "Discohelm",
+    "album": "HECKISTIIGER (feat. Tina Weirather, Michael Schweizer & Marc Berthod) - Single"
+  }
+]

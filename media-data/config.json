@@ -1,0 +1,21 @@
+{
+  "sonosBaseUrl": "http://192.168.114.21:5005",
+  "rooms": [
+    "Lounge",
+    "Werkstatt",
+    "Büro",
+    "Wintergarten",
+    "Bad",
+    "Schlafzimmer",
+    "Küche",
+    "Kinderzimmer",
+    "Wohnzimmer",
+    "Spielzimmer"
+  ],
+  "enabledRooms": [
+    "Büro",
+    "Kinderzimmer",
+    "Küche"
+  ],
+  "defaultRoom": "Büro"
+}
