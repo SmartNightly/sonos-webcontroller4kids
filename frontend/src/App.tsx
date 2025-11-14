@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { MediaItem, MediaTrack, AppleSearchResult } from './types'
+import { MediaEditor } from './MediaEditor'
 
 function App() {
   const params = new URLSearchParams(window.location.search)
@@ -452,6 +453,7 @@ interface SonosConfig {
 }
 
 function AdminView() {
+  const [tab, setTab] = useState<'search' | 'sonos' | 'editor'>('search')
   const [query, setQuery] = useState('')
   const [entity, setEntity] = useState<'album' | 'song'>('album')
   const [results, setResults] = useState<AppleSearchResult[]>([])
@@ -659,173 +661,215 @@ function AdminView() {
 
   return (
     <div style={styles.screen}>
-      <h1 style={styles.title}>Admin: Sonos Raum-Discovery → config.json</h1>
-
-      {/* Sonos-Konfiguration */}
-      <div style={{ marginBottom: 10, padding: 6, backgroundColor: '#222', borderRadius: 8 }}>
-        <div style={{ fontSize: '0.9rem', marginBottom: 4 }}>Sonos-Konfiguration</div>
-        <div style={{ marginBottom: 4 }}>
-          <input
-            style={styles.input}
-            value={sonosBaseUrl}
-            onChange={e => setSonosBaseUrl(e.target.value)}
-            placeholder="http://192.168.114.21:5005"
-          />
-          <button
-            style={styles.button}
-            onClick={discoverSonosRooms}
-            disabled={sonosLoading}
-          >
-            {sonosLoading ? 'Lade…' : 'Räume laden & speichern'}
-          </button>
-        </div>
-        {sonosError && (
-          <div style={{ color: 'red', fontSize: '0.8rem', marginBottom: 4 }}>
-            {sonosError}
-          </div>
-        )}
-
-        {/* Dual-List: Links alle Räume, rechts aktive Räume */}
-        <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.8rem', marginBottom: 2 }}>Alle Räume</div>
-            <div style={{ maxHeight: 120, overflowY: 'auto', backgroundColor: '#111', borderRadius: 6, padding: 4 }}>
-              {availableRooms.length === 0 && (
-                <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>Keine weiteren Räume</div>
-              )}
-              {availableRooms.map(room => (
-                <button
-                  key={room}
-                  style={{
-                    width: '100%',
-                    textAlign: 'left',
-                    border: 'none',
-                    borderRadius: 4,
-                    padding: '2px 4px',
-                    marginBottom: 2,
-                    backgroundColor: '#333',
-                    fontSize: '0.8rem',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => moveRoomRight(room)}
-                >
-                  ➕ {room}
-                </button>
-              ))}
-            </div>
-            <button
-              style={{ ...styles.smallButton, marginTop: 4 }}
-              onClick={moveAllRight}
-            >
-              Alle hinzufügen
-            </button>
-          </div>
-
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.8rem', marginBottom: 2 }}>Aktive Räume (für Kids-Frontend)</div>
-            <div style={{ maxHeight: 120, overflowY: 'auto', backgroundColor: '#111', borderRadius: 6, padding: 4 }}>
-              {enabledRooms.length === 0 && (
-                <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>Noch keine aktiven Räume</div>
-              )}
-              {enabledRooms.map(room => (
-                <button
-                  key={room}
-                  style={{
-                    width: '100%',
-                    textAlign: 'left',
-                    border: 'none',
-                    borderRadius: 4,
-                    padding: '2px 4px',
-                    marginBottom: 2,
-                    backgroundColor: '#444',
-                    fontSize: '0.8rem',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => moveRoomLeft(room)}
-                >
-                  ➖ {room}
-                </button>
-              ))}
-            </div>
-            <button
-              style={{ ...styles.smallButton, marginTop: 4 }}
-              onClick={moveAllLeft}
-            >
-              Alle entfernen
-            </button>
-          </div>
-        </div>
-
+      {/* Tab-Navigation */}
+      <div style={styles.tabNav}>
         <button
-          style={{ ...styles.button, marginTop: 6 }}
-          onClick={saveEnabledRooms}
+          style={{
+            ...styles.tabButton,
+            ...(tab === 'search' ? styles.tabButtonActive : {}),
+          }}
+          onClick={() => setTab('search')}
         >
-          Aktive Räume speichern
+          Apple-Suche
         </button>
-
-        {sonosRooms.length > 0 && (
-          <div style={{ fontSize: '0.75rem', opacity: 0.8, marginTop: 4 }}>
-            Entdeckte Räume: {sonosRooms.join(', ')}
-          </div>
-        )}
-      </div>
-
-
-      {/* Bestehende Apple-Suche */}
-      <h1 style={styles.title}>Admin: Apple-Suche → media.json</h1>
-
-      <div style={{ marginBottom: 8 }}>
-        <input
-          style={styles.input}
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          placeholder="Titel, Interpret, Album…"
-        />
-        <select
-          style={styles.select}
-          value={entity}
-          onChange={e => setEntity(e.target.value as 'album' | 'song')}
+        <button
+          style={{
+            ...styles.tabButton,
+            ...(tab === 'sonos' ? styles.tabButtonActive : {}),
+          }}
+          onClick={() => setTab('sonos')}
         >
-          <option value="album">Album</option>
-          <option value="song">Song</option>
-        </select>
-        <button style={styles.button} onClick={search} disabled={loading}>
-          Suchen
+          Sonos-Räume
+        </button>
+        <button
+          style={{
+            ...styles.tabButton,
+            ...(tab === 'editor' ? styles.tabButtonActive : {}),
+          }}
+          onClick={() => setTab('editor')}
+        >
+          Media-Editor
         </button>
       </div>
 
-      {loading && <div>Lade Suchergebnisse…</div>}
-      {error && <div style={{ color: 'red', marginBottom: 4 }}>{error}</div>}
-      {info && (
-        <div style={{ color: 'lightgreen', marginBottom: 4 }}>{info}</div>
-      )}
+      {/* Sonos-Tab */}
+      {tab === 'sonos' && (
+        <div style={{ flex: 1, overflowY: 'auto' }}>
+          <h1 style={styles.title}>Admin: Sonos Raum-Discovery → config.json</h1>
 
-      <div style={styles.list}>
-        {results.map(r => (
-          <div
-            key={`${r.kind}-${r.appleAlbumId}-${r.appleSongId}-${r.title}`}
-            style={styles.resultRow}
-          >
-            <img
-              src={r.coverUrl}
-              alt={r.title}
-              style={styles.resultCover}
-            />
-            <div style={styles.resultInfo}>
-              <div>{r.title}</div>
-              <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
-                {r.artist} {r.album ? `– ${r.album}` : ''}
+          {/* Sonos-Konfiguration */}
+          <div style={{ marginBottom: 10, padding: 6, backgroundColor: '#222', borderRadius: 8 }}>
+            <div style={{ fontSize: '0.9rem', marginBottom: 4 }}>Sonos-Konfiguration</div>
+            <div style={{ marginBottom: 4 }}>
+              <input
+                style={styles.input}
+                value={sonosBaseUrl}
+                onChange={e => setSonosBaseUrl(e.target.value)}
+                placeholder="http://192.168.114.21:5005"
+              />
+              <button
+                style={styles.button}
+                onClick={discoverSonosRooms}
+                disabled={sonosLoading}
+              >
+                {sonosLoading ? 'Lade…' : 'Räume laden & speichern'}
+              </button>
+            </div>
+            {sonosError && (
+              <div style={{ color: 'red', fontSize: '0.8rem', marginBottom: 4 }}>
+                {sonosError}
+              </div>
+            )}
+
+            {/* Dual-List: Links alle Räume, rechts aktive Räume */}
+            <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: '0.8rem', marginBottom: 2 }}>Alle Räume</div>
+                <div style={{ maxHeight: 120, overflowY: 'auto', backgroundColor: '#111', borderRadius: 6, padding: 4 }}>
+                  {availableRooms.length === 0 && (
+                    <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>Keine weiteren Räume</div>
+                  )}
+                  {availableRooms.map(room => (
+                    <button
+                      key={room}
+                      style={{
+                        width: '100%',
+                        textAlign: 'left',
+                        border: 'none',
+                        borderRadius: 4,
+                        padding: '2px 4px',
+                        marginBottom: 2,
+                        backgroundColor: '#333',
+                        fontSize: '0.8rem',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => moveRoomRight(room)}
+                    >
+                      ➕ {room}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  style={{ ...styles.smallButton, marginTop: 4 }}
+                  onClick={moveAllRight}
+                >
+                  Alle hinzufügen
+                </button>
+              </div>
+
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: '0.8rem', marginBottom: 2 }}>Aktive Räume (für Kids-Frontend)</div>
+                <div style={{ maxHeight: 120, overflowY: 'auto', backgroundColor: '#111', borderRadius: 6, padding: 4 }}>
+                  {enabledRooms.length === 0 && (
+                    <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>Noch keine aktiven Räume</div>
+                  )}
+                  {enabledRooms.map(room => (
+                    <button
+                      key={room}
+                      style={{
+                        width: '100%',
+                        textAlign: 'left',
+                        border: 'none',
+                        borderRadius: 4,
+                        padding: '2px 4px',
+                        marginBottom: 2,
+                        backgroundColor: '#444',
+                        fontSize: '0.8rem',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => moveRoomLeft(room)}
+                    >
+                      ➖ {room}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  style={{ ...styles.smallButton, marginTop: 4 }}
+                  onClick={moveAllLeft}
+                >
+                  Alle entfernen
+                </button>
               </div>
             </div>
+
             <button
-              style={styles.smallButton}
-              onClick={() => addToMedia(r, entity)}
+              style={{ ...styles.button, marginTop: 6 }}
+              onClick={saveEnabledRooms}
             >
-              Hinzufügen
+              Aktive Räume speichern
+            </button>
+
+            {sonosRooms.length > 0 && (
+              <div style={{ fontSize: '0.75rem', opacity: 0.8, marginTop: 4 }}>
+                Entdeckte Räume: {sonosRooms.join(', ')}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Search-Tab */}
+      {tab === 'search' && (
+        <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+          <h1 style={styles.title}>Admin: Apple-Suche → media.json</h1>
+
+          <div style={{ marginBottom: 8 }}>
+            <input
+              style={styles.input}
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder="Titel, Interpret, Album…"
+            />
+            <select
+              style={styles.select}
+              value={entity}
+              onChange={e => setEntity(e.target.value as 'album' | 'song')}
+            >
+              <option value="album">Album</option>
+              <option value="song">Song</option>
+            </select>
+            <button style={styles.button} onClick={search} disabled={loading}>
+              Suchen
             </button>
           </div>
-        ))}
-      </div>
+
+          {loading && <div>Lade Suchergebnisse…</div>}
+          {error && <div style={{ color: 'red', marginBottom: 4 }}>{error}</div>}
+          {info && (
+            <div style={{ color: 'lightgreen', marginBottom: 4 }}>{info}</div>
+          )}
+
+          <div style={styles.list}>
+            {results.map(r => (
+              <div
+                key={`${r.kind}-${r.appleAlbumId}-${r.appleSongId}-${r.title}`}
+                style={styles.resultRow}
+              >
+                <img
+                  src={r.coverUrl}
+                  alt={r.title}
+                  style={styles.resultCover}
+                />
+                <div style={styles.resultInfo}>
+                  <div>{r.title}</div>
+                  <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
+                    {r.artist} {r.album ? `– ${r.album}` : ''}
+                  </div>
+                </div>
+                <button
+                  style={styles.smallButton}
+                  onClick={() => addToMedia(r, entity)}
+                >
+                  Hinzufügen
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Editor-Tab */}
+      {tab === 'editor' && <MediaEditor />}
     </div>
   )
 }
@@ -1045,6 +1089,27 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: '#555',
     color: '#fff',
     cursor: 'pointer',
+  },
+
+  // Tab Navigation
+  tabNav: {
+    display: 'flex',
+    gap: '4px',
+    marginBottom: '8px',
+    borderBottom: '1px solid #333',
+  },
+  tabButton: {
+    padding: '8px 12px',
+    fontSize: '0.9rem',
+    border: 'none',
+    borderBottom: '2px solid transparent',
+    backgroundColor: 'transparent',
+    color: '#aaa',
+    cursor: 'pointer',
+  },
+  tabButtonActive: {
+    borderBottomColor: '#0a0',
+    color: '#fff',
   },
 
   // Admin styles

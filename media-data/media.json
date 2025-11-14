@@ -23,7 +23,7 @@
   },
   {
     "id": "album_1721851439",
-    "title": "Bart aber herzlich (Deluxe Edition)",
+    "title": "Bart aber herzlich",
     "kind": "album",
     "service": "appleMusic",
     "artist": "Bligg",
@@ -234,7 +234,7 @@
     "title": "Heimspiel",
     "kind": "album",
     "service": "appleMusic",
-    "artist": "BLAY, Bligg & Marc Sway",
+    "artist": "Bligg",
     "album": "Heimspiel",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/28/23/27/28232786-b919-64d1-996b-63921ec8f879/886448948988.jpg/600x600bb.jpg",
     "appleId": "1542625408",
@@ -314,7 +314,7 @@
   {
     "id": "album_1483523950",
     "title": "Globi am Flughafen",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Globi",
     "album": "Globi am Flughafen",
@@ -550,7 +550,7 @@
   {
     "id": "album_1483669865",
     "title": "Globi bei der Feuerwehr",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Globi",
     "album": "Globi bei der Feuerwehr",
@@ -758,7 +758,7 @@
   {
     "id": "album_1483664441",
     "title": "Globis Zoo",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Globi",
     "album": "Globis Zoo",
@@ -1318,7 +1318,7 @@
   },
   {
     "id": "album_1721856727",
-    "title": "Brass aber herzlich (Deluxe Edition)",
+    "title": "Brass aber herzlich ()",
     "kind": "album",
     "service": "appleMusic",
     "artist": "Bligg",
@@ -1335,7 +1335,7 @@
       },
       {
         "id": "album_1721856727_track_1721856918",
-        "title": "Chef (YBBB Version)",
+        "title": "Chef (Version)",
         "appleSongId": "1721856918",
         "trackNumber": 2,
         "durationMs": 216133
@@ -1522,7 +1522,7 @@
     "title": "Finale",
     "kind": "album",
     "service": "appleMusic",
-    "artist": "BLAY, Bligg & Marc Sway",
+    "artist": "Bligg",
     "album": "Finale",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/5f/0f/ad/5f0fad14-fdaf-77d5-1b23-22f4b0d0f918/196589053480.jpg/600x600bb.jpg",
     "appleId": "1628609463",
@@ -1588,7 +1588,7 @@
   {
     "id": "album_1483747704",
     "title": "Globi im Europa-Park",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Globi",
     "album": "Globi im Europa-Park",
@@ -1856,5 +1856,2010 @@
     ],
     "artist": "Discohelm",
     "album": "HECKISTIIGER (feat. Tina Weirather, Michael Schweizer & Marc Berthod) - Single"
+  },
+  {
+    "id": "album_1713845538",
+    "title": "1989 (Taylor's Version) [Deluxe]",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Taylor Swift",
+    "album": "1989 (Taylor's Version) [Deluxe]",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8e/35/6c/8e356cc2-0be4-b83b-d29e-b578623df2ac/23UM1IM34052.rgb.jpg/600x600bb.jpg",
+    "appleId": "1713845538",
+    "tracks": [
+      {
+        "id": "album_1713845538_track_1713845554",
+        "title": "Welcome To New York (Taylor's Version)",
+        "appleSongId": "1713845554",
+        "trackNumber": 1,
+        "durationMs": 212600
+      },
+      {
+        "id": "album_1713845538_track_1713845737",
+        "title": "Blank Space (Taylor's Version)",
+        "appleSongId": "1713845737",
+        "trackNumber": 2,
+        "durationMs": 231833
+      },
+      {
+        "id": "album_1713845538_track_1713845746",
+        "title": "Style (Taylor's Version)",
+        "appleSongId": "1713845746",
+        "trackNumber": 3,
+        "durationMs": 231000
+      },
+      {
+        "id": "album_1713845538_track_1713845779",
+        "title": "Out Of The Woods (Taylor's Version)",
+        "appleSongId": "1713845779",
+        "trackNumber": 4,
+        "durationMs": 235800
+      },
+      {
+        "id": "album_1713845538_track_1713845784",
+        "title": "All You Had To Do Was Stay (Taylor's Version)",
+        "appleSongId": "1713845784",
+        "trackNumber": 5,
+        "durationMs": 193289
+      },
+      {
+        "id": "album_1713845538_track_1713845786",
+        "title": "Shake It Off (Taylor's Version)",
+        "appleSongId": "1713845786",
+        "trackNumber": 6,
+        "durationMs": 219209
+      },
+      {
+        "id": "album_1713845538_track_1713845994",
+        "title": "I Wish You Would (Taylor's Version)",
+        "appleSongId": "1713845994",
+        "trackNumber": 7,
+        "durationMs": 207650
+      },
+      {
+        "id": "album_1713845538_track_1713846092",
+        "title": "Bad Blood (Taylor's Version)",
+        "appleSongId": "1713846092",
+        "trackNumber": 8,
+        "durationMs": 211104
+      },
+      {
+        "id": "album_1713845538_track_1713846100",
+        "title": "Wildest Dreams (Taylor's Version)",
+        "appleSongId": "1713846100",
+        "trackNumber": 9,
+        "durationMs": 220433
+      },
+      {
+        "id": "album_1713845538_track_1713846103",
+        "title": "How You Get The Girl (Taylor's Version)",
+        "appleSongId": "1713846103",
+        "trackNumber": 10,
+        "durationMs": 247533
+      },
+      {
+        "id": "album_1713845538_track_1713846228",
+        "title": "This Love (Taylor’s Version)",
+        "appleSongId": "1713846228",
+        "trackNumber": 11,
+        "durationMs": 250100
+      },
+      {
+        "id": "album_1713845538_track_1713846232",
+        "title": "I Know Places (Taylor's Version)",
+        "appleSongId": "1713846232",
+        "trackNumber": 12,
+        "durationMs": 195700
+      },
+      {
+        "id": "album_1713845538_track_1713846238",
+        "title": "Clean (Taylor's Version)",
+        "appleSongId": "1713846238",
+        "trackNumber": 13,
+        "durationMs": 271000
+      },
+      {
+        "id": "album_1713845538_track_1713846243",
+        "title": "Wonderland (Taylor's Version)",
+        "appleSongId": "1713846243",
+        "trackNumber": 14,
+        "durationMs": 245567
+      },
+      {
+        "id": "album_1713845538_track_1713846248",
+        "title": "You Are In Love (Taylor's Version)",
+        "appleSongId": "1713846248",
+        "trackNumber": 15,
+        "durationMs": 267389
+      },
+      {
+        "id": "album_1713845538_track_1713846253",
+        "title": "New Romantics (Taylor's Version)",
+        "appleSongId": "1713846253",
+        "trackNumber": 16,
+        "durationMs": 230178
+      },
+      {
+        "id": "album_1713845538_track_1713846497",
+        "title": "\"Slut!\" (Taylor's Version) [From The Vault]",
+        "appleSongId": "1713846497",
+        "trackNumber": 17,
+        "durationMs": 180381
+      },
+      {
+        "id": "album_1713845538_track_1713846513",
+        "title": "Say Don't Go (Taylor's Version) [From The Vault]",
+        "appleSongId": "1713846513",
+        "trackNumber": 18,
+        "durationMs": 279833
+      },
+      {
+        "id": "album_1713845538_track_1713846523",
+        "title": "Now That We Don't Talk (Taylor's Version) [From The Vault]",
+        "appleSongId": "1713846523",
+        "trackNumber": 19,
+        "durationMs": 146437
+      },
+      {
+        "id": "album_1713845538_track_1713846651",
+        "title": "Suburban Legends (Taylor's Version) [From The Vault]",
+        "appleSongId": "1713846651",
+        "trackNumber": 20,
+        "durationMs": 171819
+      },
+      {
+        "id": "album_1713845538_track_1713846658",
+        "title": "Is It Over Now? (Taylor's Version) [From The Vault]",
+        "appleSongId": "1713846658",
+        "trackNumber": 21,
+        "durationMs": 229478
+      },
+      {
+        "id": "album_1713845538_track_1713846670",
+        "title": "Bad Blood (Taylor's Version) [feat. Kendrick Lamar]",
+        "appleSongId": "1713846670",
+        "trackNumber": 22,
+        "durationMs": 199773
+      }
+    ]
+  },
+  {
+    "id": "album_1451412511",
+    "title": "Chinder Musig Wält, Vol. 1",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Swissmom",
+    "album": "Chinder Musig Wält, Vol. 1",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/0e/76/95/0e769572-c2f9-f77b-fdd6-ad346c3d57f8/artwork.jpg/600x600bb.jpg",
+    "appleId": "1451412511",
+    "tracks": [
+      {
+        "id": "album_1451412511_track_1451412532",
+        "title": "Alli mini Äntli",
+        "appleSongId": "1451412532",
+        "trackNumber": 1,
+        "durationMs": 119000
+      },
+      {
+        "id": "album_1451412511_track_1451412533",
+        "title": "Chom mier wei go Chrieseli günne",
+        "appleSongId": "1451412533",
+        "trackNumber": 2,
+        "durationMs": 126000
+      },
+      {
+        "id": "album_1451412511_track_1451412534",
+        "title": "Det äne am Bärgli",
+        "appleSongId": "1451412534",
+        "trackNumber": 3,
+        "durationMs": 83000
+      },
+      {
+        "id": "album_1451412511_track_1451412535",
+        "title": "Det äne am Bärgli alternativ",
+        "appleSongId": "1451412535",
+        "trackNumber": 4,
+        "durationMs": 83000
+      },
+      {
+        "id": "album_1451412511_track_1451412596",
+        "title": "Es Buurebüebli",
+        "appleSongId": "1451412596",
+        "trackNumber": 5,
+        "durationMs": 159000
+      },
+      {
+        "id": "album_1451412511_track_1451412597",
+        "title": "Ich ghöre es Glöggli",
+        "appleSongId": "1451412597",
+        "trackNumber": 6,
+        "durationMs": 138340
+      },
+      {
+        "id": "album_1451412511_track_1451412598",
+        "title": "Meiteli wenn du witt go tanze",
+        "appleSongId": "1451412598",
+        "trackNumber": 7,
+        "durationMs": 138000
+      },
+      {
+        "id": "album_1451412511_track_1451412599",
+        "title": "Mini Farb und dini",
+        "appleSongId": "1451412599",
+        "trackNumber": 8,
+        "durationMs": 228000
+      },
+      {
+        "id": "album_1451412511_track_1451412600",
+        "title": "Roti Rösli im Garte",
+        "appleSongId": "1451412600",
+        "trackNumber": 9,
+        "durationMs": 90000
+      },
+      {
+        "id": "album_1451412511_track_1451412601",
+        "title": "S isch mer alles ei Ding",
+        "appleSongId": "1451412601",
+        "trackNumber": 10,
+        "durationMs": 106000
+      },
+      {
+        "id": "album_1451412511_track_1451412602",
+        "title": "S Ramseiers wei go grase",
+        "appleSongId": "1451412602",
+        "trackNumber": 11,
+        "durationMs": 164000
+      },
+      {
+        "id": "album_1451412511_track_1451412603",
+        "title": "Siebe chugelrundi Säu",
+        "appleSongId": "1451412603",
+        "trackNumber": 12,
+        "durationMs": 114000
+      },
+      {
+        "id": "album_1451412511_track_1451412604",
+        "title": "Tierlitänzli, Chatzeschwänzli",
+        "appleSongId": "1451412604",
+        "trackNumber": 13,
+        "durationMs": 53000
+      },
+      {
+        "id": "album_1451412511_track_1451412605",
+        "title": "Wenn eine tannigi Hose het",
+        "appleSongId": "1451412605",
+        "trackNumber": 14,
+        "durationMs": 85000
+      },
+      {
+        "id": "album_1451412511_track_1451412606",
+        "title": "Liederland",
+        "appleSongId": "1451412606",
+        "trackNumber": 15,
+        "durationMs": 137000
+      },
+      {
+        "id": "album_1451412511_track_1451412607",
+        "title": "Alli mini Äntli (Instrumental)",
+        "appleSongId": "1451412607",
+        "trackNumber": 16,
+        "durationMs": 119000
+      },
+      {
+        "id": "album_1451412511_track_1451412608",
+        "title": "Chom mier wei go Chrieseli günne (Instrumental)",
+        "appleSongId": "1451412608",
+        "trackNumber": 17,
+        "durationMs": 126000
+      },
+      {
+        "id": "album_1451412511_track_1451412609",
+        "title": "Det äne am Bärgli (Instrumental)",
+        "appleSongId": "1451412609",
+        "trackNumber": 18,
+        "durationMs": 83000
+      },
+      {
+        "id": "album_1451412511_track_1451412610",
+        "title": "Es Buurebüebli (Instrumental)",
+        "appleSongId": "1451412610",
+        "trackNumber": 19,
+        "durationMs": 159000
+      },
+      {
+        "id": "album_1451412511_track_1451412611",
+        "title": "Ich ghöre es Glöggli (Instrumental)",
+        "appleSongId": "1451412611",
+        "trackNumber": 20,
+        "durationMs": 138340
+      },
+      {
+        "id": "album_1451412511_track_1451412612",
+        "title": "Meiteli wenn du witt go tanze (Instrumental)",
+        "appleSongId": "1451412612",
+        "trackNumber": 21,
+        "durationMs": 138000
+      },
+      {
+        "id": "album_1451412511_track_1451412613",
+        "title": "Mini Farb und dini (Instrumental)",
+        "appleSongId": "1451412613",
+        "trackNumber": 22,
+        "durationMs": 228000
+      },
+      {
+        "id": "album_1451412511_track_1451412615",
+        "title": "Roti Rösli im Garte (Instrumental)",
+        "appleSongId": "1451412615",
+        "trackNumber": 23,
+        "durationMs": 90000
+      },
+      {
+        "id": "album_1451412511_track_1451412616",
+        "title": "S isch mer alles ei Ding (Instrumental)",
+        "appleSongId": "1451412616",
+        "trackNumber": 24,
+        "durationMs": 106000
+      },
+      {
+        "id": "album_1451412511_track_1451412617",
+        "title": "S Ramseiers wie go grase (Instrumental)",
+        "appleSongId": "1451412617",
+        "trackNumber": 25,
+        "durationMs": 164000
+      },
+      {
+        "id": "album_1451412511_track_1451412620",
+        "title": "Siebe chugelrundi Säu (Instrumental)",
+        "appleSongId": "1451412620",
+        "trackNumber": 26,
+        "durationMs": 114000
+      },
+      {
+        "id": "album_1451412511_track_1451412621",
+        "title": "Tierlitänzli, Chatzeschwänzli (Instrumental)",
+        "appleSongId": "1451412621",
+        "trackNumber": 27,
+        "durationMs": 53000
+      },
+      {
+        "id": "album_1451412511_track_1451412622",
+        "title": "Wenn eine tannigi Hose het (Instrumental)",
+        "appleSongId": "1451412622",
+        "trackNumber": 28,
+        "durationMs": 85000
+      },
+      {
+        "id": "album_1451412511_track_1451412623",
+        "title": "Liederland (Instrumental)",
+        "appleSongId": "1451412623",
+        "trackNumber": 29,
+        "durationMs": 137000
+      }
+    ]
+  },
+  {
+    "id": "album_1550027424",
+    "title": "Wiehnachtsliedli",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Liedli.ch",
+    "album": "Wiehnachtsliedli",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/e4/90/c8/e490c89b-063f-d2cc-f580-547be1ac56cd/cover.jpg/600x600bb.jpg",
+    "appleId": "1550027424",
+    "tracks": [
+      {
+        "id": "album_1550027424_track_1550027425",
+        "title": "Am Waldrand staht es Hüsli",
+        "appleSongId": "1550027425",
+        "trackNumber": 1,
+        "durationMs": 118773
+      },
+      {
+        "id": "album_1550027424_track_1550027426",
+        "title": "Chrischtchindli, chumm zuemer",
+        "appleSongId": "1550027426",
+        "trackNumber": 2,
+        "durationMs": 105240
+      },
+      {
+        "id": "album_1550027424_track_1550027430",
+        "title": "De chlii Trummler",
+        "appleSongId": "1550027430",
+        "trackNumber": 3,
+        "durationMs": 146640
+      },
+      {
+        "id": "album_1550027424_track_1550027434",
+        "title": "Drüü Ängeli flüüged",
+        "appleSongId": "1550027434",
+        "trackNumber": 4,
+        "durationMs": 74907
+      },
+      {
+        "id": "album_1550027424_track_1550027435",
+        "title": "Es schneielet ganz fyn und lys",
+        "appleSongId": "1550027435",
+        "trackNumber": 5,
+        "durationMs": 89800
+      },
+      {
+        "id": "album_1550027424_track_1550027976",
+        "title": "Es Tanebäumli staht im Wald",
+        "appleSongId": "1550027976",
+        "trackNumber": 6,
+        "durationMs": 108333
+      },
+      {
+        "id": "album_1550027424_track_1550027978",
+        "title": "Ihr Kinderlein kommet",
+        "appleSongId": "1550027978",
+        "trackNumber": 7,
+        "durationMs": 120107
+      },
+      {
+        "id": "album_1550027424_track_1550027980",
+        "title": "Ihr klare Seraphim",
+        "appleSongId": "1550027980",
+        "trackNumber": 8,
+        "durationMs": 111920
+      },
+      {
+        "id": "album_1550027424_track_1550027981",
+        "title": "O Du fröhliche, o du Selige",
+        "appleSongId": "1550027981",
+        "trackNumber": 9,
+        "durationMs": 170373
+      },
+      {
+        "id": "album_1550027424_track_1550027988",
+        "title": "Samichlaus, du liebe Ma",
+        "appleSongId": "1550027988",
+        "trackNumber": 10,
+        "durationMs": 69547
+      },
+      {
+        "id": "album_1550027424_track_1550027991",
+        "title": "Santi Niggi Näggi",
+        "appleSongId": "1550027991",
+        "trackNumber": 11,
+        "durationMs": 72880
+      },
+      {
+        "id": "album_1550027424_track_1550028000",
+        "title": "Still, still, still",
+        "appleSongId": "1550028000",
+        "trackNumber": 12,
+        "durationMs": 124013
+      },
+      {
+        "id": "album_1550027424_track_1550028001",
+        "title": "Stille Nacht, heilige Nacht",
+        "appleSongId": "1550028001",
+        "trackNumber": 13,
+        "durationMs": 181547
+      },
+      {
+        "id": "album_1550027424_track_1550028003",
+        "title": "Was isch das für es Liechtli",
+        "appleSongId": "1550028003",
+        "trackNumber": 14,
+        "durationMs": 61307
+      },
+      {
+        "id": "album_1550027424_track_1550028004",
+        "title": "Am Waldrand stat es Hüsli (Instrumental)",
+        "appleSongId": "1550028004",
+        "trackNumber": 15,
+        "durationMs": 121747
+      },
+      {
+        "id": "album_1550027424_track_1550028005",
+        "title": "Chrischtchindli, chumm zuemer (Instrumental)",
+        "appleSongId": "1550028005",
+        "trackNumber": 16,
+        "durationMs": 106147
+      },
+      {
+        "id": "album_1550027424_track_1550028285",
+        "title": "De Chlii Trummler (Instrumental)",
+        "appleSongId": "1550028285",
+        "trackNumber": 17,
+        "durationMs": 147493
+      },
+      {
+        "id": "album_1550027424_track_1550028286",
+        "title": "Drüü Ängeli flüüged (Instrumental)",
+        "appleSongId": "1550028286",
+        "trackNumber": 18,
+        "durationMs": 76733
+      },
+      {
+        "id": "album_1550027424_track_1550028291",
+        "title": "Es schneielet ganz fyn und lys (Instrumental)",
+        "appleSongId": "1550028291",
+        "trackNumber": 19,
+        "durationMs": 89747
+      },
+      {
+        "id": "album_1550027424_track_1550028292",
+        "title": "Es Tanebäumli staht im Wald (Instrumental)",
+        "appleSongId": "1550028292",
+        "trackNumber": 20,
+        "durationMs": 108440
+      },
+      {
+        "id": "album_1550027424_track_1550028295",
+        "title": "Ihr Kinderlein kommet (Instrumental)",
+        "appleSongId": "1550028295",
+        "trackNumber": 21,
+        "durationMs": 120600
+      },
+      {
+        "id": "album_1550027424_track_1550028299",
+        "title": "Ihr klare Seraphim (Instrumental)",
+        "appleSongId": "1550028299",
+        "trackNumber": 22,
+        "durationMs": 112533
+      },
+      {
+        "id": "album_1550027424_track_1550028304",
+        "title": "O Du fröhliche, o du selige (Instrumental)",
+        "appleSongId": "1550028304",
+        "trackNumber": 23,
+        "durationMs": 170427
+      },
+      {
+        "id": "album_1550027424_track_1550028548",
+        "title": "Samichlaus, du guete Maa (Instrumental)",
+        "appleSongId": "1550028548",
+        "trackNumber": 24,
+        "durationMs": 69493
+      },
+      {
+        "id": "album_1550027424_track_1550028554",
+        "title": "Santi Niggi Näggi (Instrumental)",
+        "appleSongId": "1550028554",
+        "trackNumber": 25,
+        "durationMs": 73227
+      },
+      {
+        "id": "album_1550027424_track_1550028557",
+        "title": "Still, still, still (Instrumental)",
+        "appleSongId": "1550028557",
+        "trackNumber": 26,
+        "durationMs": 124973
+      },
+      {
+        "id": "album_1550027424_track_1550028559",
+        "title": "Stille Nacht, heilige Nacht (Instrumental)",
+        "appleSongId": "1550028559",
+        "trackNumber": 27,
+        "durationMs": 181373
+      },
+      {
+        "id": "album_1550027424_track_1550028563",
+        "title": "Was isch das für es Liechtli (Instrumental)",
+        "appleSongId": "1550028563",
+        "trackNumber": 28,
+        "durationMs": 58320
+      }
+    ]
+  },
+  {
+    "id": "album_1548754033",
+    "title": "Herbscht- & Winterliedli",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Liedli.ch",
+    "album": "Herbscht- & Winterliedli",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/d1/c1/4c/d1c14c4b-8b75-ea02-46a1-3c1e28f7dfed/cover.jpg/600x600bb.jpg",
+    "appleId": "1548754033",
+    "tracks": [
+      {
+        "id": "album_1548754033_track_1548754039",
+        "title": "A, a, a de Winter, de isch da",
+        "appleSongId": "1548754039",
+        "trackNumber": 1,
+        "durationMs": 111307
+      },
+      {
+        "id": "album_1548754033_track_1548754042",
+        "title": "D Flöckli tanzed, jupelihe",
+        "appleSongId": "1548754042",
+        "trackNumber": 2,
+        "durationMs": 74093
+      },
+      {
+        "id": "album_1548754033_track_1548754043",
+        "title": "De Herbscht, er isch en guete Ma",
+        "appleSongId": "1548754043",
+        "trackNumber": 3,
+        "durationMs": 76240
+      },
+      {
+        "id": "album_1548754033_track_1548754931",
+        "title": "De Winter isch en wisse Ma",
+        "appleSongId": "1548754931",
+        "trackNumber": 4,
+        "durationMs": 75853
+      },
+      {
+        "id": "album_1548754033_track_1548754938",
+        "title": "Es schneielet, es beielet",
+        "appleSongId": "1548754938",
+        "trackNumber": 5,
+        "durationMs": 65093
+      },
+      {
+        "id": "album_1548754033_track_1548754943",
+        "title": "Ganz lislig faled d Flöckli",
+        "appleSongId": "1548754943",
+        "trackNumber": 6,
+        "durationMs": 104560
+      },
+      {
+        "id": "album_1548754033_track_1548755291",
+        "title": "I han es Räbeliechtli",
+        "appleSongId": "1548755291",
+        "trackNumber": 7,
+        "durationMs": 98600
+      },
+      {
+        "id": "album_1548754033_track_1548755299",
+        "title": "I Muetters Stübeli",
+        "appleSongId": "1548755299",
+        "trackNumber": 8,
+        "durationMs": 106533
+      },
+      {
+        "id": "album_1548754033_track_1548755307",
+        "title": "Ich gah mit miner Laterne",
+        "appleSongId": "1548755307",
+        "trackNumber": 9,
+        "durationMs": 89413
+      },
+      {
+        "id": "album_1548754033_track_1548755313",
+        "title": "Jetzt fallet d Blettli wider",
+        "appleSongId": "1548755313",
+        "trackNumber": 10,
+        "durationMs": 130400
+      },
+      {
+        "id": "album_1548754033_track_1548755529",
+        "title": "Räbeliechtli, Räbeliechtli",
+        "appleSongId": "1548755529",
+        "trackNumber": 11,
+        "durationMs": 97387
+      },
+      {
+        "id": "album_1548754033_track_1548755736",
+        "title": "Räbe, Räbeliechtli",
+        "appleSongId": "1548755736",
+        "trackNumber": 12,
+        "durationMs": 107267
+      },
+      {
+        "id": "album_1548754033_track_1548755822",
+        "title": "Redli, Redli, ränn",
+        "appleSongId": "1548755822",
+        "trackNumber": 13,
+        "durationMs": 70693
+      },
+      {
+        "id": "album_1548754033_track_1548755902",
+        "title": "S gaht e Frau go Öpfel schüttle",
+        "appleSongId": "1548755902",
+        "trackNumber": 14,
+        "durationMs": 85960
+      },
+      {
+        "id": "album_1548754033_track_1548756037",
+        "title": "Schnee und Is",
+        "appleSongId": "1548756037",
+        "trackNumber": 15,
+        "durationMs": 77907
+      },
+      {
+        "id": "album_1548754033_track_1548756059",
+        "title": "Schneeflöckli, Wyssröckli",
+        "appleSongId": "1548756059",
+        "trackNumber": 16,
+        "durationMs": 77000
+      },
+      {
+        "id": "album_1548754033_track_1548756196",
+        "title": "Uf em Fueterstäbli",
+        "appleSongId": "1548756196",
+        "trackNumber": 17,
+        "durationMs": 73627
+      },
+      {
+        "id": "album_1548754033_track_1548756207",
+        "title": "A, a, a de Winter, de isch da (Instrumental)",
+        "appleSongId": "1548756207",
+        "trackNumber": 18,
+        "durationMs": 114000
+      },
+      {
+        "id": "album_1548754033_track_1548756215",
+        "title": "D Flöckli tanzed, jupelihe (Instrumental)",
+        "appleSongId": "1548756215",
+        "trackNumber": 19,
+        "durationMs": 74173
+      },
+      {
+        "id": "album_1548754033_track_1548756374",
+        "title": "De Herbscht, er isch en guete Ma (Instrumental)",
+        "appleSongId": "1548756374",
+        "trackNumber": 20,
+        "durationMs": 76893
+      },
+      {
+        "id": "album_1548754033_track_1548756381",
+        "title": "De Winter isch en wisse Ma (Instrumental)",
+        "appleSongId": "1548756381",
+        "trackNumber": 21,
+        "durationMs": 76387
+      },
+      {
+        "id": "album_1548754033_track_1548756386",
+        "title": "Es schneielet, es beielet (Instrumental)",
+        "appleSongId": "1548756386",
+        "trackNumber": 22,
+        "durationMs": 64973
+      },
+      {
+        "id": "album_1548754033_track_1548756395",
+        "title": "Ganz lislig faled d Flöckli (Instrumental)",
+        "appleSongId": "1548756395",
+        "trackNumber": 23,
+        "durationMs": 104627
+      },
+      {
+        "id": "album_1548754033_track_1548756650",
+        "title": "I han es Räbeliechtli (Instrumental)",
+        "appleSongId": "1548756650",
+        "trackNumber": 24,
+        "durationMs": 98747
+      },
+      {
+        "id": "album_1548754033_track_1548756661",
+        "title": "I Muetters Stübeli (Instrumental)",
+        "appleSongId": "1548756661",
+        "trackNumber": 25,
+        "durationMs": 106973
+      },
+      {
+        "id": "album_1548754033_track_1548756791",
+        "title": "Ich gah mit miner Laterne (Instrumental)",
+        "appleSongId": "1548756791",
+        "trackNumber": 26,
+        "durationMs": 89480
+      },
+      {
+        "id": "album_1548754033_track_1548756794",
+        "title": "Jetzt fallet d Blettli wider (Instrumental)",
+        "appleSongId": "1548756794",
+        "trackNumber": 27,
+        "durationMs": 129453
+      },
+      {
+        "id": "album_1548754033_track_1548756798",
+        "title": "Räbeliechtli, Räbeliechtli (Instrumental)",
+        "appleSongId": "1548756798",
+        "trackNumber": 28,
+        "durationMs": 96293
+      },
+      {
+        "id": "album_1548754033_track_1548756808",
+        "title": "Räbe, Räbeliechtli (Instrumental)",
+        "appleSongId": "1548756808",
+        "trackNumber": 29,
+        "durationMs": 107800
+      },
+      {
+        "id": "album_1548754033_track_1548757346",
+        "title": "Redli, Redli, ränn (Instrumental)",
+        "appleSongId": "1548757346",
+        "trackNumber": 30,
+        "durationMs": 71507
+      },
+      {
+        "id": "album_1548754033_track_1548757656",
+        "title": "S gaht e Frau go Öpfel schüttle (Instrumental)",
+        "appleSongId": "1548757656",
+        "trackNumber": 31,
+        "durationMs": 85733
+      },
+      {
+        "id": "album_1548754033_track_1548757705",
+        "title": "Schnee und Is (Instrumental)",
+        "appleSongId": "1548757705",
+        "trackNumber": 32,
+        "durationMs": 77933
+      },
+      {
+        "id": "album_1548754033_track_1548757714",
+        "title": "Schneeflöckli, Wyssröckli (Instrumental)",
+        "appleSongId": "1548757714",
+        "trackNumber": 33,
+        "durationMs": 77173
+      },
+      {
+        "id": "album_1548754033_track_1548757926",
+        "title": "Uf em Fueterstäbli (Instrumental)",
+        "appleSongId": "1548757926",
+        "trackNumber": 34,
+        "durationMs": 71613
+      }
+    ]
+  },
+  {
+    "id": "album_1548753225",
+    "title": "Schlafliedli",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Liedli.ch",
+    "album": "Schlafliedli",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/a6/64/13/a664133c-817f-17ff-7aea-7b1528787039/cover.jpg/600x600bb.jpg",
+    "appleId": "1548753225",
+    "tracks": [
+      {
+        "id": "album_1548753225_track_1548753237",
+        "title": "Äis Sterndli nach em andere",
+        "appleSongId": "1548753237",
+        "trackNumber": 1,
+        "durationMs": 100107
+      },
+      {
+        "id": "album_1548753225_track_1548753578",
+        "title": "Am Abig lütet s Glöggli",
+        "appleSongId": "1548753578",
+        "trackNumber": 2,
+        "durationMs": 128680
+      },
+      {
+        "id": "album_1548753225_track_1548753722",
+        "title": "Am Himmel schint s Sterndli",
+        "appleSongId": "1548753722",
+        "trackNumber": 3,
+        "durationMs": 92840
+      },
+      {
+        "id": "album_1548753225_track_1548753777",
+        "title": "Bajuschki, baju",
+        "appleSongId": "1548753777",
+        "trackNumber": 4,
+        "durationMs": 162693
+      },
+      {
+        "id": "album_1548753225_track_1548753889",
+        "title": "Bruder Jakob",
+        "appleSongId": "1548753889",
+        "trackNumber": 5,
+        "durationMs": 80800
+      },
+      {
+        "id": "album_1548753225_track_1548753902",
+        "title": "Chindli mi",
+        "appleSongId": "1548753902",
+        "trackNumber": 6,
+        "durationMs": 103907
+      },
+      {
+        "id": "album_1548753225_track_1548754059",
+        "title": "Der Mond ist aufgegangen",
+        "appleSongId": "1548754059",
+        "trackNumber": 7,
+        "durationMs": 266400
+      },
+      {
+        "id": "album_1548753225_track_1548754069",
+        "title": "Guten Abend, gut Nacht",
+        "appleSongId": "1548754069",
+        "trackNumber": 8,
+        "durationMs": 118813
+      },
+      {
+        "id": "album_1548753225_track_1548754084",
+        "title": "I ha jetz mis Chindli",
+        "appleSongId": "1548754084",
+        "trackNumber": 9,
+        "durationMs": 113493
+      },
+      {
+        "id": "album_1548753225_track_1548754277",
+        "title": "Jetz gahni i mis Bettli",
+        "appleSongId": "1548754277",
+        "trackNumber": 10,
+        "durationMs": 140333
+      },
+      {
+        "id": "album_1548753225_track_1548754768",
+        "title": "Nina, Buschi, schlaf",
+        "appleSongId": "1548754768",
+        "trackNumber": 11,
+        "durationMs": 86560
+      },
+      {
+        "id": "album_1548753225_track_1548755138",
+        "title": "S ischt allwäg scho bald Zit",
+        "appleSongId": "1548755138",
+        "trackNumber": 12,
+        "durationMs": 111640
+      },
+      {
+        "id": "album_1548753225_track_1548755151",
+        "title": "Schlaf, Chindli, schlaf",
+        "appleSongId": "1548755151",
+        "trackNumber": 13,
+        "durationMs": 197027
+      },
+      {
+        "id": "album_1548753225_track_1548755160",
+        "title": "Weisst du wieviel Sternlein stehen",
+        "appleSongId": "1548755160",
+        "trackNumber": 14,
+        "durationMs": 152747
+      },
+      {
+        "id": "album_1548753225_track_1548755382",
+        "title": "Äis Sterndli nach em andere (Instrumental)",
+        "appleSongId": "1548755382",
+        "trackNumber": 15,
+        "durationMs": 103040
+      },
+      {
+        "id": "album_1548753225_track_1548755451",
+        "title": "Am Abig lütet s Glöggli (Instrumental)",
+        "appleSongId": "1548755451",
+        "trackNumber": 16,
+        "durationMs": 128813
+      },
+      {
+        "id": "album_1548753225_track_1548755457",
+        "title": "Am Himmel schint s Sterndli (Instrumental)",
+        "appleSongId": "1548755457",
+        "trackNumber": 17,
+        "durationMs": 92720
+      },
+      {
+        "id": "album_1548753225_track_1548755463",
+        "title": "Bajuschki, baju (Instrumental)",
+        "appleSongId": "1548755463",
+        "trackNumber": 18,
+        "durationMs": 162507
+      },
+      {
+        "id": "album_1548753225_track_1548755924",
+        "title": "Bruder Jakob (Instrumental)",
+        "appleSongId": "1548755924",
+        "trackNumber": 19,
+        "durationMs": 80573
+      },
+      {
+        "id": "album_1548753225_track_1548755931",
+        "title": "Chindli mi (Instrumental)",
+        "appleSongId": "1548755931",
+        "trackNumber": 20,
+        "durationMs": 103853
+      },
+      {
+        "id": "album_1548753225_track_1548755941",
+        "title": "Der Mond ist aufgegangen (Instrumental)",
+        "appleSongId": "1548755941",
+        "trackNumber": 21,
+        "durationMs": 266413
+      },
+      {
+        "id": "album_1548753225_track_1548756282",
+        "title": "Guten Abend, gut Nacht (Instrumental)",
+        "appleSongId": "1548756282",
+        "trackNumber": 22,
+        "durationMs": 118627
+      },
+      {
+        "id": "album_1548753225_track_1548756288",
+        "title": "I ha jetz mis Chindli (Instrumental)",
+        "appleSongId": "1548756288",
+        "trackNumber": 23,
+        "durationMs": 113107
+      },
+      {
+        "id": "album_1548753225_track_1548756407",
+        "title": "Jetz gahni i mis Bettli (Instrumental)",
+        "appleSongId": "1548756407",
+        "trackNumber": 24,
+        "durationMs": 139720
+      },
+      {
+        "id": "album_1548753225_track_1548756409",
+        "title": "Nina, Buschi, schlaf (Instrumental)",
+        "appleSongId": "1548756409",
+        "trackNumber": 25,
+        "durationMs": 86280
+      },
+      {
+        "id": "album_1548753225_track_1548756410",
+        "title": "S ischt allwäg scho bald Zit (Instrumental)",
+        "appleSongId": "1548756410",
+        "trackNumber": 26,
+        "durationMs": 111680
+      },
+      {
+        "id": "album_1548753225_track_1548756413",
+        "title": "Schlaf, Chindli, schlaf (Instrumental)",
+        "appleSongId": "1548756413",
+        "trackNumber": 27,
+        "durationMs": 197213
+      },
+      {
+        "id": "album_1548753225_track_1548756419",
+        "title": "Weisst du wieviel Sternlein stehen (Instrumental)",
+        "appleSongId": "1548756419",
+        "trackNumber": 28,
+        "durationMs": 150773
+      }
+    ]
+  },
+  {
+    "id": "album_1547993206",
+    "title": "Früelig- & Summerliedli",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Liedli.ch",
+    "album": "Früelig- & Summerliedli",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c3/3d/f5/c33df56e-156f-fcac-0669-225fda9f9d82/cover.jpg/600x600bb.jpg",
+    "appleId": "1547993206",
+    "tracks": [
+      {
+        "id": "album_1547993206_track_1547993209",
+        "title": "Alle Vögel sind schon da",
+        "appleSongId": "1547993209",
+        "trackNumber": 1,
+        "durationMs": 100760
+      },
+      {
+        "id": "album_1547993206_track_1547993213",
+        "title": "Alles neu macht der Mai",
+        "appleSongId": "1547993213",
+        "trackNumber": 2,
+        "durationMs": 91427
+      },
+      {
+        "id": "album_1547993206_track_1547993219",
+        "title": "Chömed, Chinde, gänd eu d Hand",
+        "appleSongId": "1547993219",
+        "trackNumber": 3,
+        "durationMs": 103107
+      },
+      {
+        "id": "album_1547993206_track_1547993429",
+        "title": "Chumm, mer wänd is Gärtli ga",
+        "appleSongId": "1547993429",
+        "trackNumber": 4,
+        "durationMs": 94307
+      },
+      {
+        "id": "album_1547993206_track_1547993502",
+        "title": "D Zyt isch da",
+        "appleSongId": "1547993502",
+        "trackNumber": 5,
+        "durationMs": 103880
+      },
+      {
+        "id": "album_1547993206_track_1547993503",
+        "title": "Da höch uf de Alpe",
+        "appleSongId": "1547993503",
+        "trackNumber": 6,
+        "durationMs": 83813
+      },
+      {
+        "id": "album_1547993206_track_1547993508",
+        "title": "Ein Männlein steht im Walde",
+        "appleSongId": "1547993508",
+        "trackNumber": 7,
+        "durationMs": 82680
+      },
+      {
+        "id": "album_1547993206_track_1547993509",
+        "title": "Grüess di Gott, du liebe Früelig",
+        "appleSongId": "1547993509",
+        "trackNumber": 8,
+        "durationMs": 64160
+      },
+      {
+        "id": "album_1547993206_track_1547993513",
+        "title": "I han e chlises Schiffli",
+        "appleSongId": "1547993513",
+        "trackNumber": 9,
+        "durationMs": 96093
+      },
+      {
+        "id": "album_1547993206_track_1547993515",
+        "title": "Im Wald möcht i blibe",
+        "appleSongId": "1547993515",
+        "trackNumber": 10,
+        "durationMs": 104120
+      },
+      {
+        "id": "album_1547993206_track_1547993518",
+        "title": "Im Wald, im schöne grüene Wald",
+        "appleSongId": "1547993518",
+        "trackNumber": 11,
+        "durationMs": 104120
+      },
+      {
+        "id": "album_1547993206_track_1547993521",
+        "title": "Maiechäfer, flüg uus",
+        "appleSongId": "1547993521",
+        "trackNumber": 12,
+        "durationMs": 102227
+      },
+      {
+        "id": "album_1547993206_track_1547993522",
+        "title": "Mis Chindli chumm weidli",
+        "appleSongId": "1547993522",
+        "trackNumber": 13,
+        "durationMs": 58253
+      },
+      {
+        "id": "album_1547993206_track_1547993525",
+        "title": "Oh, du goldigs Sünneli",
+        "appleSongId": "1547993525",
+        "trackNumber": 14,
+        "durationMs": 65147
+      },
+      {
+        "id": "album_1547993206_track_1547993866",
+        "title": "Ringel, Ringel, Reihe",
+        "appleSongId": "1547993866",
+        "trackNumber": 15,
+        "durationMs": 41920
+      },
+      {
+        "id": "album_1547993206_track_1547993868",
+        "title": "S Schneeglöggli stat i Schnee und Is",
+        "appleSongId": "1547993868",
+        "trackNumber": 16,
+        "durationMs": 103613
+      },
+      {
+        "id": "album_1547993206_track_1547993871",
+        "title": "Schiffli fahre ufem See",
+        "appleSongId": "1547993871",
+        "trackNumber": 17,
+        "durationMs": 73480
+      },
+      {
+        "id": "album_1547993206_track_1547993874",
+        "title": "Schneeglöggli lüüt",
+        "appleSongId": "1547993874",
+        "trackNumber": 18,
+        "durationMs": 85173
+      },
+      {
+        "id": "album_1547993206_track_1547993878",
+        "title": "Tra-Ri-Ra, de Summer isch jetzt da",
+        "appleSongId": "1547993878",
+        "trackNumber": 19,
+        "durationMs": 92373
+      },
+      {
+        "id": "album_1547993206_track_1547994156",
+        "title": "Alle Vögel sind schon da (Instrumental)",
+        "appleSongId": "1547994156",
+        "trackNumber": 20,
+        "durationMs": 104013
+      },
+      {
+        "id": "album_1547993206_track_1547994161",
+        "title": "Alles neu macht der Mai (Instrumental)",
+        "appleSongId": "1547994161",
+        "trackNumber": 21,
+        "durationMs": 91733
+      },
+      {
+        "id": "album_1547993206_track_1547994168",
+        "title": "Chömed, Chinde, gänd eu d Hand (Instrumental)",
+        "appleSongId": "1547994168",
+        "trackNumber": 22,
+        "durationMs": 102880
+      },
+      {
+        "id": "album_1547993206_track_1547994175",
+        "title": "Chumm, mer wänd is Gärtli ga (Instrumental)",
+        "appleSongId": "1547994175",
+        "trackNumber": 23,
+        "durationMs": 93867
+      },
+      {
+        "id": "album_1547993206_track_1547994180",
+        "title": "D Zyt isch da (Instrumental)",
+        "appleSongId": "1547994180",
+        "trackNumber": 24,
+        "durationMs": 103467
+      },
+      {
+        "id": "album_1547993206_track_1547994185",
+        "title": "Da höch uf de Alpe (Instrumental)",
+        "appleSongId": "1547994185",
+        "trackNumber": 25,
+        "durationMs": 83520
+      },
+      {
+        "id": "album_1547993206_track_1547994551",
+        "title": "Ein Männlein steht im Walde (Instrumental)",
+        "appleSongId": "1547994551",
+        "trackNumber": 26,
+        "durationMs": 82493
+      },
+      {
+        "id": "album_1547993206_track_1547994558",
+        "title": "Grüess di Gott, du liebe Früelig (Instrumental)",
+        "appleSongId": "1547994558",
+        "trackNumber": 27,
+        "durationMs": 64160
+      },
+      {
+        "id": "album_1547993206_track_1547994561",
+        "title": "I han e chlises Schiffli (Instrumental)",
+        "appleSongId": "1547994561",
+        "trackNumber": 28,
+        "durationMs": 95680
+      },
+      {
+        "id": "album_1547993206_track_1547994816",
+        "title": "Im Wald möcht i blibe (Instrumental)",
+        "appleSongId": "1547994816",
+        "trackNumber": 29,
+        "durationMs": 103720
+      },
+      {
+        "id": "album_1547993206_track_1547994817",
+        "title": "Im Wald, im schöne grüene Wald (Instrumental)",
+        "appleSongId": "1547994817",
+        "trackNumber": 30,
+        "durationMs": 103960
+      },
+      {
+        "id": "album_1547993206_track_1547994824",
+        "title": "Maiechäfer, flüg uus (Instrumental)",
+        "appleSongId": "1547994824",
+        "trackNumber": 31,
+        "durationMs": 102413
+      },
+      {
+        "id": "album_1547993206_track_1547994827",
+        "title": "Mis Chindli chumm weidli (Instrumental)",
+        "appleSongId": "1547994827",
+        "trackNumber": 32,
+        "durationMs": 58253
+      },
+      {
+        "id": "album_1547993206_track_1547994831",
+        "title": "Oh, du goldigs Sünneli (Instrumental)",
+        "appleSongId": "1547994831",
+        "trackNumber": 33,
+        "durationMs": 65133
+      },
+      {
+        "id": "album_1547993206_track_1547994835",
+        "title": "Ringel, Ringel, Reihe (Instrumental)",
+        "appleSongId": "1547994835",
+        "trackNumber": 34,
+        "durationMs": 42253
+      },
+      {
+        "id": "album_1547993206_track_1547994843",
+        "title": "S Schneeglöggli stat i Schnee und Is (Instrumental)",
+        "appleSongId": "1547994843",
+        "trackNumber": 35,
+        "durationMs": 103347
+      },
+      {
+        "id": "album_1547993206_track_1547994845",
+        "title": "Schiffli fahre ufem See (Instrumental)",
+        "appleSongId": "1547994845",
+        "trackNumber": 36,
+        "durationMs": 72987
+      },
+      {
+        "id": "album_1547993206_track_1547995425",
+        "title": "Schneeglöggli lüüt (Instrumental)",
+        "appleSongId": "1547995425",
+        "trackNumber": 37,
+        "durationMs": 84320
+      },
+      {
+        "id": "album_1547993206_track_1547995433",
+        "title": "Tra-Ri-Ra, de Summer isch jetzt da (Instrumental)",
+        "appleSongId": "1547995433",
+        "trackNumber": 38,
+        "durationMs": 89467
+      }
+    ]
+  },
+  {
+    "id": "album_1550985589",
+    "title": "Luschtigi und gschaffigi Liedli",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Liedli.ch",
+    "album": "Luschtigi und gschaffigi Liedli",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/8b/d6/e4/8bd6e47c-0fa8-886b-e797-8c84d7218cd1/cover.jpg/600x600bb.jpg",
+    "appleId": "1550985589",
+    "tracks": [
+      {
+        "id": "album_1550985589_track_1550985593",
+        "title": "Backe, backe Kuchen",
+        "appleSongId": "1550985593",
+        "trackNumber": 1,
+        "durationMs": 79947
+      },
+      {
+        "id": "album_1550985589_track_1550985604",
+        "title": "Baduseli badäseli",
+        "appleSongId": "1550985604",
+        "trackNumber": 2,
+        "durationMs": 91787
+      },
+      {
+        "id": "album_1550985589_track_1550986029",
+        "title": "Chämifäger schwarze Ma",
+        "appleSongId": "1550986029",
+        "trackNumber": 3,
+        "durationMs": 79547
+      },
+      {
+        "id": "album_1550985589_track_1550986034",
+        "title": "D Appizäller sind luschtig",
+        "appleSongId": "1550986034",
+        "trackNumber": 4,
+        "durationMs": 84680
+      },
+      {
+        "id": "album_1550985589_track_1550986040",
+        "title": "De Hans im Schnäggeloch",
+        "appleSongId": "1550986040",
+        "trackNumber": 5,
+        "durationMs": 65733
+      },
+      {
+        "id": "album_1550985589_track_1550986044",
+        "title": "De Hansli am Bach",
+        "appleSongId": "1550986044",
+        "trackNumber": 6,
+        "durationMs": 59547
+      },
+      {
+        "id": "album_1550985589_track_1550986049",
+        "title": "De Töff vom Polizischt",
+        "appleSongId": "1550986049",
+        "trackNumber": 7,
+        "durationMs": 83093
+      },
+      {
+        "id": "album_1550985589_track_1550986053",
+        "title": "Es wott es Fraueli z Märit gah",
+        "appleSongId": "1550986053",
+        "trackNumber": 8,
+        "durationMs": 261093
+      },
+      {
+        "id": "album_1550985589_track_1550986055",
+        "title": "Hänschen klein",
+        "appleSongId": "1550986055",
+        "trackNumber": 9,
+        "durationMs": 91253
+      },
+      {
+        "id": "album_1550985589_track_1550986541",
+        "title": "Ich bi en Malermeischter",
+        "appleSongId": "1550986541",
+        "trackNumber": 10,
+        "durationMs": 87200
+      },
+      {
+        "id": "album_1550985589_track_1550986558",
+        "title": "Mues immer de blogeti Hansli si",
+        "appleSongId": "1550986558",
+        "trackNumber": 11,
+        "durationMs": 96907
+      },
+      {
+        "id": "album_1550985589_track_1550986698",
+        "title": "Schuehmächerli",
+        "appleSongId": "1550986698",
+        "trackNumber": 12,
+        "durationMs": 64507
+      },
+      {
+        "id": "album_1550985589_track_1550986713",
+        "title": "Täär i nöd e bitzeli",
+        "appleSongId": "1550986713",
+        "trackNumber": 13,
+        "durationMs": 157547
+      },
+      {
+        "id": "album_1550985589_track_1550986715",
+        "title": "Wie macheds de die Zimmerslüt",
+        "appleSongId": "1550986715",
+        "trackNumber": 14,
+        "durationMs": 123000
+      },
+      {
+        "id": "album_1550985589_track_1550986782",
+        "title": "Backe, backe Kuchen (Instrumental)",
+        "appleSongId": "1550986782",
+        "trackNumber": 15,
+        "durationMs": 82560
+      },
+      {
+        "id": "album_1550985589_track_1550986784",
+        "title": "Baduseli badäseli (Instrumental)",
+        "appleSongId": "1550986784",
+        "trackNumber": 16,
+        "durationMs": 91787
+      },
+      {
+        "id": "album_1550985589_track_1550986789",
+        "title": "Chämifäger schwarze Ma (Ins)",
+        "appleSongId": "1550986789",
+        "trackNumber": 17,
+        "durationMs": 80307
+      },
+      {
+        "id": "album_1550985589_track_1550986795",
+        "title": "D Appizäller sind luschtig (Instrumental)",
+        "appleSongId": "1550986795",
+        "trackNumber": 18,
+        "durationMs": 84800
+      },
+      {
+        "id": "album_1550985589_track_1550986800",
+        "title": "De Hans im Schnäggeloch (Instrumental)",
+        "appleSongId": "1550986800",
+        "trackNumber": 19,
+        "durationMs": 65093
+      },
+      {
+        "id": "album_1550985589_track_1550987107",
+        "title": "De Hansli am Bach (Instrumental)",
+        "appleSongId": "1550987107",
+        "trackNumber": 20,
+        "durationMs": 59600
+      },
+      {
+        "id": "album_1550985589_track_1550987112",
+        "title": "De Töff vom Polizischt (Ins)",
+        "appleSongId": "1550987112",
+        "trackNumber": 21,
+        "durationMs": 83200
+      },
+      {
+        "id": "album_1550985589_track_1550987123",
+        "title": "Es wott es Fraueli z Märit go (Instrumental)",
+        "appleSongId": "1550987123",
+        "trackNumber": 22,
+        "durationMs": 260773
+      },
+      {
+        "id": "album_1550985589_track_1550987415",
+        "title": "Hänschen klein (Instrumental)",
+        "appleSongId": "1550987415",
+        "trackNumber": 23,
+        "durationMs": 90987
+      },
+      {
+        "id": "album_1550985589_track_1550987417",
+        "title": "Ich bi en Malermeischter (Instrumental)",
+        "appleSongId": "1550987417",
+        "trackNumber": 24,
+        "durationMs": 86973
+      },
+      {
+        "id": "album_1550985589_track_1550987420",
+        "title": "Mues immer de blogeti Hansli si (Instrumental)",
+        "appleSongId": "1550987420",
+        "trackNumber": 25,
+        "durationMs": 97200
+      },
+      {
+        "id": "album_1550985589_track_1550987427",
+        "title": "Schuehmächerli (Instrumental)",
+        "appleSongId": "1550987427",
+        "trackNumber": 26,
+        "durationMs": 64773
+      },
+      {
+        "id": "album_1550985589_track_1550987434",
+        "title": "Täär i nöd e bitzeli (Instrumental)",
+        "appleSongId": "1550987434",
+        "trackNumber": 27,
+        "durationMs": 157240
+      },
+      {
+        "id": "album_1550985589_track_1550987826",
+        "title": "Wie macheds de die Zimmerslüt (Instrumental)",
+        "appleSongId": "1550987826",
+        "trackNumber": 28,
+        "durationMs": 120720
+      }
+    ]
+  },
+  {
+    "id": "album_1551632735",
+    "title": "Tierli Liedli",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Liedli.ch",
+    "album": "Tierli Liedli",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/32/52/18/325218f9-6041-1b6c-b172-240268c2ccff/cover.jpg/600x600bb.jpg",
+    "appleId": "1551632735",
+    "tracks": [
+      {
+        "id": "album_1551632735_track_1551632869",
+        "title": "Alli Büseli sind no blind",
+        "appleSongId": "1551632869",
+        "trackNumber": 1,
+        "durationMs": 63720
+      },
+      {
+        "id": "album_1551632735_track_1551632870",
+        "title": "De Guggu uf em dürre Ascht",
+        "appleSongId": "1551632870",
+        "trackNumber": 2,
+        "durationMs": 74213
+      },
+      {
+        "id": "album_1551632735_track_1551632872",
+        "title": "Der Kuckuck und der Esel",
+        "appleSongId": "1551632872",
+        "trackNumber": 3,
+        "durationMs": 63773
+      },
+      {
+        "id": "album_1551632735_track_1551632883",
+        "title": "Eusi zwei Chätzli",
+        "appleSongId": "1551632883",
+        "trackNumber": 4,
+        "durationMs": 80240
+      },
+      {
+        "id": "album_1551632735_track_1551632884",
+        "title": "Früeh am Morge",
+        "appleSongId": "1551632884",
+        "trackNumber": 5,
+        "durationMs": 79880
+      },
+      {
+        "id": "album_1551632735_track_1551633165",
+        "title": "Fuchs, du hast die Gans gestohlen",
+        "appleSongId": "1551633165",
+        "trackNumber": 6,
+        "durationMs": 74027
+      },
+      {
+        "id": "album_1551632735_track_1551633171",
+        "title": "Gang rüef de Bruune",
+        "appleSongId": "1551633171",
+        "trackNumber": 7,
+        "durationMs": 177213
+      },
+      {
+        "id": "album_1551632735_track_1551633174",
+        "title": "Häsli i dä Gruebe",
+        "appleSongId": "1551633174",
+        "trackNumber": 8,
+        "durationMs": 70520
+      },
+      {
+        "id": "album_1551632735_track_1551633176",
+        "title": "Hopp, hopp, hopp",
+        "appleSongId": "1551633176",
+        "trackNumber": 9,
+        "durationMs": 66307
+      },
+      {
+        "id": "album_1551632735_track_1551633177",
+        "title": "Joggeli, chascht au rite",
+        "appleSongId": "1551633177",
+        "trackNumber": 10,
+        "durationMs": 41360
+      },
+      {
+        "id": "album_1551632735_track_1551633184",
+        "title": "Kuckuck, kuckuck ruft's aus dem Wald",
+        "appleSongId": "1551633184",
+        "trackNumber": 11,
+        "durationMs": 73133
+      },
+      {
+        "id": "album_1551632735_track_1551633612",
+        "title": "Rite, rite, Rössli",
+        "appleSongId": "1551633612",
+        "trackNumber": 12,
+        "durationMs": 70133
+      },
+      {
+        "id": "album_1551632735_track_1551633613",
+        "title": "S chrüücht es Schnäggli",
+        "appleSongId": "1551633613",
+        "trackNumber": 13,
+        "durationMs": 81480
+      },
+      {
+        "id": "album_1551632735_track_1551633617",
+        "title": "S git kä brävers Tierli",
+        "appleSongId": "1551633617",
+        "trackNumber": 14,
+        "durationMs": 69347
+      },
+      {
+        "id": "album_1551632735_track_1551633619",
+        "title": "Schnägge- Schnäggehüüsli",
+        "appleSongId": "1551633619",
+        "trackNumber": 15,
+        "durationMs": 70880
+      },
+      {
+        "id": "album_1551632735_track_1551633621",
+        "title": "Summ, summ, summ",
+        "appleSongId": "1551633621",
+        "trackNumber": 16,
+        "durationMs": 109133
+      },
+      {
+        "id": "album_1551632735_track_1551633624",
+        "title": "Alli Büseli (Instrumental)",
+        "appleSongId": "1551633624",
+        "trackNumber": 17,
+        "durationMs": 66347
+      },
+      {
+        "id": "album_1551632735_track_1551633625",
+        "title": "De Guggu uf em dürre Ascht (Instrumental)",
+        "appleSongId": "1551633625",
+        "trackNumber": 18,
+        "durationMs": 74747
+      },
+      {
+        "id": "album_1551632735_track_1551633626",
+        "title": "Der Kuckuck und der Esel (Instrumental)",
+        "appleSongId": "1551633626",
+        "trackNumber": 19,
+        "durationMs": 64387
+      },
+      {
+        "id": "album_1551632735_track_1551633630",
+        "title": "Eusi zwei Chätzli (Instrumental)",
+        "appleSongId": "1551633630",
+        "trackNumber": 20,
+        "durationMs": 80093
+      },
+      {
+        "id": "album_1551632735_track_1551634029",
+        "title": "Früeh am Morge (Instrumental)",
+        "appleSongId": "1551634029",
+        "trackNumber": 21,
+        "durationMs": 79773
+      },
+      {
+        "id": "album_1551632735_track_1551634038",
+        "title": "Fuchs, du hast die Gans gestohlen (Instrumental)",
+        "appleSongId": "1551634038",
+        "trackNumber": 22,
+        "durationMs": 73800
+      },
+      {
+        "id": "album_1551632735_track_1551634045",
+        "title": "Gang rüef de Bruune (Instrumental)",
+        "appleSongId": "1551634045",
+        "trackNumber": 23,
+        "durationMs": 177413
+      },
+      {
+        "id": "album_1551632735_track_1551634049",
+        "title": "Häsli i dä Gruebe (Instrumental)",
+        "appleSongId": "1551634049",
+        "trackNumber": 24,
+        "durationMs": 71347
+      },
+      {
+        "id": "album_1551632735_track_1551634051",
+        "title": "Hopp, hopp, hopp (Instrumental)",
+        "appleSongId": "1551634051",
+        "trackNumber": 25,
+        "durationMs": 67027
+      },
+      {
+        "id": "album_1551632735_track_1551634330",
+        "title": "Joggeli, chascht au rite (Instrumental)",
+        "appleSongId": "1551634330",
+        "trackNumber": 26,
+        "durationMs": 41933
+      },
+      {
+        "id": "album_1551632735_track_1551634340",
+        "title": "Kuckuck, Kuckuck ruft's aus dem Wald (Instrumental)",
+        "appleSongId": "1551634340",
+        "trackNumber": 27,
+        "durationMs": 74387
+      },
+      {
+        "id": "album_1551632735_track_1551634354",
+        "title": "Rite, rite, Rössli (Instrumental)",
+        "appleSongId": "1551634354",
+        "trackNumber": 28,
+        "durationMs": 71200
+      },
+      {
+        "id": "album_1551632735_track_1551634510",
+        "title": "S chrüücht es Schnäggli (Instrumental)",
+        "appleSongId": "1551634510",
+        "trackNumber": 29,
+        "durationMs": 82227
+      },
+      {
+        "id": "album_1551632735_track_1551634515",
+        "title": "S git keis brävers Tierli (Instrumental)",
+        "appleSongId": "1551634515",
+        "trackNumber": 30,
+        "durationMs": 69840
+      },
+      {
+        "id": "album_1551632735_track_1551634518",
+        "title": "Schnägge- Schnäggehüüsli (Instrumental)",
+        "appleSongId": "1551634518",
+        "trackNumber": 31,
+        "durationMs": 71747
+      },
+      {
+        "id": "album_1551632735_track_1551634519",
+        "title": "Summ, summ, summ (Instrumental)",
+        "appleSongId": "1551634519",
+        "trackNumber": 32,
+        "durationMs": 107920
+      }
+    ]
+  },
+  {
+    "id": "album_1660533804",
+    "title": "Schuel Liedli",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Liedli.ch",
+    "album": "Schuel Liedli",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/ac/c6/37/acc63737-1436-d99f-aac4-0dcc13fbcb13/cover.jpg/600x600bb.jpg",
+    "appleId": "1660533804",
+    "tracks": [
+      {
+        "id": "album_1660533804_track_1660533816",
+        "title": "A B C D E F G",
+        "appleSongId": "1660533816",
+        "trackNumber": 1,
+        "durationMs": 96920
+      },
+      {
+        "id": "album_1660533804_track_1660533818",
+        "title": "Auf der Mauer, auf der Lauer",
+        "appleSongId": "1660533818",
+        "trackNumber": 2,
+        "durationMs": 142947
+      },
+      {
+        "id": "album_1660533804_track_1660533825",
+        "title": "De Plitsch und de Platsch",
+        "appleSongId": "1660533825",
+        "trackNumber": 3,
+        "durationMs": 210867
+      },
+      {
+        "id": "album_1660533804_track_1660534066",
+        "title": "De Tuusigfüessler Balthasar",
+        "appleSongId": "1660534066",
+        "trackNumber": 4,
+        "durationMs": 158173
+      },
+      {
+        "id": "album_1660533804_track_1660534070",
+        "title": "Die Affen rasen durch den Wald",
+        "appleSongId": "1660534070",
+        "trackNumber": 5,
+        "durationMs": 186973
+      },
+      {
+        "id": "album_1660533804_track_1660534079",
+        "title": "Dr Eskimo",
+        "appleSongId": "1660534079",
+        "trackNumber": 6,
+        "durationMs": 93827
+      },
+      {
+        "id": "album_1660533804_track_1660534089",
+        "title": "Dr Sidi Abdel Assar",
+        "appleSongId": "1660534089",
+        "trackNumber": 7,
+        "durationMs": 128147
+      },
+      {
+        "id": "album_1660533804_track_1660534091",
+        "title": "Drei Chinesen mit dem Kontrabass",
+        "appleSongId": "1660534091",
+        "trackNumber": 8,
+        "durationMs": 113360
+      },
+      {
+        "id": "album_1660533804_track_1660534095",
+        "title": "D'schribmaschine Kunigund",
+        "appleSongId": "1660534095",
+        "trackNumber": 9,
+        "durationMs": 187427
+      },
+      {
+        "id": "album_1660533804_track_1660534247",
+        "title": "Heile, heile Säge",
+        "appleSongId": "1660534247",
+        "trackNumber": 10,
+        "durationMs": 91373
+      },
+      {
+        "id": "album_1660533804_track_1660534249",
+        "title": "Hejo, spann den Wagen an",
+        "appleSongId": "1660534249",
+        "trackNumber": 11,
+        "durationMs": 124720
+      },
+      {
+        "id": "album_1660533804_track_1660534250",
+        "title": "I han es Zündhölzli azünd",
+        "appleSongId": "1660534250",
+        "trackNumber": 12,
+        "durationMs": 108840
+      },
+      {
+        "id": "album_1660533804_track_1660534256",
+        "title": "Hemmige",
+        "appleSongId": "1660534256",
+        "trackNumber": 13,
+        "durationMs": 133347
+      },
+      {
+        "id": "album_1660533804_track_1660534258",
+        "title": "Meine Oma fährt im Hühnerstall Motorrad",
+        "appleSongId": "1660534258",
+        "trackNumber": 14,
+        "durationMs": 149387
+      },
+      {
+        "id": "album_1660533804_track_1660534260",
+        "title": "Räge-, Rägetröpfli",
+        "appleSongId": "1660534260",
+        "trackNumber": 15,
+        "durationMs": 113467
+      },
+      {
+        "id": "album_1660533804_track_1660534262",
+        "title": "Mir Senne heis luschtig",
+        "appleSongId": "1660534262",
+        "trackNumber": 16,
+        "durationMs": 147360
+      },
+      {
+        "id": "album_1660533804_track_1660534266",
+        "title": "A B C D E F G (Instrumental)",
+        "appleSongId": "1660534266",
+        "trackNumber": 17,
+        "durationMs": 97547
+      },
+      {
+        "id": "album_1660533804_track_1660534268",
+        "title": "Auf der Mauer, auf der Lauer (Instrumental)",
+        "appleSongId": "1660534268",
+        "trackNumber": 18,
+        "durationMs": 143413
+      },
+      {
+        "id": "album_1660533804_track_1660534271",
+        "title": "De Plitsch und de Platsch (Instrumental)",
+        "appleSongId": "1660534271",
+        "trackNumber": 19,
+        "durationMs": 212507
+      },
+      {
+        "id": "album_1660533804_track_1660534274",
+        "title": "De Tuusigfüessler Balthasar (Instrumental)",
+        "appleSongId": "1660534274",
+        "trackNumber": 20,
+        "durationMs": 158840
+      },
+      {
+        "id": "album_1660533804_track_1660534275",
+        "title": "Die Affen rasen durch den Wald (Instrumental)",
+        "appleSongId": "1660534275",
+        "trackNumber": 21,
+        "durationMs": 187000
+      },
+      {
+        "id": "album_1660533804_track_1660534642",
+        "title": "Dr Eskimo (Instrumental)",
+        "appleSongId": "1660534642",
+        "trackNumber": 22,
+        "durationMs": 93947
+      },
+      {
+        "id": "album_1660533804_track_1660534644",
+        "title": "Dr Sidi Abdel Assar (Instrumental)",
+        "appleSongId": "1660534644",
+        "trackNumber": 23,
+        "durationMs": 130000
+      },
+      {
+        "id": "album_1660533804_track_1660534669",
+        "title": "Drei Chinesen mit dem Kontrabass (Instrumental)",
+        "appleSongId": "1660534669",
+        "trackNumber": 24,
+        "durationMs": 114133
+      },
+      {
+        "id": "album_1660533804_track_1660534673",
+        "title": "D'schribmaschine Kunigund (Instrumental)",
+        "appleSongId": "1660534673",
+        "trackNumber": 25,
+        "durationMs": 187867
+      },
+      {
+        "id": "album_1660533804_track_1660534677",
+        "title": "Heile, heile Säge (Instrumental)",
+        "appleSongId": "1660534677",
+        "trackNumber": 26,
+        "durationMs": 93027
+      },
+      {
+        "id": "album_1660533804_track_1660534681",
+        "title": "Hejo, spann den Wagen an (Instrumental)",
+        "appleSongId": "1660534681",
+        "trackNumber": 27,
+        "durationMs": 124920
+      },
+      {
+        "id": "album_1660533804_track_1660534682",
+        "title": "Hemmige (Instrumental)",
+        "appleSongId": "1660534682",
+        "trackNumber": 28,
+        "durationMs": 133533
+      },
+      {
+        "id": "album_1660533804_track_1660534683",
+        "title": "I han es Zündhölzli azünd (Instrumental)",
+        "appleSongId": "1660534683",
+        "trackNumber": 29,
+        "durationMs": 110600
+      },
+      {
+        "id": "album_1660533804_track_1660534687",
+        "title": "Meine Oma fährt im Hühnerstall Motorrad (Instrumental)",
+        "appleSongId": "1660534687",
+        "trackNumber": 30,
+        "durationMs": 151627
+      },
+      {
+        "id": "album_1660533804_track_1660534692",
+        "title": "Mir Senne heis luschtig (Instrumental)",
+        "appleSongId": "1660534692",
+        "trackNumber": 31,
+        "durationMs": 148587
+      },
+      {
+        "id": "album_1660533804_track_1660534693",
+        "title": "Räge-, Rägetröpfli (Instrumental)",
+        "appleSongId": "1660534693",
+        "trackNumber": 32,
+        "durationMs": 111453
+      }
+    ]
   }
 ]
