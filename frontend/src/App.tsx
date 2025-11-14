@@ -18,6 +18,13 @@ function KidsView() {
   const [nowPlaying, setNowPlaying] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
+  // UI state for album player/detail view
+  const [showTracks, setShowTracks] = useState(false)
+  const [playing, setPlaying] = useState(false)
+  const [muted, setMuted] = useState(false)
+  const [shuffle, setShuffle] = useState(false)
+  const [repeatMode, setRepeatMode] = useState<'off' | 'all' | 'one'>('off')
+
   const [selectedAlbum, setSelectedAlbum] = useState<MediaItem | null>(null)
   const [selectedArtist, setSelectedArtist] = useState<string | null>(null)
 
@@ -271,11 +278,6 @@ useEffect(() => {
   if (selectedAlbum) {
     const album = selectedAlbum
     const tracks = album.tracks || []
-    const [showTracks, setShowTracks] = useState(false)
-    const [playing, setPlaying] = useState(false)
-    const [muted, setMuted] = useState(false)
-    const [shuffle, setShuffle] = useState(false)
-    const [repeatMode, setRepeatMode] = useState<'off' | 'all' | 'one'>('off')
 
     return (
       <div style={styles.screen}>
