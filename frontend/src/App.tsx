@@ -912,9 +912,12 @@ const styles: Record<string, React.CSSProperties> = {
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gridAutoRows: 'minmax(0, 1fr)',
+    /* Use auto rows so items size to their content instead of stretching to equal height.
+       Stretching caused a tall dark area under single album covers. */
+    gridAutoRows: 'auto',
     gap: '8px',
     flex: 1,
+    alignItems: 'start',
   },
   card: {
     backgroundColor: '#222',
