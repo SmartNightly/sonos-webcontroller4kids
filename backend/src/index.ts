@@ -651,9 +651,11 @@ app.post('/media/apple/album', async (req: Request, res: Response) => {
 
   let items = loadMedia()
 
-  if (items.some(i => i.id === id || i.appleId === appleAlbumId)) {
-    return res.status(409).json({ error: 'Album existiert bereits' })
-  }
+  // Falls ein Album mit derselben appleAlbumId oder id bereits existiert,
+  // ergänzen wir fehlende Tracks statt einen Fehler zu werfen.
+  const existingByApple = items.find(i => i.appleId === appleAlbumId)
+  const existingById = items.find(i => i.id === id)
+  const existingAlbum = existingById || existingByApple || null
 
   // Album-Tracks von Apple holen
   const params = new URLSearchParams({
@@ -678,6 +680,35 @@ app.post('/media/apple/album', async (req: Request, res: Response) => {
         trackNumber: r.trackNumber,
         durationMs: r.trackTimeMillis,
       }))
+
+    if (existingAlbum) {
+      // Merge: füge fehlende Tracks (nach appleSongId) hinzu
+      existingAlbum.tracks = existingAlbum.tracks || []
+
+      const existingAppleIds = new Set(
+        existingAlbum.tracks.map(t => String(t.appleSongId)),
+      )
+
+      const toAdd = tracks.filter(t => !existingAppleIds.has(String(t.appleSongId)))
+
+      // Erzeuge eindeutige IDs basierend auf dem bestehenden Album id
+      const newTracks = toAdd.map(t => ({
+        ...t,
+        id: `${existingAlbum.id}_track_${t.appleSongId}`,
+      }))
+
+      existingAlbum.tracks.push(...newTracks)
+
+      // Aktualisiere Metadaten falls übergeben
+      if (title) existingAlbum.title = title
+      if (artist) existingAlbum.artist = artist
+      if (album) existingAlbum.album = album
+      if (coverUrl) existingAlbum.coverUrl = coverUrl
+      existingAlbum.appleId = appleAlbumId
+
+      saveMedia(items)
+      return res.status(200).json(existingAlbum)
+    }
 
     const newAlbum: MediaItem = {
       id,
