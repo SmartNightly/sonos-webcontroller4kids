@@ -163,6 +163,153 @@ app.post('/media', (req: Request, res: Response) => {
 
   res.status(201).json(newItem)
 })
+
+// Media-Eintrag aktualisieren (PUT /media/:id)
+app.put('/media/:id', (req: Request, res: Response) => {
+  const { id } = req.params
+  const updates = req.body as Partial<MediaItem>
+
+  let items: MediaItem[]
+  try {
+    items = loadMedia()
+  } catch (err) {
+    console.error('Fehler beim Laden von media.json:', err)
+    return res.status(500).json({ error: 'Media file could not be loaded' })
+  }
+
+  const index = items.findIndex(i => i.id === id)
+  if (index === -1) {
+    return res.status(404).json({ error: `Kein Eintrag mit id ${id} gefunden` })
+  }
+
+  const item = items[index]!
+
+  // Nur bestimmte Felder aktualisieren, um id/service zu schützen
+  if (updates.title !== undefined) item.title = updates.title
+  if (updates.artist !== undefined) item.artist = updates.artist
+  if (updates.album !== undefined) item.album = updates.album
+  if (updates.coverUrl !== undefined) item.coverUrl = updates.coverUrl
+  if (updates.kind !== undefined) item.kind = updates.kind as MediaItem['kind']
+
+  try {
+    saveMedia(items)
+  } catch (err) {
+    console.error('Fehler beim Schreiben von media.json:', err)
+    return res.status(500).json({ error: 'Media file could not be saved' })
+  }
+
+  res.json(item)
+})
+
+// Media-Eintrag löschen (DELETE /media/:id)
+app.delete('/media/:id', (req: Request, res: Response) => {
+  const { id } = req.params
+
+  let items: MediaItem[]
+  try {
+    items = loadMedia()
+  } catch (err) {
+    console.error('Fehler beim Laden von media.json:', err)
+    return res.status(500).json({ error: 'Media file could not be loaded' })
+  }
+
+  const index = items.findIndex(i => i.id === id)
+  if (index === -1) {
+    return res.status(404).json({ error: `Kein Eintrag mit id ${id} gefunden` })
+  }
+
+  items.splice(index, 1)
+
+  try {
+    saveMedia(items)
+  } catch (err) {
+    console.error('Fehler beim Schreiben von media.json:', err)
+    return res.status(500).json({ error: 'Media file could not be saved' })
+  }
+
+  res.json({ status: 'deleted', id })
+})
+
+// Track aus Album löschen (DELETE /media/:albumId/tracks/:trackId)
+app.delete('/media/:albumId/tracks/:trackId', (req: Request, res: Response) => {
+  const { albumId, trackId } = req.params
+
+  let items: MediaItem[]
+  try {
+    items = loadMedia()
+  } catch (err) {
+    console.error('Fehler beim Laden von media.json:', err)
+    return res.status(500).json({ error: 'Media file could not be loaded' })
+  }
+
+  const item = items.find(i => i.id === albumId)
+  if (!item) {
+    return res.status(404).json({ error: `Kein Album mit id ${albumId} gefunden` })
+  }
+
+  if (!item.tracks || item.tracks.length === 0) {
+    return res.status(404).json({ error: `Album ${albumId} hat keine Tracks` })
+  }
+
+  const trackIndex = item.tracks.findIndex(t => t.id === trackId)
+  if (trackIndex === -1) {
+    return res.status(404).json({ error: `Kein Track mit id ${trackId} gefunden` })
+  }
+
+  item.tracks.splice(trackIndex, 1)
+
+  try {
+    saveMedia(items)
+  } catch (err) {
+    console.error('Fehler beim Schreiben von media.json:', err)
+    return res.status(500).json({ error: 'Media file could not be saved' })
+  }
+
+  res.json({ status: 'deleted', albumId, trackId })
+})
+
+// Track in Album aktualisieren (PUT /media/:albumId/tracks/:trackId)
+app.put('/media/:albumId/tracks/:trackId', (req: Request, res: Response) => {
+  const { albumId, trackId } = req.params
+  const updates = req.body as Partial<MediaTrack>
+
+  let items: MediaItem[]
+  try {
+    items = loadMedia()
+  } catch (err) {
+    console.error('Fehler beim Laden von media.json:', err)
+    return res.status(500).json({ error: 'Media file could not be loaded' })
+  }
+
+  const item = items.find(i => i.id === albumId)
+  if (!item) {
+    return res.status(404).json({ error: `Kein Album mit id ${albumId} gefunden` })
+  }
+
+  if (!item.tracks || item.tracks.length === 0) {
+    return res.status(404).json({ error: `Album ${albumId} hat keine Tracks` })
+  }
+
+  const track = item.tracks.find(t => t.id === trackId)
+  if (!track) {
+    return res.status(404).json({ error: `Kein Track mit id ${trackId} gefunden` })
+  }
+
+  // Nur erlaubte Felder aktualisieren (derzeit Titel, optional Nummer/Dauer)
+  if (updates.title !== undefined) track.title = updates.title
+  if (updates.trackNumber !== undefined) track.trackNumber = updates.trackNumber
+  if (updates.durationMs !== undefined) track.durationMs = updates.durationMs
+
+  try {
+    saveMedia(items)
+  } catch (err) {
+    console.error('Fehler beim Schreiben von media.json:', err)
+    return res.status(500).json({ error: 'Media file could not be saved' })
+  }
+
+  res.json(track)
+})
+
 // Aktuelle Sonos-Konfiguration holen
 app.get('/admin/sonos', (req: Request, res: Response) => {
   try {
