@@ -465,6 +465,81 @@ app.post('/admin/sonos/default-room', (req: Request, res: Response) => {
 })
 
 
+// Generischer Sonos-Control-Endpoint
+// Body: { room: string, action: string, value?: number }
+app.post('/sonos/control', async (req: Request, res: Response) => {
+  const { room, action, value } = req.body as { room?: string; action?: string; value?: number }
+
+  if (!room || !action) {
+    return res.status(400).json({ error: 'room und action erforderlich' })
+  }
+
+  const config = loadConfig()
+  const baseUrl = config.sonosBaseUrl || DEFAULT_SONOS_BASE_URL
+
+  // Map action to sonos-http-api path
+  let path = ''
+  switch (action) {
+    case 'play':
+    case 'pause':
+    case 'next':
+    case 'previous':
+      path = action === 'previous' ? 'previous' : action
+      break
+    case 'volumeUp':
+      path = `volume/+${value ?? 5}`
+      break
+    case 'volumeDown':
+      path = `volume/-${value ?? 5}`
+      break
+    case 'setVolume':
+      if (typeof value !== 'number') return res.status(400).json({ error: 'value erforderlich für setVolume' })
+      path = `volume/${value}`
+      break
+    case 'mute':
+      path = 'mute'
+      break
+    case 'unmute':
+      path = 'unmute'
+      break
+    case 'toggleMute':
+      path = 'toggleMute'
+      break
+    case 'shuffleOn':
+      path = 'shuffle/on'
+      break
+    case 'shuffleOff':
+      path = 'shuffle/off'
+      break
+    case 'repeatOff':
+      path = 'repeat/off'
+      break
+    case 'repeatOne':
+      path = 'repeat/one'
+      break
+    case 'repeatAll':
+      path = 'repeat/all'
+      break
+    default:
+      return res.status(400).json({ error: `Unbekannte action ${action}` })
+  }
+
+  const url = `${baseUrl}/${encodeURIComponent(room)}/${path}`
+
+  try {
+    const response = await fetch(url, { method: 'POST' })
+    if (!response.ok) {
+      const text = await response.text().catch(() => '')
+      return res.status(502).json({ error: `Sonos API returned ${response.status}`, details: text })
+    }
+    return res.json({ status: 'ok', action, room })
+  } catch (err) {
+    console.error('Fehler bei Sonos-Control:', err)
+    return res.status(502).json({ error: 'Fehler bei Sonos-API' })
+  }
+})
+
+
 
 function buildSonosUrl(item: MediaItem, room: string, track?: MediaTrack): string {
   const config = loadConfig()

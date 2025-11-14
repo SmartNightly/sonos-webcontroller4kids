@@ -271,6 +271,11 @@ useEffect(() => {
   if (selectedAlbum) {
     const album = selectedAlbum
     const tracks = album.tracks || []
+    const [showTracks, setShowTracks] = useState(false)
+    const [playing, setPlaying] = useState(false)
+    const [muted, setMuted] = useState(false)
+    const [shuffle, setShuffle] = useState(false)
+    const [repeatMode, setRepeatMode] = useState<'off' | 'all' | 'one'>('off')
 
     return (
       <div style={styles.screen}>
@@ -296,34 +301,195 @@ useEffect(() => {
             {album.artist && (
               <div style={styles.albumArtist}>{album.artist}</div>
             )}
-            <button
-              style={styles.primaryButton}
-              onClick={() => playAlbum(album)}
-              disabled={busy}
-            >
-              {busy ? 'Bitte warten…' : 'Album abspielen'}
-            </button>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <button
+                style={styles.primaryButton}
+                onClick={async () => {
+                  await playAlbum(album)
+                  setPlaying(true)
+                }}
+                disabled={busy}
+              >
+                {busy ? 'Bitte warten…' : 'Album abspielen'}
+              </button>
+              <button
+                style={styles.secondaryButton}
+                onClick={() => setShowTracks(s => !s)}
+              >
+                {showTracks ? 'Tracks verbergen' : 'Tracks anzeigen'}
+              </button>
+            </div>
           </div>
         </div>
 
-        <div style={styles.tracksList}>
-          {tracks.map(t => (
+        {/* Player Controls */}
+        <div style={styles.playerControls}>
+          <div style={styles.playerRow}>
             <button
-              key={t.id}
-              style={styles.trackRow}
-              onClick={() => playTrack(album, t)}
-              disabled={busy}
-            >
-              <div style={styles.trackNumber}>
-                {t.trackNumber ?? '•'}
-              </div>
-              <div style={styles.trackTitle}>{t.title}</div>
-              <div style={styles.trackDuration}>
-                {t.durationMs ? formatDuration(t.durationMs) : ''}
-              </div>
-            </button>
-          ))}
+              style={styles.controlButton}
+              onClick={async () => {
+                const room = ensureRoomSelected()
+                if (!room) return
+                await fetch('http://localhost:3001/sonos/control', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ room, action: 'previous' }),
+                })
+              }}
+            >◀◀</button>
+            <button
+              style={styles.controlButton}
+              onClick={async () => {
+                const room = ensureRoomSelected()
+                if (!room) return
+                if (playing) {
+                  await fetch('http://localhost:3001/sonos/control', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ room, action: 'pause' }),
+                  })
+                  setPlaying(false)
+                } else {
+                  await fetch('http://localhost:3001/sonos/control', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ room, action: 'play' }),
+                  })
+                  setPlaying(true)
+                }
+              }}
+            >{playing ? '❚❚' : '▶'}</button>
+            <button
+              style={styles.controlButton}
+              onClick={async () => {
+                const room = ensureRoomSelected()
+                if (!room) return
+                await fetch('http://localhost:3001/sonos/control', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ room, action: 'next' }),
+                })
+              }}
+            >▶▶</button>
+
+            <div style={{ width: 12 }} />
+
+            <button
+              style={styles.controlButton}
+              onClick={async () => {
+                const room = ensureRoomSelected()
+                if (!room) return
+                await fetch('http://localhost:3001/sonos/control', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ room, action: 'volumeDown', value: 5 }),
+                })
+              }}
+            >−</button>
+            <button
+              style={styles.controlButton}
+              onClick={async () => {
+                const room = ensureRoomSelected()
+                if (!room) return
+                await fetch('http://localhost:3001/sonos/control', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ room, action: 'volumeUp', value: 5 }),
+                })
+              }}
+            >＋</button>
+
+            <div style={{ width: 12 }} />
+
+            <button
+              style={styles.controlButton}
+              onClick={async () => {
+                const room = ensureRoomSelected()
+                if (!room) return
+                if (muted) {
+                  await fetch('http://localhost:3001/sonos/control', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ room, action: 'unmute' }),
+                  })
+                  setMuted(false)
+                } else {
+                  await fetch('http://localhost:3001/sonos/control', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ room, action: 'mute' }),
+                  })
+                  setMuted(true)
+                }
+              }}
+            >{muted ? 'Unmute' : 'Mute'}</button>
+          </div>
+
+          <div style={styles.playerRow}>
+            <button
+              style={styles.controlButton}
+              onClick={async () => {
+                const room = ensureRoomSelected()
+                if (!room) return
+                if (shuffle) {
+                  await fetch('http://localhost:3001/sonos/control', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ room, action: 'shuffleOff' }),
+                  })
+                  setShuffle(false)
+                } else {
+                  await fetch('http://localhost:3001/sonos/control', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ room, action: 'shuffleOn' }),
+                  })
+                  setShuffle(true)
+                }
+              }}
+            >{shuffle ? 'Shuffle On' : 'Shuffle Off'}</button>
+
+            <div style={{ width: 8 }} />
+
+            <button
+              style={styles.controlButton}
+              onClick={async () => {
+                const room = ensureRoomSelected()
+                if (!room) return
+                const nextMode = repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off'
+                const action = nextMode === 'off' ? 'repeatOff' : nextMode === 'all' ? 'repeatAll' : 'repeatOne'
+                await fetch('http://localhost:3001/sonos/control', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ room, action }),
+                })
+                setRepeatMode(nextMode)
+              }}
+            >Repeat: {repeatMode}</button>
+          </div>
         </div>
+
+        {/* Tracks list (collapsible) */}
+        {showTracks && (
+          <div style={styles.tracksList}>
+            {tracks.map(t => (
+              <button
+                key={t.id}
+                style={styles.trackRow}
+                onClick={() => playTrack(album, t)}
+                disabled={busy}
+              >
+                <div style={styles.trackNumber}>
+                  {t.trackNumber ?? '•'}
+                </div>
+                <div style={styles.trackTitle}>{t.title}</div>
+                <div style={styles.trackDuration}>
+                  {t.durationMs ? formatDuration(t.durationMs) : ''}
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
 
         {nowPlaying && (
           <div style={styles.nowPlayingBar}>▶ {nowPlaying}</div>
@@ -1153,6 +1319,38 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: 4,
     objectFit: 'cover',
     marginRight: 8,
+  },
+  // Player styles
+  playerControls: {
+    marginTop: 8,
+    marginBottom: 8,
+    padding: 8,
+    backgroundColor: '#111',
+    borderRadius: 8,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+  },
+  playerRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+  },
+  controlButton: {
+    padding: '6px 8px',
+    borderRadius: 8,
+    border: 'none',
+    backgroundColor: '#222',
+    color: '#fff',
+    cursor: 'pointer',
+  },
+  secondaryButton: {
+    padding: '6px 8px',
+    borderRadius: 8,
+    border: 'none',
+    backgroundColor: '#333',
+    color: '#fff',
+    cursor: 'pointer',
   },
   resultInfo: {
     flex: 1,
