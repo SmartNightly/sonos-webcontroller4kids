@@ -24,6 +24,14 @@ function KidsView() {
   const [muted, setMuted] = useState(false)
   const [shuffle, setShuffle] = useState(false)
   const [repeatMode, setRepeatMode] = useState<'off' | 'all' | 'one'>('off')
+  const [volume, setVolume] = useState<number | null>(null)
+  const [currentTrack, setCurrentTrack] = useState<{
+    title?: string
+    artist?: string
+    album?: string
+    positionMs?: number
+    durationMs?: number
+  } | null>(null)
 
   const [selectedAlbum, setSelectedAlbum] = useState<MediaItem | null>(null)
   const [selectedArtist, setSelectedArtist] = useState<string | null>(null)
@@ -33,6 +41,62 @@ function KidsView() {
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
   const [roomPickerOpen, setRoomPickerOpen] = useState(false)
   const [roomError, setRoomError] = useState<string | null>(null)
+
+  // Status-Polling: synchronisiere Sonos-Status alle 2 Sekunden
+  useEffect(() => {
+    if (!selectedRoom) return
+
+    const pollInterval = 2000 // 2s
+    let timer: number | undefined
+
+    const fetchStatus = async () => {
+      try {
+        const encoded = encodeURIComponent(selectedRoom)
+        const res = await fetch(`http://localhost:3001/sonos/status?room=${encoded}`)
+        if (!res.ok) return
+        const data = await res.json()
+
+        // Sync playback state
+        if (data.state) {
+          const s = String(data.state).toLowerCase()
+          setPlaying(s === 'playing')
+        }
+
+        // Sync volume, mute, shuffle, repeat
+        if (data.volume !== undefined) setVolume(data.volume)
+        if (data.muted !== undefined) setMuted(data.muted)
+        if (data.shuffle !== undefined) setShuffle(data.shuffle)
+        if (data.repeat !== undefined) {
+          const r = String(data.repeat).toLowerCase()
+          setRepeatMode(r === 'all' ? 'all' : r === 'one' ? 'one' : 'off')
+        }
+
+        // Sync current track
+        if (data.track) {
+          setCurrentTrack({
+            title: data.track.title,
+            artist: data.track.artist,
+            album: data.track.album,
+            positionMs: data.track.positionMs,
+            durationMs: data.track.durationMs,
+          })
+        } else {
+          setCurrentTrack(null)
+        }
+      } catch (err) {
+        console.error('Status-Polling-Fehler:', err)
+      }
+    }
+
+    // Initial fetch
+    fetchStatus()
+    // Poll every 2s
+    timer = window.setInterval(fetchStatus, pollInterval)
+
+    return () => {
+      if (timer !== undefined) clearInterval(timer)
+    }
+  }, [selectedRoom])
 
   // Medien laden
 useEffect(() => {
@@ -324,6 +388,21 @@ useEffect(() => {
           </div>
         </div>
 
+        {/* Current Track Info */}
+        {currentTrack && (
+          <div style={styles.trackInfo}>
+            <div style={styles.trackInfoTitle}>{currentTrack.title || 'Unbekannt'}</div>
+            {currentTrack.artist && (
+              <div style={styles.trackInfoArtist}>{currentTrack.artist}</div>
+            )}
+            {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && (
+              <div style={styles.trackInfoProgress}>
+                {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Player Controls */}
         <div style={styles.playerControls}>
           <div style={styles.playerRow}>
@@ -403,7 +482,7 @@ useEffect(() => {
 
             <div style={{ width: 12 }} />
 
-            <button
+                        <button
               style={styles.controlButton}
               onClick={async () => {
                 const room = ensureRoomSelected()
@@ -425,6 +504,12 @@ useEffect(() => {
                 }
               }}
             >{muted ? 'Unmute' : 'Mute'}</button>
+
+            {volume !== null && (
+              <span style={{ fontSize: '0.8rem', opacity: 0.7, marginLeft: 8 }}>
+                Vol: {volume}
+              </span>
+            )}
           </div>
 
           <div style={styles.playerRow}>
@@ -1321,6 +1406,28 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: 4,
     objectFit: 'cover',
     marginRight: 8,
+  },
+  trackInfo: {
+    marginTop: 4,
+    marginBottom: 8,
+    padding: 8,
+    backgroundColor: '#222',
+    borderRadius: 8,
+    textAlign: 'center' as const,
+  },
+  trackInfoTitle: {
+    fontSize: '0.95rem',
+    fontWeight: 'bold' as const,
+  },
+  trackInfoArtist: {
+    fontSize: '0.8rem',
+    opacity: 0.8,
+    marginTop: 2,
+  },
+  trackInfoProgress: {
+    fontSize: '0.75rem',
+    opacity: 0.7,
+    marginTop: 4,
   },
   // Player styles
   playerControls: {

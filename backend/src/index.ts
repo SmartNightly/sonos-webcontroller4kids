@@ -527,16 +527,213 @@ app.post('/sonos/control', async (req: Request, res: Response) => {
   const url = `${baseUrl}/${encodeURIComponent(room)}/${path}`
 
   try {
-    const response = await fetch(url, { method: 'POST' })
-    if (!response.ok) {
-      const text = await response.text().catch(() => '')
-      return res.status(502).json({ error: `Sonos API returned ${response.status}`, details: text })
+    // Viele sonos-http-api Endpunkte erwarten einen einfachen GET-Request.
+    // Verwende ein kurzes Timeout, damit der Backend-Request nicht ewig hängt.
+    const controller = new AbortController()
+    const timeout = 3000
+    const id = setTimeout(() => controller.abort(), timeout)
+    try {
+      const response = await fetch(url, { signal: controller.signal })
+      if (!response.ok) {
+        const text = await response.text().catch(() => '')
+        return res.status(502).json({ error: `Sonos API returned ${response.status}`, details: text })
+      }
+      return res.json({ status: 'ok', action, room })
+    } finally {
+      clearTimeout(id)
     }
-    return res.json({ status: 'ok', action, room })
-  } catch (err) {
+  } catch (err: any) {
+    if (err && err.name === 'AbortError') {
+      console.error('Fehler bei Sonos-Control: request timeout')
+      return res.status(504).json({ error: 'Sonos API request timed out' })
+    }
     console.error('Fehler bei Sonos-Control:', err)
     return res.status(502).json({ error: 'Fehler bei Sonos-API' })
   }
+})
+
+
+// Status-Synchronisation: Liefert aktuellen Player-Status und Track-Info
+// Versucht verschiedene sonos-http-api Endpunkte und aggregiert Ergebnisse.
+app.get('/sonos/status', async (req: Request, res: Response) => {
+  const room = String(req.query.room || '')
+
+  if (!room) {
+    return res.status(400).json({ error: 'Query-Parameter room ist erforderlich' })
+  }
+
+  const config = loadConfig()
+  const baseUrl = config.sonosBaseUrl || DEFAULT_SONOS_BASE_URL
+
+  // Hilfsfunktion: hole URL und versuche JSON, sonst Text
+  async function fetchAny(u: string, timeoutMs = 3000) {
+    const controller = new AbortController()
+    const id = setTimeout(() => controller.abort(), timeoutMs)
+    try {
+      const r = await fetch(u, { signal: controller.signal })
+      const text = await r.text().catch(() => '')
+      try {
+        return { ok: r.ok, url: u, json: JSON.parse(text) }
+      } catch {
+        return { ok: r.ok, url: u, text }
+      }
+    } catch (err: any) {
+      // Distinguish abort vs other errors for better debugging
+      if (err && err.name === 'AbortError') {
+        return { ok: false, url: u, error: `timeout after ${timeoutMs}ms` }
+      }
+      return { ok: false, url: u, error: String(err) }
+    } finally {
+      clearTimeout(id)
+    }
+  }
+
+  const encoded = encodeURIComponent(room)
+
+  const tried: Array<any> = []
+  const result: any = { room, available: false }
+
+  // 1) State (playing/paused) — diese Endpoint liefert oft umfangreiche Infos
+  const stateUrl = `${baseUrl}/${encoded}/state`
+  const stateRes = await fetchAny(stateUrl)
+  tried.push(stateRes)
+  if (stateRes.ok) {
+    result.available = true
+    const payload = stateRes.json ?? stateRes.text
+
+    if (typeof payload === 'string') {
+      const p = payload.toLowerCase()
+      if (p.includes('play')) result.state = 'playing'
+      else if (p.includes('pause') || p.includes('paused')) result.state = 'paused'
+      else result.state = payload
+    } else if (payload && typeof payload === 'object') {
+      // Direktes Mapping für das von dir gezeigte /state-Format
+      // Playback state
+      const pb = payload.playbackState || payload.state || payload.transportState
+      if (pb) {
+        result.state = typeof pb === 'string' ? pb.toLowerCase() : pb
+      }
+
+      // Volume & mute
+      if (payload.volume !== undefined) result.volume = Number(payload.volume)
+      if (payload.mute !== undefined) result.muted = Boolean(payload.mute)
+
+      // Equalizer (optional)
+      if (payload.equalizer) result.equalizer = payload.equalizer
+
+      // Current track
+      const ct = payload.currentTrack || payload.current || payload.track || null
+      if (ct && typeof ct === 'object') {
+        const track: any = {}
+        track.title = ct.title || ct.name || ct.track || ct.currentTitle
+        track.artist = ct.artist || ct.creator
+        track.album = ct.album
+        track.uri = ct.uri || ct.trackUri || ct.resource
+        // duration in seconds → convert to ms when reasonable
+        if (ct.duration !== undefined) {
+          const d = Number(ct.duration)
+          if (!Number.isNaN(d)) track.durationMs = d > 10000 ? d : d * 1000
+        } else if (ct.durationMs !== undefined) {
+          track.durationMs = Number(ct.durationMs)
+        } else if (ct.trackTimeMillis !== undefined) {
+          track.durationMs = Number(ct.trackTimeMillis)
+        }
+
+        // album art
+        if (ct.absoluteAlbumArtUri) track.albumArt = ct.absoluteAlbumArtUri
+        else if (ct.albumArtUri) track.albumArt = ct.albumArtUri
+
+        result.track = { ...(result.track || {}), ...track }
+      }
+
+      // Next track
+      const nt = payload.nextTrack
+      if (nt && typeof nt === 'object') {
+        result.nextTrack = {
+          title: nt.title || nt.name,
+          artist: nt.artist,
+          album: nt.album,
+          durationMs: nt.duration ? (Number(nt.duration) > 10000 ? Number(nt.duration) : Number(nt.duration) * 1000) : undefined,
+          uri: nt.uri || nt.trackUri,
+          albumArt: nt.absoluteAlbumArtUri || nt.albumArtUri,
+        }
+      }
+
+      // Position / elapsed
+      if (payload.elapsedTime !== undefined) {
+        const e = Number(payload.elapsedTime)
+        if (!Number.isNaN(e)) result.track = { ...(result.track || {}), positionMs: e > 10000 ? e : e * 1000 }
+      } else if (payload.elapsedTimeMs !== undefined) {
+        result.track = { ...(result.track || {}), positionMs: Number(payload.elapsedTimeMs) }
+      }
+
+      // Track number
+      if (payload.trackNo !== undefined) result.trackNo = Number(payload.trackNo)
+
+      // Play mode (repeat/shuffle)
+      if (payload.playMode) {
+        result.playMode = payload.playMode
+        if (payload.playMode.repeat !== undefined) result.repeat = payload.playMode.repeat
+        if (payload.playMode.shuffle !== undefined) result.shuffle = Boolean(payload.playMode.shuffle)
+      }
+    }
+  }
+
+  // 2) Now playing / current track endpoints to extract metadata
+  const nowCandidates = [
+    `${baseUrl}/${encoded}/now`,
+    `${baseUrl}/${encoded}/nowPlaying`,
+    `${baseUrl}/${encoded}/currentTrack`,
+    `${baseUrl}/${encoded}/player`,
+    `${baseUrl}/${encoded}/status`,
+    `${baseUrl}/${encoded}/getPositionInfo`,
+    `${baseUrl}/${encoded}/position`,
+  ]
+
+  for (const u of nowCandidates) {
+    const r = await fetchAny(u)
+    tried.push(r)
+    if (!r.ok) continue
+    const payload = r.json ?? r.text
+    // Try to extract common fields
+    const track: any = result.track || {}
+
+    if (typeof payload === 'string') {
+      // Some endpoints return a simple string with title
+      if (!track.title) track.title = payload
+    } else if (payload && typeof payload === 'object') {
+      // Common keys
+      if (!track.title) track.title = payload.title || payload.name || payload.track || payload.currentTitle
+      if (!track.artist) track.artist = payload.artist || payload.creator || payload.trackArtist
+      if (!track.album) track.album = payload.album || payload.collection
+      if (!track.uri) track.uri = payload.resource || payload.uri || payload.trackUri
+      if (!track.durationMs) {
+        const dur = payload.duration || payload.durationMs || payload.trackTimeMillis || payload.length
+        if (typeof dur === 'number') track.durationMs = dur
+        else if (typeof dur === 'string' && !Number.isNaN(Number(dur))) track.durationMs = Number(dur)
+      }
+      // position
+      if (!track.positionMs) {
+        const pos = payload.position || payload.positionMs || payload.elapsed
+        if (typeof pos === 'number') track.positionMs = pos
+        else if (typeof pos === 'string' && !Number.isNaN(Number(pos))) track.positionMs = Number(pos)
+      }
+    }
+
+    result.track = track
+    // stop at first successful detailed response
+    if (result.track && (result.track.title || result.track.uri)) break
+  }
+
+  // Volume, mute, shuffle, repeat werden bereits von /state geliefert.
+  // Separate Abfragen an /volume, /mute, /shuffle, /repeat können bei manchen
+  // Sonos-HTTP-API-Implementierungen Seiteneffekte (toggle/set) verursachen.
+  // Daher überspringen wir sie und verlassen uns auf die /state-Antwort.
+
+  // Attach tried endpoints for debugging
+  result._tried = tried.map((t: any) => ({ url: t.url, ok: !!t.ok, summary: t.json ? '[json]' : typeof t.text === 'string' ? t.text : t.error }))
+
+  res.json(result)
 })
 
 
