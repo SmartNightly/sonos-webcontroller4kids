@@ -357,7 +357,6 @@ useEffect(() => {
         {renderTopBar()}
         {renderRoomOverlay()}
 
-        <h1 style={styles.titleSmall}>Album</h1>
         <button
           style={styles.backButton}
           onClick={() => setSelectedAlbum(null)}
@@ -586,17 +585,12 @@ useEffect(() => {
         {renderTopBar()}
         {renderRoomOverlay()}
 
-        <h1 style={styles.titleSmall}>Artist</h1>
         <button
           style={styles.backButton}
           onClick={() => setSelectedArtist(null)}
         >
           ← Zurück zu Artists
         </button>
-
-        <div style={{ marginBottom: 4, fontSize: '0.9rem' }}>
-          {selectedArtist}
-        </div>
 
         {busy && <div style={styles.busy}>Bitte warten…</div>}
 
@@ -645,8 +639,6 @@ useEffect(() => {
     <div style={styles.screen}>
       {renderTopBar()}
       {renderRoomOverlay()}
-
-      <h1 style={styles.title}>Kids Player 🎧</h1>
 
       {busy && <div style={styles.busy}>Bitte warten…</div>}
 
