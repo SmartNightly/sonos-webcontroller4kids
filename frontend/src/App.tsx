@@ -15,7 +15,6 @@ function KidsView() {
   const [media, setMedia] = useState<MediaItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [nowPlaying, setNowPlaying] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
   // UI state for album player/detail view
@@ -226,8 +225,6 @@ useEffect(() => {
         const body = await res.json().catch(() => ({}))
         throw new Error(body.error || `HTTP ${res.status}`)
       }
-
-      setNowPlaying(`${item.title} (${room})`)
     } catch (err) {
       console.error(err)
       setError('Konnte nicht abspielen 😕')
@@ -260,8 +257,6 @@ useEffect(() => {
         const body = await res.json().catch(() => ({}))
         throw new Error(body.error || `HTTP ${res.status}`)
       }
-
-      setNowPlaying(`${album.title} – ${track.title} (${room})`)
     } catch (err) {
       console.error(err)
       setError('Konnte Track nicht abspielen 😕')
@@ -356,6 +351,21 @@ useEffect(() => {
           ← Zurück
         </button>
 
+        {/* Current Track Info - Live from status polling */}
+        {currentTrack && (
+          <div style={styles.trackInfo}>
+            <div style={styles.trackInfoTitle}>▶ {currentTrack.title || 'Unbekannt'}</div>
+            {currentTrack.artist && (
+              <div style={styles.trackInfoArtist}>{currentTrack.artist}</div>
+            )}
+            {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && (
+              <div style={styles.trackInfoProgress}>
+                {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}
+              </div>
+            )}
+          </div>
+        )}
+
         <div style={styles.albumHeader}>
           <img
             src={album.coverUrl}
@@ -387,21 +397,6 @@ useEffect(() => {
             </div>
           </div>
         </div>
-
-        {/* Current Track Info */}
-        {currentTrack && (
-          <div style={styles.trackInfo}>
-            <div style={styles.trackInfoTitle}>{currentTrack.title || 'Unbekannt'}</div>
-            {currentTrack.artist && (
-              <div style={styles.trackInfoArtist}>{currentTrack.artist}</div>
-            )}
-            {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && (
-              <div style={styles.trackInfoProgress}>
-                {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}
-              </div>
-            )}
-          </div>
-        )}
 
         {/* Player Controls */}
         <div style={styles.playerControls}>
@@ -577,10 +572,6 @@ useEffect(() => {
             ))}
           </div>
         )}
-
-        {nowPlaying && (
-          <div style={styles.nowPlayingBar}>▶ {nowPlaying}</div>
-        )}
       </div>
     )
   }
@@ -608,8 +599,19 @@ useEffect(() => {
           {selectedArtist}
         </div>
 
-        {nowPlaying && (
-          <div style={styles.nowPlaying}>▶ {nowPlaying}</div>
+        {/* Current Track Info - Live from status polling */}
+        {currentTrack && (
+          <div style={styles.trackInfo}>
+            <div style={styles.trackInfoTitle}>▶ {currentTrack.title || 'Unbekannt'}</div>
+            {currentTrack.artist && (
+              <div style={styles.trackInfoArtist}>{currentTrack.artist}</div>
+            )}
+            {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && (
+              <div style={styles.trackInfoProgress}>
+                {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}
+              </div>
+            )}
+          </div>
         )}
         {busy && <div style={styles.busy}>Bitte warten…</div>}
 
@@ -660,9 +662,22 @@ useEffect(() => {
       {renderRoomOverlay()}
 
       <h1 style={styles.title}>Kids Player 🎧</h1>
-      {nowPlaying && (
-        <div style={styles.nowPlaying}>▶ {nowPlaying}</div>
+
+      {/* Current Track Info - Live from status polling */}
+      {currentTrack && (
+        <div style={styles.trackInfo}>
+          <div style={styles.trackInfoTitle}>▶ {currentTrack.title || 'Unbekannt'}</div>
+          {currentTrack.artist && (
+            <div style={styles.trackInfoArtist}>{currentTrack.artist}</div>
+          )}
+          {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && (
+            <div style={styles.trackInfoProgress}>
+              {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}
+            </div>
+          )}
+        </div>
       )}
+
       {busy && <div style={styles.busy}>Bitte warten…</div>}
 
       <div style={styles.grid}>
