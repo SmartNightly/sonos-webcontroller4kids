@@ -343,14 +343,6 @@ useEffect(() => {
         {renderRoomSelector()}
         {renderRoomOverlay()}
 
-        <h1 style={styles.titleSmall}>Album</h1>
-        <button
-          style={styles.backButton}
-          onClick={() => setSelectedAlbum(null)}
-        >
-          ← Zurück
-        </button>
-
         {/* Current Track Info - Live from status polling */}
         {currentTrack && (
           <div style={styles.trackInfo}>
@@ -365,6 +357,14 @@ useEffect(() => {
             )}
           </div>
         )}
+
+        <h1 style={styles.titleSmall}>Album</h1>
+        <button
+          style={styles.backButton}
+          onClick={() => setSelectedAlbum(null)}
+        >
+          ← Zurück
+        </button>
 
         <div style={styles.albumHeader}>
           <img
@@ -587,18 +587,6 @@ useEffect(() => {
         {renderRoomSelector()}
         {renderRoomOverlay()}
 
-        <h1 style={styles.titleSmall}>Artist</h1>
-        <button
-          style={styles.backButton}
-          onClick={() => setSelectedArtist(null)}
-        >
-          ← Zurück zu Artists
-        </button>
-
-        <div style={{ marginBottom: 4, fontSize: '0.9rem' }}>
-          {selectedArtist}
-        </div>
-
         {/* Current Track Info - Live from status polling */}
         {currentTrack && (
           <div style={styles.trackInfo}>
@@ -613,6 +601,19 @@ useEffect(() => {
             )}
           </div>
         )}
+
+        <h1 style={styles.titleSmall}>Artist</h1>
+        <button
+          style={styles.backButton}
+          onClick={() => setSelectedArtist(null)}
+        >
+          ← Zurück zu Artists
+        </button>
+
+        <div style={{ marginBottom: 4, fontSize: '0.9rem' }}>
+          {selectedArtist}
+        </div>
+
         {busy && <div style={styles.busy}>Bitte warten…</div>}
 
         <div style={styles.grid}>
@@ -661,8 +662,6 @@ useEffect(() => {
       {renderRoomSelector()}
       {renderRoomOverlay()}
 
-      <h1 style={styles.title}>Kids Player 🎧</h1>
-
       {/* Current Track Info - Live from status polling */}
       {currentTrack && (
         <div style={styles.trackInfo}>
@@ -677,6 +676,8 @@ useEffect(() => {
           )}
         </div>
       )}
+
+      <h1 style={styles.title}>Kids Player 🎧</h1>
 
       {busy && <div style={styles.busy}>Bitte warten…</div>}
 
