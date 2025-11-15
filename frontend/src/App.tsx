@@ -39,7 +39,6 @@ function KidsView() {
   const [rooms, setRooms] = useState<string[]>([])
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
   const [roomPickerOpen, setRoomPickerOpen] = useState(false)
-  const [roomError, setRoomError] = useState<string | null>(null)
 
   // Status-Polling: synchronisiere Sonos-Status alle 2 Sekunden
   useEffect(() => {
@@ -195,8 +194,8 @@ useEffect(() => {
 
   const ensureRoomSelected = (): string | null => {
     if (!selectedRoom) {
-      setRoomError('Bitte zuerst einen Raum wählen')
-      setTimeout(() => setRoomError(null), 2000)
+      setError('Bitte zuerst einen Raum wählen')
+      setTimeout(() => setError(null), 2000)
       return null
     }
     return selectedRoom
@@ -265,20 +264,35 @@ useEffect(() => {
     }
   }
 
-  const renderRoomSelector = () => (
-    <div style={styles.roomBar}>
-      <button
-        style={styles.roomButton}
-        onClick={() => rooms.length > 0 && setRoomPickerOpen(true)}
-        disabled={rooms.length === 0}
-      >
-        {rooms.length === 0
-          ? 'Kein Raum gefunden'
-          : `Raum: ${selectedRoom ?? 'Bitte wählen'}`}
-      </button>
-      {roomError && (
-        <div style={styles.roomError}>{roomError}</div>
-      )}
+  const renderTopBar = () => (
+    <div style={styles.topBar}>
+      {/* Track Info - 2/3 width */}
+      <div style={styles.topBarTrackInfo}>
+        {currentTrack ? (
+          <span style={{ fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            ▶ {currentTrack.title || 'Unbekannt'}
+            {currentTrack.artist && ` • ${currentTrack.artist}`}
+            {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && 
+              ` • ${formatDuration(currentTrack.positionMs)} / ${formatDuration(currentTrack.durationMs)}`
+            }
+          </span>
+        ) : (
+          <span style={{ fontSize: '0.85rem', opacity: 0.5 }}>Nichts abgespielt</span>
+        )}
+      </div>
+
+      {/* Room Selector - 1/3 width */}
+      <div style={styles.topBarRoom}>
+        <button
+          style={styles.roomButton}
+          onClick={() => rooms.length > 0 && setRoomPickerOpen(true)}
+          disabled={rooms.length === 0}
+        >
+          {rooms.length === 0
+            ? 'Kein Raum'
+            : selectedRoom ?? 'Raum wählen'}
+        </button>
+      </div>
     </div>
   )
 
@@ -340,23 +354,8 @@ useEffect(() => {
 
     return (
       <div style={styles.screen}>
-        {renderRoomSelector()}
+        {renderTopBar()}
         {renderRoomOverlay()}
-
-        {/* Current Track Info - Live from status polling */}
-        {currentTrack && (
-          <div style={styles.trackInfo}>
-            <div style={styles.trackInfoTitle}>▶ {currentTrack.title || 'Unbekannt'}</div>
-            {currentTrack.artist && (
-              <div style={styles.trackInfoArtist}>{currentTrack.artist}</div>
-            )}
-            {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && (
-              <div style={styles.trackInfoProgress}>
-                {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}
-              </div>
-            )}
-          </div>
-        )}
 
         <h1 style={styles.titleSmall}>Album</h1>
         <button
@@ -584,23 +583,8 @@ useEffect(() => {
 
     return (
       <div style={styles.screen}>
-        {renderRoomSelector()}
+        {renderTopBar()}
         {renderRoomOverlay()}
-
-        {/* Current Track Info - Live from status polling */}
-        {currentTrack && (
-          <div style={styles.trackInfo}>
-            <div style={styles.trackInfoTitle}>▶ {currentTrack.title || 'Unbekannt'}</div>
-            {currentTrack.artist && (
-              <div style={styles.trackInfoArtist}>{currentTrack.artist}</div>
-            )}
-            {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && (
-              <div style={styles.trackInfoProgress}>
-                {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}
-              </div>
-            )}
-          </div>
-        )}
 
         <h1 style={styles.titleSmall}>Artist</h1>
         <button
@@ -659,23 +643,8 @@ useEffect(() => {
 
   return (
     <div style={styles.screen}>
-      {renderRoomSelector()}
+      {renderTopBar()}
       {renderRoomOverlay()}
-
-      {/* Current Track Info - Live from status polling */}
-      {currentTrack && (
-        <div style={styles.trackInfo}>
-          <div style={styles.trackInfoTitle}>▶ {currentTrack.title || 'Unbekannt'}</div>
-          {currentTrack.artist && (
-            <div style={styles.trackInfoArtist}>{currentTrack.artist}</div>
-          )}
-          {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && (
-            <div style={styles.trackInfoProgress}>
-              {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}
-            </div>
-          )}
-        </div>
-      )}
 
       <h1 style={styles.title}>Kids Player 🎧</h1>
 
@@ -1290,6 +1259,25 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '0.8rem',
     paddingTop: 4,
     textAlign: 'center',
+  },
+  topBar: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+    width: '100%',
+  },
+  topBarTrackInfo: {
+    flex: '2',
+    minWidth: 0,
+    padding: '6px 8px',
+    backgroundColor: '#1a1a1a',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  topBarRoom: {
+    flex: '1',
+    minWidth: 0,
   },
   roomBar: {
     display: 'flex',
