@@ -266,14 +266,14 @@ useEffect(() => {
 
   const renderTopBar = () => (
     <div style={styles.topBar}>
-      {/* Track Info - 2/3 width */}
+      {/* Track Info - flexible width */}
       <div style={styles.topBarTrackInfo}>
         {currentTrack ? (
-          <span style={{ fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            ▶ {currentTrack.title || 'Unbekannt'}
-            {currentTrack.artist && ` • ${currentTrack.artist}`}
+          <span style={{ fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>
+            <span style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>▶ {currentTrack.title || 'Unbekannt'}</span>
+            {currentTrack.artist && <span style={{ fontSize: '0.85rem' }}> • {currentTrack.artist}</span>}
             {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && 
-              ` • ${formatDuration(currentTrack.positionMs)} / ${formatDuration(currentTrack.durationMs)}`
+              <span style={{ fontSize: '0.85rem' }}> • {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}</span>
             }
           </span>
         ) : (
@@ -281,10 +281,10 @@ useEffect(() => {
         )}
       </div>
 
-      {/* Room Selector - 1/3 width */}
+      {/* Room Selector - fixed width, aligned right */}
       <div style={styles.topBarRoom}>
         <button
-          style={styles.roomButton}
+          style={styles.topBarRoomButton}
           onClick={() => rooms.length > 0 && setRoomPickerOpen(true)}
           disabled={rooms.length === 0}
         >
@@ -1268,16 +1268,28 @@ const styles: Record<string, React.CSSProperties> = {
     width: '100%',
   },
   topBarTrackInfo: {
-    flex: '2',
+    flex: '1',
     minWidth: 0,
-    padding: '6px 8px',
+    padding: '8px 10px',
     backgroundColor: '#1a1a1a',
     borderRadius: 8,
     overflow: 'hidden',
   },
   topBarRoom: {
-    flex: '1',
-    minWidth: 0,
+    flexShrink: 0,
+    marginLeft: 'auto',
+  },
+  topBarRoomButton: {
+    padding: '10px 16px',
+    fontSize: '0.95rem',
+    fontWeight: '500',
+    borderRadius: 8,
+    border: 'none',
+    backgroundColor: '#333',
+    color: '#fff',
+    cursor: 'pointer',
+    minWidth: 120,
+    whiteSpace: 'nowrap',
   },
   roomBar: {
     display: 'flex',
