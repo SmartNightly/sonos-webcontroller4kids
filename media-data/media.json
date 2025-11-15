@@ -3861,5 +3861,285 @@
         "durationMs": 111453
       }
     ]
+  },
+  {
+    "id": "album_1844323304",
+    "title": "Ländler Tornado",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Heimatliebi",
+    "album": "Ländler Tornado",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/de/ed/f2/deedf2c1-1c9a-9149-1d6f-c0df8d063791/cover_4062851205078.jpg/600x600bb.jpg",
+    "appleId": "1844323304",
+    "tracks": [
+      {
+        "id": "album_1844323304_track_1844323308",
+        "title": "All mini Liebi",
+        "appleSongId": "1844323308",
+        "trackNumber": 1,
+        "durationMs": 202911
+      },
+      {
+        "id": "album_1844323304_track_1844323310",
+        "title": "Allei",
+        "appleSongId": "1844323310",
+        "trackNumber": 2,
+        "durationMs": 212767
+      },
+      {
+        "id": "album_1844323304_track_1844323312",
+        "title": "Feyfleiber",
+        "appleSongId": "1844323312",
+        "trackNumber": 3,
+        "durationMs": 169450
+      },
+      {
+        "id": "album_1844323304_track_1844323313",
+        "title": "Steinä",
+        "appleSongId": "1844323313",
+        "trackNumber": 4,
+        "durationMs": 169531
+      },
+      {
+        "id": "album_1844323304_track_1844323314",
+        "title": "Höch i d'Luft",
+        "appleSongId": "1844323314",
+        "trackNumber": 5,
+        "durationMs": 127229
+      },
+      {
+        "id": "album_1844323304_track_1844323315",
+        "title": "Schäri Schtäi Papeyr",
+        "appleSongId": "1844323315",
+        "trackNumber": 6,
+        "durationMs": 123517
+      },
+      {
+        "id": "album_1844323304_track_1844323317",
+        "title": "Gang mit em Wind",
+        "appleSongId": "1844323317",
+        "trackNumber": 7,
+        "durationMs": 182618
+      },
+      {
+        "id": "album_1844323304_track_1844323319",
+        "title": "Lah gah",
+        "appleSongId": "1844323319",
+        "trackNumber": 8,
+        "durationMs": 179455
+      },
+      {
+        "id": "album_1844323304_track_1844323502",
+        "title": "Sunne, Mond und Stärne",
+        "appleSongId": "1844323502",
+        "trackNumber": 9,
+        "durationMs": 166494
+      },
+      {
+        "id": "album_1844323304_track_1844323503",
+        "title": "Zum Glick",
+        "appleSongId": "1844323503",
+        "trackNumber": 10,
+        "durationMs": 159792
+      }
+    ]
+  },
+  {
+    "id": "album_1435894372",
+    "title": "Schnupf, Schnaps + Edelwyss (Enzian Edition)",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Trauffer",
+    "album": "Schnupf, Schnaps + Edelwyss (Enzian Edition)",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/1b/5e/26/1b5e2699-4939-38b3-21c2-d5f3f6349cb4/886447228609.jpg/600x600bb.jpg",
+    "appleId": "1435894372",
+    "tracks": [
+      {
+        "id": "album_1435894372_track_1435894376",
+        "title": "Alpufzug",
+        "appleSongId": "1435894376",
+        "trackNumber": 1,
+        "durationMs": 114151
+      },
+      {
+        "id": "album_1435894372_track_1435894377",
+        "title": "Dä mit de Chüeh",
+        "appleSongId": "1435894377",
+        "trackNumber": 2,
+        "durationMs": 205402
+      },
+      {
+        "id": "album_1435894372_track_1435894378",
+        "title": "Schnupf, Schnaps + Edelwyss",
+        "appleSongId": "1435894378",
+        "trackNumber": 3,
+        "durationMs": 212270
+      },
+      {
+        "id": "album_1435894372_track_1435894379",
+        "title": "Schärischnitt",
+        "appleSongId": "1435894379",
+        "trackNumber": 4,
+        "durationMs": 242112
+      },
+      {
+        "id": "album_1435894372_track_1435894380",
+        "title": "Geissepeter",
+        "appleSongId": "1435894380",
+        "trackNumber": 5,
+        "durationMs": 198577
+      },
+      {
+        "id": "album_1435894372_track_1435894662",
+        "title": "Liire",
+        "appleSongId": "1435894662",
+        "trackNumber": 6,
+        "durationMs": 230674
+      },
+      {
+        "id": "album_1435894372_track_1435894668",
+        "title": "Schacherseppli",
+        "appleSongId": "1435894668",
+        "trackNumber": 7,
+        "durationMs": 185448
+      },
+      {
+        "id": "album_1435894372_track_1435894671",
+        "title": "Alphorn + Ragete",
+        "appleSongId": "1435894671",
+        "trackNumber": 8,
+        "durationMs": 221269
+      },
+      {
+        "id": "album_1435894372_track_1435894673",
+        "title": "Obsi oder Nizi",
+        "appleSongId": "1435894673",
+        "trackNumber": 9,
+        "durationMs": 232043
+      },
+      {
+        "id": "album_1435894372_track_1435894675",
+        "title": "Bier + Cervelat",
+        "appleSongId": "1435894675",
+        "trackNumber": 10,
+        "durationMs": 195611
+      },
+      {
+        "id": "album_1435894372_track_1435894676",
+        "title": "Heldin",
+        "appleSongId": "1435894676",
+        "trackNumber": 11,
+        "durationMs": 217833
+      },
+      {
+        "id": "album_1435894372_track_1435894678",
+        "title": "Alpechalb",
+        "appleSongId": "1435894678",
+        "trackNumber": 12,
+        "durationMs": 207673
+      },
+      {
+        "id": "album_1435894372_track_1435894679",
+        "title": "Zickechrieg",
+        "appleSongId": "1435894679",
+        "trackNumber": 13,
+        "durationMs": 161901
+      },
+      {
+        "id": "album_1435894372_track_1435894680",
+        "title": "Rössli + Bären",
+        "appleSongId": "1435894680",
+        "trackNumber": 14,
+        "durationMs": 194985
+      },
+      {
+        "id": "album_1435894372_track_1435894683",
+        "title": "Alpzyt",
+        "appleSongId": "1435894683",
+        "trackNumber": 15,
+        "durationMs": 220885
+      },
+      {
+        "id": "album_1435894372_track_1435894684",
+        "title": "Superzucker Sexysummergroove",
+        "appleSongId": "1435894684",
+        "trackNumber": 1,
+        "durationMs": 196989
+      },
+      {
+        "id": "album_1435894372_track_1435894842",
+        "title": "Weschtschwiiz",
+        "appleSongId": "1435894842",
+        "trackNumber": 2,
+        "durationMs": 205097
+      },
+      {
+        "id": "album_1435894372_track_1435894846",
+        "title": "Meh chani nümme gäh",
+        "appleSongId": "1435894846",
+        "trackNumber": 3,
+        "durationMs": 229366
+      },
+      {
+        "id": "album_1435894372_track_1435894851",
+        "title": "Himmelbett",
+        "appleSongId": "1435894851",
+        "trackNumber": 4,
+        "durationMs": 241439
+      },
+      {
+        "id": "album_1435894372_track_1435894852",
+        "title": "Chartehuus",
+        "appleSongId": "1435894852",
+        "trackNumber": 5,
+        "durationMs": 211577
+      },
+      {
+        "id": "album_1435894372_track_1435894861",
+        "title": "Gump i See",
+        "appleSongId": "1435894861",
+        "trackNumber": 6,
+        "durationMs": 243286
+      },
+      {
+        "id": "album_1435894372_track_1435894862",
+        "title": "C'est la vie",
+        "appleSongId": "1435894862",
+        "trackNumber": 7,
+        "durationMs": 206778
+      },
+      {
+        "id": "album_1435894372_track_1435894863",
+        "title": "Weisch du wär",
+        "appleSongId": "1435894863",
+        "trackNumber": 8,
+        "durationMs": 234477
+      },
+      {
+        "id": "album_1435894372_track_1435894865",
+        "title": "Räge Reggae",
+        "appleSongId": "1435894865",
+        "trackNumber": 9,
+        "durationMs": 207884
+      },
+      {
+        "id": "album_1435894372_track_1435894866",
+        "title": "Filmkuss",
+        "appleSongId": "1435894866",
+        "trackNumber": 10,
+        "durationMs": 203789
+      }
+    ]
+  },
+  {
+    "id": "album_1596442422",
+    "title": "MTV Unplugged Tonbildshow",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Patent Ochsner",
+    "album": "MTV Unplugged Tonbildshow",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/e4/24/90/e42490e0-d0cd-527e-409b-d25b29f8e739/21UM1IM41359.rgb.jpg/600x600bb.jpg",
+    "appleId": "1596442422",
+    "tracks": []
   }
 ]

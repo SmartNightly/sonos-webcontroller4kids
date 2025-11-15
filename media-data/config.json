@@ -17,5 +17,6 @@
     "Kinderzimmer",
     "Küche"
   ],
-  "defaultRoom": "Büro"
+  "defaultRoom": "Büro",
+  "showShuffleRepeat": false
 }

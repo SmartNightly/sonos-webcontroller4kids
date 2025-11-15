@@ -18,9 +18,7 @@ function KidsView() {
   const [busy, setBusy] = useState(false)
 
   // UI state for album player/detail view
-  const [showTracks, setShowTracks] = useState(false)
   const [playing, setPlaying] = useState(false)
-  const [muted, setMuted] = useState(false)
   const [shuffle, setShuffle] = useState(false)
   const [repeatMode, setRepeatMode] = useState<'off' | 'all' | 'one'>('off')
   const [volume, setVolume] = useState<number | null>(null)
@@ -39,6 +37,8 @@ function KidsView() {
   const [rooms, setRooms] = useState<string[]>([])
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
   const [roomPickerOpen, setRoomPickerOpen] = useState(false)
+  const [playerOpen, setPlayerOpen] = useState(false)
+  const [showShuffleRepeat, setShowShuffleRepeat] = useState(true)
 
   // Status-Polling: synchronisiere Sonos-Status alle 2 Sekunden
   useEffect(() => {
@@ -62,7 +62,6 @@ function KidsView() {
 
         // Sync volume, mute, shuffle, repeat
         if (data.volume !== undefined) setVolume(data.volume)
-        if (data.muted !== undefined) setMuted(data.muted)
         if (data.shuffle !== undefined) setShuffle(data.shuffle)
         if (data.repeat !== undefined) {
           const r = String(data.repeat).toLowerCase()
@@ -174,6 +173,7 @@ useEffect(() => {
         : data.rooms || []
 
       setRooms(enabled)
+      setShowShuffleRepeat(data.showShuffleRepeat !== undefined ? data.showShuffleRepeat : true)
 
       let initialRoom: string | null = null
 
@@ -209,6 +209,9 @@ useEffect(() => {
       setBusy(true)
       setError(null)
 
+      // Clear queue first
+      await fetch(`http://192.168.114.21:5005/${encodeURIComponent(room)}/clearqueue`)
+
       const res = await fetch('http://localhost:3001/play', {
         method: 'POST',
         headers: {
@@ -240,6 +243,9 @@ useEffect(() => {
       setBusy(true)
       setError(null)
 
+      // Clear queue first
+      await fetch(`http://192.168.114.21:5005/${encodeURIComponent(room)}/clearqueue`)
+
       const res = await fetch('http://localhost:3001/play', {
         method: 'POST',
         headers: {
@@ -264,20 +270,41 @@ useEffect(() => {
     }
   }
 
-  const renderTopBar = () => (
+  const renderTopBar = (showBackButton?: boolean, onBackClick?: () => void, backLabel?: string) => (
     <div style={styles.topBar}>
+      {/* Back Button / Title - left side (optional) */}
+      {showBackButton ? (
+        <button
+          style={{
+            ...styles.topBarBackButton,
+            cursor: onBackClick ? 'pointer' : 'default',
+            opacity: 1,
+            pointerEvents: onBackClick ? 'auto' : 'none',
+          }}
+          onClick={onBackClick}
+        >
+          {onBackClick ? '← ' : ''}{backLabel || 'Zurück'}
+        </button>
+      ) : (
+        <div style={{ ...styles.topBarBackButton, visibility: 'hidden' }} />
+      )}
+
       {/* Track Info - flexible width */}
-      <div style={styles.topBarTrackInfo}>
+      <div 
+        style={{ ...styles.topBarTrackInfo, cursor: 'pointer' }}
+        onClick={() => setPlayerOpen(!playerOpen)}
+      >
         {currentTrack ? (
-          <span style={{ fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>
+          <span style={{ fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block', textAlign: 'center' }}>
             <span style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>▶ {currentTrack.title || 'Unbekannt'}</span>
             {currentTrack.artist && <span style={{ fontSize: '0.85rem' }}> • {currentTrack.artist}</span>}
             {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && 
               <span style={{ fontSize: '0.85rem' }}> • {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}</span>
             }
+            {volume !== null && <span style={{ fontSize: '0.85rem' }}> • Vol: {volume}</span>}
           </span>
         ) : (
-          <span style={{ fontSize: '0.85rem', opacity: 0.5 }}>Nichts abgespielt</span>
+          <span style={{ fontSize: '0.85rem', opacity: 0.5, textAlign: 'center', display: 'block' }}>Nichts abgespielt</span>
         )}
       </div>
 
@@ -285,7 +312,7 @@ useEffect(() => {
       <div style={styles.topBarRoom}>
         <button
           style={styles.topBarRoomButton}
-          onClick={() => rooms.length > 0 && setRoomPickerOpen(true)}
+          onClick={() => rooms.length > 0 && setRoomPickerOpen(!roomPickerOpen)}
           disabled={rooms.length === 0}
         >
           {rooms.length === 0
@@ -297,112 +324,116 @@ useEffect(() => {
   )
 
   const renderRoomOverlay = () => {
-    if (!roomPickerOpen) return null
     return (
-      <div style={styles.roomOverlay} onClick={() => setRoomPickerOpen(false)}>
-        <div
-          style={styles.roomOverlayInner}
-          onClick={e => e.stopPropagation()}
-        >
-          <div style={styles.roomOverlayTitle}>Raum wählen</div>
-          <div style={styles.roomOverlayList}>
-            {rooms.map(room => (
-              <button
-                key={room}
-                style={styles.roomListButton}
-                onClick={async () => {
-                  setSelectedRoom(room)
-                  setRoomPickerOpen(false)
+      <div 
+        style={{
+          ...styles.roomPanel,
+          maxHeight: roomPickerOpen ? '300px' : '0',
+          opacity: roomPickerOpen ? 1 : 0,
+        }}
+      >
+        <div style={styles.roomPanelTitle}>Raum wählen</div>
+        <div style={styles.roomPanelList}>
+          {rooms.map(room => (
+            <button
+              key={room}
+              style={{
+                ...styles.roomPanelButton,
+                backgroundColor: room === selectedRoom ? '#555' : '#333',
+                border: room === selectedRoom ? '2px solid #888' : '2px solid transparent',
+              }}
+              onClick={async () => {
+                setSelectedRoom(room)
+                setRoomPickerOpen(false)
 
-                  try {
-                    await fetch('http://localhost:3001/admin/sonos/default-room', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ defaultRoom: room }),
-                    })
-                  } catch (err) {
-                    console.error('Konnte Default-Raum nicht speichern:', err)
-                  }
-                }}
-
-              >
-                {room}
-              </button>
-            ))}
-          </div>
-          <button
-            style={styles.roomOverlayClose}
-            onClick={() => setRoomPickerOpen(false)}
-          >
-            Schliessen
-          </button>
+                try {
+                  await fetch('http://localhost:3001/admin/sonos/default-room', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ defaultRoom: room }),
+                  })
+                } catch (err) {
+                  console.error('Konnte Default-Raum nicht speichern:', err)
+                }
+              }}
+            >
+              {room}
+            </button>
+          ))}
         </div>
       </div>
     )
   }
 
-  if (loading) return <div style={styles.screen}>Lade Medien…</div>
-  if (error) return <div style={styles.screen}>{error}</div>
-
-  // Nur Alben für Artist-/Album-Ansicht
-  const albums = media.filter(m => m.kind === 'album')
-
-  // ============= Ebene 3: Album-Detail (Tracks) =============
-  if (selectedAlbum) {
-    const album = selectedAlbum
-    const tracks = album.tracks || []
-
+  const renderPlayerOverlay = () => {
+    const room = selectedRoom
+    
     return (
-      <div style={styles.screen}>
-        {renderTopBar()}
-        {renderRoomOverlay()}
-
-        <button
-          style={styles.backButton}
-          onClick={() => setSelectedAlbum(null)}
-        >
-          ← Zurück
-        </button>
-
-        <div style={styles.albumHeader}>
-          <img
-            src={album.coverUrl}
-            alt={album.title}
-            style={styles.albumCover}
-          />
-          <div style={styles.albumMeta}>
-            <div style={styles.albumTitle}>{album.title}</div>
-            {album.artist && (
-              <div style={styles.albumArtist}>{album.artist}</div>
-            )}
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-              <button
-                style={styles.primaryButton}
-                onClick={async () => {
-                  await playAlbum(album)
-                  setPlaying(true)
-                }}
-                disabled={busy}
-              >
-                {busy ? 'Bitte warten…' : 'Album abspielen'}
-              </button>
-              <button
-                style={styles.secondaryButton}
-                onClick={() => setShowTracks(s => !s)}
-              >
-                {showTracks ? 'Tracks verbergen' : 'Tracks anzeigen'}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Player Controls */}
+      <div 
+        style={{
+          ...styles.playerPanel,
+          maxHeight: playerOpen ? '300px' : '0',
+          opacity: playerOpen ? 1 : 0,
+        }}
+      >
+        {/* Player Controls - Single Row */}
         <div style={styles.playerControls}>
-          <div style={styles.playerRow}>
+          <div style={styles.playerSingleRow}>
+            {/* Left: Shuffle & Repeat (invisible placeholders if disabled) */}
             <button
-              style={styles.controlButton}
+              style={{
+                ...styles.playerCompactButton,
+                backgroundColor: shuffle ? '#666' : '#333',
+                border: shuffle ? '2px solid #888' : '2px solid transparent',
+                visibility: showShuffleRepeat ? 'visible' : 'hidden',
+              }}
               onClick={async () => {
-                const room = ensureRoomSelected()
+                if (!room || !showShuffleRepeat) return
+                const action = shuffle ? 'shuffleOff' : 'shuffleOn'
+                await fetch('http://localhost:3001/sonos/control', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ room, action }),
+                })
+                setShuffle(!shuffle)
+              }}
+              disabled={!showShuffleRepeat}
+            >🔀</button>
+            <button
+              style={{
+                ...styles.playerCompactButton,
+                backgroundColor: repeatMode !== 'off' ? '#666' : '#333',
+                border: repeatMode !== 'off' ? '2px solid #888' : '2px solid transparent',
+                visibility: showShuffleRepeat ? 'visible' : 'hidden',
+              }}
+              onClick={async () => {
+                if (!room || !showShuffleRepeat) return
+                let newMode: 'off' | 'all' | 'one'
+                let action: string
+                if (repeatMode === 'off') {
+                  newMode = 'all'
+                  action = 'repeatAll'
+                } else if (repeatMode === 'all') {
+                  newMode = 'one'
+                  action = 'repeatOne'
+                } else {
+                  newMode = 'off'
+                  action = 'repeatOff'
+                }
+                await fetch('http://localhost:3001/sonos/control', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ room, action }),
+                })
+                setRepeatMode(newMode)
+              }}
+              disabled={!showShuffleRepeat}
+            >🔁{repeatMode === 'one' ? '1' : ''}</button>
+
+            {/* Center: Prev, Play/Pause, Next */}
+            <button
+              style={styles.playerMainButton}
+              onClick={async () => {
                 if (!room) return
                 await fetch('http://localhost:3001/sonos/control', {
                   method: 'POST',
@@ -412,9 +443,12 @@ useEffect(() => {
               }}
             >◀◀</button>
             <button
-              style={styles.controlButton}
+              style={{
+                ...styles.playerMainButton,
+                fontSize: '2rem',
+                minWidth: 100,
+              }}
               onClick={async () => {
-                const room = ensureRoomSelected()
                 if (!room) return
                 if (playing) {
                   await fetch('http://localhost:3001/sonos/control', {
@@ -434,9 +468,8 @@ useEffect(() => {
               }}
             >{playing ? '❚❚' : '▶'}</button>
             <button
-              style={styles.controlButton}
+              style={styles.playerMainButton}
               onClick={async () => {
-                const room = ensureRoomSelected()
                 if (!room) return
                 await fetch('http://localhost:3001/sonos/control', {
                   method: 'POST',
@@ -446,130 +479,92 @@ useEffect(() => {
               }}
             >▶▶</button>
 
-            <div style={{ width: 12 }} />
-
+            {/* Right: Volume Controls */}
             <button
-              style={styles.controlButton}
+              style={styles.playerCompactButton}
               onClick={async () => {
-                const room = ensureRoomSelected()
                 if (!room) return
                 await fetch('http://localhost:3001/sonos/control', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ room, action: 'volumeDown', value: 5 }),
+                  body: JSON.stringify({ room, action: 'volumeDown' }),
                 })
               }}
             >−</button>
             <button
-              style={styles.controlButton}
+              style={styles.playerCompactButton}
               onClick={async () => {
-                const room = ensureRoomSelected()
                 if (!room) return
                 await fetch('http://localhost:3001/sonos/control', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ room, action: 'volumeUp', value: 5 }),
+                  body: JSON.stringify({ room, action: 'volumeUp' }),
                 })
               }}
-            >＋</button>
-
-            <div style={{ width: 12 }} />
-
-                        <button
-              style={styles.controlButton}
-              onClick={async () => {
-                const room = ensureRoomSelected()
-                if (!room) return
-                if (muted) {
-                  await fetch('http://localhost:3001/sonos/control', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ room, action: 'unmute' }),
-                  })
-                  setMuted(false)
-                } else {
-                  await fetch('http://localhost:3001/sonos/control', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ room, action: 'mute' }),
-                  })
-                  setMuted(true)
-                }
-              }}
-            >{muted ? 'Unmute' : 'Mute'}</button>
-
-            {volume !== null && (
-              <span style={{ fontSize: '0.8rem', opacity: 0.7, marginLeft: 8 }}>
-                Vol: {volume}
-              </span>
-            )}
-          </div>
-
-          <div style={styles.playerRow}>
-            <button
-              style={styles.controlButton}
-              onClick={async () => {
-                const room = ensureRoomSelected()
-                if (!room) return
-                if (shuffle) {
-                  await fetch('http://localhost:3001/sonos/control', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ room, action: 'shuffleOff' }),
-                  })
-                  setShuffle(false)
-                } else {
-                  await fetch('http://localhost:3001/sonos/control', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ room, action: 'shuffleOn' }),
-                  })
-                  setShuffle(true)
-                }
-              }}
-            >{shuffle ? 'Shuffle On' : 'Shuffle Off'}</button>
-
-            <div style={{ width: 8 }} />
-
-            <button
-              style={styles.controlButton}
-              onClick={async () => {
-                const room = ensureRoomSelected()
-                if (!room) return
-                const nextMode = repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off'
-                const action = nextMode === 'off' ? 'repeatOff' : nextMode === 'all' ? 'repeatAll' : 'repeatOne'
-                await fetch('http://localhost:3001/sonos/control', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ room, action }),
-                })
-                setRepeatMode(nextMode)
-              }}
-            >Repeat: {repeatMode}</button>
+            >+</button>
           </div>
         </div>
+      </div>
+    )
+  }
 
-        {/* Tracks list (collapsible) */}
-        {showTracks && (
-          <div style={styles.tracksList}>
+  if (loading) return <div style={styles.screen}>Lade Medien…</div>
+  if (error) return <div style={styles.screen}>{error}</div>
+
+  // Nur Alben für Artist-/Album-Ansicht
+  const albums = media.filter(m => m.kind === 'album')
+
+  // ============= Ebene 3: Album-Detail (Tracks) =============
+  if (selectedAlbum) {
+    const album = selectedAlbum
+    const tracks = album.tracks || []
+
+    return (
+      <div style={styles.screen}>
+        {renderTopBar(true, () => setSelectedAlbum(null))}
+        {renderRoomOverlay()}
+        {renderPlayerOverlay()}
+
+        <div style={styles.albumDetailContainer}>
+          {/* Left: Cover + Info */}
+          <div style={styles.albumDetailLeft}>
+            <img
+              src={album.coverUrl}
+              alt={album.title}
+              style={styles.albumDetailCover}
+              onClick={async () => {
+                await playAlbum(album)
+                setPlaying(true)
+              }}
+            />
+            <div style={styles.albumDetailInfo}>
+              <div style={styles.albumDetailTitle}>
+                <span style={{ fontWeight: 'bold' }}>{album.title}</span>
+                {album.artist && <span style={{ fontWeight: 'normal' }}> - {album.artist}</span>}
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Tracks List */}
+          <div style={styles.albumDetailTracks}>
             {tracks.map(t => (
               <button
                 key={t.id}
-                style={styles.trackRow}
+                style={styles.trackRowCompact}
                 onClick={() => playTrack(album, t)}
                 disabled={busy}
               >
-                <div style={styles.trackNumber}>
+                <div style={styles.trackNumberCompact}>
                   {t.trackNumber ?? '•'}
                 </div>
-                <div style={styles.trackTitle}>{t.title}</div>
-                <div style={styles.trackDuration}>
+                <div style={styles.trackTitleCompact}>{t.title}</div>
+                <div style={styles.trackDurationCompact}>
                   {t.durationMs ? formatDuration(t.durationMs) : ''}
                 </div>
               </button>
             ))}
           </div>
-        )}
+        </div>
       </div>
     )
   }
@@ -582,15 +577,9 @@ useEffect(() => {
 
     return (
       <div style={styles.screen}>
-        {renderTopBar()}
+        {renderTopBar(true, () => setSelectedArtist(null))}
         {renderRoomOverlay()}
-
-        <button
-          style={styles.backButton}
-          onClick={() => setSelectedArtist(null)}
-        >
-          ← Zurück zu Artists
-        </button>
+        {renderPlayerOverlay()}
 
         {busy && <div style={styles.busy}>Bitte warten…</div>}
 
@@ -637,8 +626,9 @@ useEffect(() => {
 
   return (
     <div style={styles.screen}>
-      {renderTopBar()}
+      {renderTopBar(true, undefined, 'Kids Player')}
       {renderRoomOverlay()}
+      {renderPlayerOverlay()}
 
       {busy && <div style={styles.busy}>Bitte warten…</div>}
 
@@ -680,10 +670,11 @@ interface SonosConfig {
   rooms?: string[]
   enabledRooms?: string[]
   defaultRoom?: string
+  showShuffleRepeat?: boolean
 }
 
 function AdminView() {
-  const [tab, setTab] = useState<'search' | 'sonos' | 'editor'>('search')
+  const [tab, setTab] = useState<'search' | 'editor' | 'settings'>('search')
   const [query, setQuery] = useState('')
   const [entity, setEntity] = useState<'album' | 'song'>('album')
   const [results, setResults] = useState<AppleSearchResult[]>([])
@@ -699,6 +690,7 @@ function AdminView() {
   const [enabledRooms, setEnabledRooms] = useState<string[]>([])      // rechts
   const [sonosLoading, setSonosLoading] = useState(false)
   const [sonosError, setSonosError] = useState<string | null>(null)
+  const [showShuffleRepeatSetting, setShowShuffleRepeatSetting] = useState(true)
 
 
   useEffect(() => {
@@ -710,6 +702,7 @@ function AdminView() {
         setSonosBaseUrl(data.sonosBaseUrl)
         setSonosRooms(data.rooms || [])
         setEnabledRooms(data.enabledRooms || data.rooms || [])
+        setShowShuffleRepeatSetting(data.showShuffleRepeat !== undefined ? data.showShuffleRepeat : true)
       } catch (err) {
         console.error('Konnte Sonos-Konfiguration nicht laden:', err)
       }
@@ -891,7 +884,7 @@ function AdminView() {
 
   return (
     <div style={styles.screen}>
-      {/* Tab-Navigation */}
+      {/* Tab Navigation */}
       <div style={styles.tabNav}>
         <button
           style={{
@@ -905,27 +898,27 @@ function AdminView() {
         <button
           style={{
             ...styles.tabButton,
-            ...(tab === 'sonos' ? styles.tabButtonActive : {}),
-          }}
-          onClick={() => setTab('sonos')}
-        >
-          Sonos-Räume
-        </button>
-        <button
-          style={{
-            ...styles.tabButton,
             ...(tab === 'editor' ? styles.tabButtonActive : {}),
           }}
           onClick={() => setTab('editor')}
         >
           Media-Editor
         </button>
+        <button
+          style={{
+            ...styles.tabButton,
+            ...(tab === 'settings' ? styles.tabButtonActive : {}),
+          }}
+          onClick={() => setTab('settings')}
+        >
+          Einstellungen
+        </button>
       </div>
 
-      {/* Sonos-Tab */}
-      {tab === 'sonos' && (
+      {/* Settings Tab (formerly Sonos) */}
+      {tab === 'settings' && (
         <div style={{ flex: 1, overflowY: 'auto' }}>
-          <h1 style={styles.title}>Admin: Sonos Raum-Discovery → config.json</h1>
+          <h1 style={styles.title}>Admin: Einstellungen</h1>
 
           {/* Sonos-Konfiguration */}
           <div style={{ marginBottom: 10, padding: 6, backgroundColor: '#222', borderRadius: 8 }}>
@@ -1034,6 +1027,35 @@ function AdminView() {
                 Entdeckte Räume: {sonosRooms.join(', ')}
               </div>
             )}
+
+            {/* Shuffle/Repeat Visibility Toggle */}
+            <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid #333' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={showShuffleRepeatSetting}
+                  onChange={async (e) => {
+                    const newValue = e.target.checked
+                    setShowShuffleRepeatSetting(newValue)
+                    try {
+                      await fetch('http://localhost:3001/admin/sonos/settings', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ showShuffleRepeat: newValue }),
+                      })
+                    } catch (err) {
+                      console.error('Fehler beim Speichern der Einstellung:', err)
+                    }
+                  }}
+                />
+                <span style={{ fontSize: '0.85rem' }}>
+                  Shuffle & Repeat Buttons im Player anzeigen
+                </span>
+              </label>
+              <div style={{ fontSize: '0.7rem', opacity: 0.6, marginTop: 4, marginLeft: 24 }}>
+                Für kleine Kinder kann es verwirrend sein, diese Optionen zu sehen.
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -1148,6 +1170,8 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '8px',
     flex: 1,
     alignItems: 'start',
+    overflowY: 'auto',
+    overflowX: 'hidden',
   },
   card: {
     backgroundColor: '#222',
@@ -1211,6 +1235,70 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '0.8rem',
     opacity: 0.9,
   },
+  // New Album Detail Layout (optimized for 480px height)
+  albumDetailContainer: {
+    display: 'flex',
+    gap: 8,
+    flex: 1,
+    overflow: 'hidden',
+  },
+  albumDetailLeft: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
+  },
+  albumDetailCover: {
+    width: 280,
+    height: 280,
+    borderRadius: 8,
+    objectFit: 'cover',
+    cursor: 'pointer',
+  },
+  albumDetailInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+  },
+  albumDetailTitle: {
+    fontSize: '1rem',
+    fontWeight: 'normal',
+  },
+  albumDetailArtist: {
+    fontSize: '0.85rem',
+    opacity: 0.8,
+  },
+  albumDetailTracks: {
+    flex: 1,
+    overflowY: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+  },
+  trackRowCompact: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    border: 'none',
+    backgroundColor: '#222',
+    borderRadius: 6,
+    padding: '6px 8px',
+    textAlign: 'left',
+    cursor: 'pointer',
+  },
+  trackNumberCompact: {
+    width: 20,
+    fontSize: '0.75rem',
+    opacity: 0.7,
+  },
+  trackTitleCompact: {
+    flex: 1,
+    fontSize: '0.8rem',
+  },
+  trackDurationCompact: {
+    fontSize: '0.7rem',
+    opacity: 0.7,
+    marginLeft: 4,
+  },
   primaryButton: {
     padding: '4px 8px',
     fontSize: '0.85rem',
@@ -1256,8 +1344,25 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     gap: 8,
-    marginBottom: 8,
+    marginBottom: 2,
     width: '100%',
+    position: 'sticky',
+    top: 0,
+    backgroundColor: '#111',
+    zIndex: 100,
+  },
+  topBarBackButton: {
+    padding: '10px 16px',
+    fontSize: '0.95rem',
+    fontWeight: '500',
+    borderRadius: 8,
+    border: 'none',
+    backgroundColor: '#333',
+    color: '#fff',
+    cursor: 'pointer',
+    minWidth: 120,
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
   },
   topBarTrackInfo: {
     flex: '1',
@@ -1305,56 +1410,100 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#ffaaaa',
     whiteSpace: 'nowrap',
   },
-  roomOverlay: {
-    position: 'fixed',
-    inset: 0,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1000,
-  },
-  roomOverlayInner: {
-    backgroundColor: '#222',
-    borderRadius: 12,
-    padding: 12,
-    width: '80vw',
-    maxWidth: 320,
+  
+  // Room Panel (schiebt von oben ein, wie Player)
+  roomPanel: {
+    backgroundColor: '#1a1a1a',
+    borderBottom: 'none',
+    padding: '1px 2px 2px 2px',
+    overflow: 'hidden',
+    transition: 'max-height 0.3s ease-out, opacity 0.3s ease-out',
     display: 'flex',
     flexDirection: 'column',
-    gap: 8,
+    gap: 2,
+    flexShrink: 0,
+    position: 'sticky',
+    top: 56,
+    zIndex: 98,
   },
-  roomOverlayTitle: {
-    fontSize: '1rem',
-    marginBottom: 4,
+  roomPanelTitle: {
+    fontSize: '1.1rem',
+    fontWeight: 'bold',
     textAlign: 'center',
+    marginBottom: 0,
   },
-  roomOverlayList: {
+  roomPanelList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
     maxHeight: 200,
     overflowY: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 4,
   },
-  roomListButton: {
-    padding: '6px 8px',
-    fontSize: '0.9rem',
-    borderRadius: 999,
-    border: 'none',
-    backgroundColor: '#444',
+  roomPanelButton: {
+    padding: '12px 16px',
+    fontSize: '1rem',
+    fontWeight: '500',
+    borderRadius: 10,
+    border: '2px solid transparent',
+    backgroundColor: '#333',
     color: '#fff',
     textAlign: 'center',
     cursor: 'pointer',
+    minHeight: 50,
+    touchAction: 'manipulation',
   },
-  roomOverlayClose: {
-    marginTop: 4,
-    padding: '4px 8px',
-    fontSize: '0.8rem',
-    borderRadius: 999,
+
+  // Player Panel (schiebt von oben ein)
+  playerPanel: {
+    backgroundColor: '#1a1a1a',
+    borderBottom: 'none',
+    padding: '1px 2px 2px 2px',
+    overflow: 'hidden',
+    transition: 'max-height 0.3s ease-out, opacity 0.3s ease-out',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 3,
+    flexShrink: 0,
+    position: 'sticky',
+    top: 56,
+    zIndex: 99,
+  },
+  playerTrackInfo: {
+    textAlign: 'center',
+    padding: '8px 0',
+    borderBottom: '1px solid #333',
+    marginBottom: 4,
+  },
+  playerSingleRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 8,
+  },
+  playerMainButton: {
+    padding: '16px 24px',
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    borderRadius: 12,
     border: 'none',
-    backgroundColor: '#555',
+    backgroundColor: '#333',
     color: '#fff',
     cursor: 'pointer',
+    minWidth: 80,
+    minHeight: 70,
+    touchAction: 'manipulation',
+  },
+  playerCompactButton: {
+    padding: '12px 16px',
+    fontSize: '1.3rem',
+    borderRadius: 10,
+    border: '2px solid transparent',
+    backgroundColor: '#333',
+    color: '#fff',
+    cursor: 'pointer',
+    minWidth: 60,
+    minHeight: 60,
+    touchAction: 'manipulation',
   },
 
   // Tab Navigation

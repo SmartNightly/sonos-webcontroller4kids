@@ -9,6 +9,7 @@ type AppConfig = {
   rooms: string[]        // alle entdeckten Räume
   enabledRooms: string[] // Räume, die im Frontend auswählbar sind
   defaultRoom?: string | undefined   // persistent gewählter Raum
+  showShuffleRepeat?: boolean // Shuffle/Repeat Buttons im Player anzeigen (default: true)
 }
 
 const DEFAULT_SONOS_BASE_URL = 'http://192.168.114.21:5005'
@@ -27,6 +28,7 @@ function loadConfig(): AppConfig {
       rooms,
       enabledRooms,
       defaultRoom: parsed.defaultRoom, // kann undefined sein
+      showShuffleRepeat: parsed.showShuffleRepeat !== undefined ? parsed.showShuffleRepeat : true,
     }
   } catch {
     return {
@@ -34,6 +36,7 @@ function loadConfig(): AppConfig {
       rooms: [],
       enabledRooms: [],
       defaultRoom: undefined,
+      showShuffleRepeat: true,
     }
   }
 }
@@ -458,6 +461,20 @@ app.post('/admin/sonos/default-room', (req: Request, res: Response) => {
   const newConfig: AppConfig = {
     ...config,
     defaultRoom: defaultRoom || undefined,
+  }
+
+  saveConfig(newConfig)
+  res.json(newConfig)
+})
+
+app.post('/admin/sonos/settings', (req: Request, res: Response) => {
+  const { showShuffleRepeat } = req.body as { showShuffleRepeat?: boolean }
+
+  const config = loadConfig()
+
+  const newConfig: AppConfig = {
+    ...config,
+    showShuffleRepeat: showShuffleRepeat !== undefined ? showShuffleRepeat : (config.showShuffleRepeat ?? true),
   }
 
   saveConfig(newConfig)
