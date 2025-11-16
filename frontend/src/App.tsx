@@ -1831,10 +1831,15 @@ const styles: Record<string, React.CSSProperties> = {
 
   // Admin styles
   input: {
-    padding: '4px',
+    padding: '8px 12px',
     fontSize: '0.9rem',
     width: '50%',
     marginRight: '4px',
+    backgroundColor: '#222',
+    color: '#fff',
+    border: '1px solid #444',
+    borderRadius: '4px',
+    boxSizing: 'border-box',
   },
   select: {
     padding: '4px',
