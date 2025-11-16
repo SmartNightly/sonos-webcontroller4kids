@@ -1850,6 +1850,10 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '4px 8px',
     fontSize: '0.9rem',
     cursor: 'pointer',
+    backgroundColor: '#444',
+    color: '#fff',
+    border: '1px solid #666',
+    borderRadius: '4px',
   },
   list: {
     marginTop: 8,
