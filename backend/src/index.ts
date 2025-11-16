@@ -21,11 +21,30 @@ const CONFIG_PATH = path.join(__dirname, '..', '..', 'media-data', 'config.json'
 
 function loadConfig(): AppConfig {
   try {
+    console.log('Lade config.json von:', CONFIG_PATH)
+    console.log('Datei existiert:', fs.existsSync(CONFIG_PATH))
+    
+    if (!fs.existsSync(CONFIG_PATH)) {
+      console.log('config.json nicht gefunden, verwende Defaults')
+      return {
+        sonosBaseUrl: DEFAULT_SONOS_BASE_URL,
+        rooms: [],
+        enabledRooms: [],
+        defaultRoom: undefined,
+        showShuffleRepeat: true,
+        roomIcons: {},
+        showTracklistAlbums: true,
+        showTracklistAudiobooks: true,
+      }
+    }
+    
     const raw = fs.readFileSync(CONFIG_PATH, 'utf-8')
     const parsed = JSON.parse(raw) as Partial<AppConfig>
     const rooms = parsed.rooms || []
     const enabledRooms = parsed.enabledRooms || rooms
 
+    console.log('config.json geladen:', { rooms: rooms.length, enabledRooms: enabledRooms.length })
+    
     return {
       sonosBaseUrl: parsed.sonosBaseUrl || DEFAULT_SONOS_BASE_URL,
       rooms,
@@ -36,7 +55,8 @@ function loadConfig(): AppConfig {
       showTracklistAlbums: parsed.showTracklistAlbums !== undefined ? parsed.showTracklistAlbums : true,
       showTracklistAudiobooks: parsed.showTracklistAudiobooks !== undefined ? parsed.showTracklistAudiobooks : true,
     }
-  } catch {
+  } catch (err) {
+    console.error('Fehler beim Laden von config.json:', err)
     return {
       sonosBaseUrl: DEFAULT_SONOS_BASE_URL,
       rooms: [],
@@ -52,7 +72,22 @@ function loadConfig(): AppConfig {
 
 
 function saveConfig(config: AppConfig) {
-  fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2), 'utf-8')
+  try {
+    console.log('Speichere config.json nach:', CONFIG_PATH)
+    
+    // Stelle sicher, dass das Verzeichnis existiert
+    const dir = path.dirname(CONFIG_PATH)
+    if (!fs.existsSync(dir)) {
+      console.log('Erstelle Verzeichnis:', dir)
+      fs.mkdirSync(dir, { recursive: true })
+    }
+    
+    fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2), 'utf-8')
+    console.log('config.json erfolgreich gespeichert')
+  } catch (err) {
+    console.error('Fehler beim Speichern von config.json:', err)
+    throw err
+  }
 }
 
 const app = express()
@@ -85,12 +120,43 @@ type MediaItem = {
 const MEDIA_PATH = path.join(__dirname, '..', '..', 'media-data', 'media.json')
 
 function loadMedia(): MediaItem[] {
-  const fileContent = fs.readFileSync(MEDIA_PATH, 'utf-8')
-  return JSON.parse(fileContent) as MediaItem[]
+  try {
+    console.log('Lade media.json von:', MEDIA_PATH)
+    console.log('Datei existiert:', fs.existsSync(MEDIA_PATH))
+    
+    if (!fs.existsSync(MEDIA_PATH)) {
+      console.log('media.json nicht gefunden, erstelle leeres Array')
+      return []
+    }
+    
+    const fileContent = fs.readFileSync(MEDIA_PATH, 'utf-8')
+    const parsed = JSON.parse(fileContent) as MediaItem[]
+    console.log(`media.json geladen: ${parsed.length} Einträge`)
+    return parsed
+  } catch (err) {
+    console.error('Fehler beim Laden von media.json:', err)
+    return []
+  }
 }
 
 function saveMedia(items: MediaItem[]) {
-  fs.writeFileSync(MEDIA_PATH, JSON.stringify(items, null, 2), 'utf-8')
+  try {
+    console.log('Speichere media.json nach:', MEDIA_PATH)
+    console.log('Anzahl Einträge:', items.length)
+    
+    // Stelle sicher, dass das Verzeichnis existiert
+    const dir = path.dirname(MEDIA_PATH)
+    if (!fs.existsSync(dir)) {
+      console.log('Erstelle Verzeichnis:', dir)
+      fs.mkdirSync(dir, { recursive: true })
+    }
+    
+    fs.writeFileSync(MEDIA_PATH, JSON.stringify(items, null, 2), 'utf-8')
+    console.log('media.json erfolgreich gespeichert')
+  } catch (err) {
+    console.error('Fehler beim Speichern von media.json:', err)
+    throw err
+  }
 }
 
 // Healthcheck
@@ -100,13 +166,8 @@ app.get('/health', (req: Request, res: Response) => {
 
 // Medien-Liste (für KidsView & Admin zum Anzeigen)
 app.get('/media', (req: Request, res: Response) => {
-  try {
-    const media = loadMedia()
-    res.json(media)
-  } catch (err) {
-    console.error('Fehler beim Laden von media.json:', err)
-    res.status(500).json({ error: 'Media file could not be loaded' })
-  }
+  const media = loadMedia()
+  res.json(media)
 })
 
 // Media-Eintrag hinzufügen (generisch)
