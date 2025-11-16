@@ -93,11 +93,6 @@ function saveMedia(items: MediaItem[]) {
   fs.writeFileSync(MEDIA_PATH, JSON.stringify(items, null, 2), 'utf-8')
 }
 
-// Root-Route
-app.get('/', (req: Request, res: Response) => {
-  res.send('Sonos Kids Backend läuft 🎧')
-})
-
 // Healthcheck
 app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok' })
