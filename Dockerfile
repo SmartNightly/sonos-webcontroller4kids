@@ -35,7 +35,7 @@ COPY --from=builder /app/frontend/dist ./frontend/dist
 COPY media-data ./media-data
 
 # Expose port
-EXPOSE 3001
+EXPOSE 3344
 
 # Start backend
 CMD ["node", "backend/dist/index.js"]
