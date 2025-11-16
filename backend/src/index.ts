@@ -1135,7 +1135,10 @@ app.post('/media/apple/song', (req: Request, res: Response) => {
 
 // Serve static frontend files in production (MUSS AM ENDE kommen!)
 const frontendPath = path.join(__dirname, '..', '..', 'frontend', 'dist')
+console.log('Frontend-Pfad:', frontendPath)
+console.log('Frontend existiert:', fs.existsSync(frontendPath))
 if (fs.existsSync(frontendPath)) {
+  console.log('Frontend-Dateien werden ausgeliefert von:', frontendPath)
   app.use(express.static(frontendPath))
   
   // SPA fallback - serve index.html for all non-API routes
@@ -1146,6 +1149,8 @@ if (fs.existsSync(frontendPath)) {
       next()
     }
   })
+} else {
+  console.error('WARNUNG: Frontend-Verzeichnis nicht gefunden:', frontendPath)
 }
 
 app.listen(PORT, () => {
