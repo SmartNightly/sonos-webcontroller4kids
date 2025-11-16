@@ -883,7 +883,18 @@ app.post('/play', async (req: Request, res: Response) => {
 })
 
 
-
+// Serve static frontend files in production
+const frontendPath = path.join(__dirname, '..', '..', 'frontend', 'dist')
+if (fs.existsSync(frontendPath)) {
+  app.use(express.static(frontendPath))
+  
+  // SPA fallback - serve index.html for all non-API routes
+  app.get('*', (req: Request, res: Response) => {
+    if (!req.path.startsWith('/api') && !req.path.startsWith('/media') && !req.path.startsWith('/admin') && !req.path.startsWith('/sonos') && !req.path.startsWith('/search') && !req.path.startsWith('/play')) {
+      res.sendFile(path.join(frontendPath, 'index.html'))
+    }
+  })
+}
 
 app.listen(PORT, () => {
   console.log(`Backend läuft auf http://localhost:${PORT}`)

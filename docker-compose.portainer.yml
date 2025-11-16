@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  sonos-webcontroller:
+    # Image wird automatisch von Docker Hub gepullt (via GitHub Actions)
+    image: smartnightly/sonos-webcontroller4kids:latest
+    
+    container_name: sonos-webcontroller4kids
+    
+    ports:
+      - "3001:3001"
+    
+    volumes:
+      # Passe den Pfad für Synology an:
+      # z.B. /volume1/docker/sonos-webcontroller4kids/media-data
+      - ./media-data:/app/media-data
+    
+    network_mode: host
+    
+    restart: unless-stopped
+    
+    environment:
+      - NODE_ENV=production

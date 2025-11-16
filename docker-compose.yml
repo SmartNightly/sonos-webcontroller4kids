@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  sonos-webcontroller:
+    build: .
+    container_name: sonos-webcontroller4kids
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./media-data:/app/media-data
+    environment:
+      - NODE_ENV=production
+    network_mode: host
+    restart: unless-stopped
