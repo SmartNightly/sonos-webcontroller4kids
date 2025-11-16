@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import type { MediaItem, MediaTrack } from './types'
 
+// API Base URL - verwendet relative URL in Production, localhost in Development
+const API_BASE_URL = import.meta.env.DEV ? 'http://localhost:3344' : ''
+
 interface EditModalProps {
   item: MediaItem | null
   track?: MediaTrack | null
@@ -265,7 +268,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
   useEffect(() => {
     const loadMedia = async () => {
       try {
-        const res = await fetch('http://localhost:3001/media')
+        const res = await fetch(`${API_BASE_URL}/media`)
         if (!res.ok) throw new Error('Fehler beim Laden')
         const data = (await res.json()) as MediaItem[]
         setMedia(data)
@@ -294,7 +297,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
 
     if (track) {
       // Track aktualisieren (nur title)
-      const res = await fetch(`http://localhost:3001/media/${item.id}/tracks/${track.id}`, {
+      const res = await fetch(`${API_BASE_URL}/media/${item.id}/tracks/${track.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates),
@@ -332,7 +335,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
       setInfo('Track wurde aktualisiert')
     } else {
       // Item aktualisieren
-      const res = await fetch(`http://localhost:3001/media/${item.id}`, {
+      const res = await fetch(`${API_BASE_URL}/media/${item.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates),
@@ -385,7 +388,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
     const { type, itemId, trackId } = deleteConfirm
 
     if (type === 'item') {
-      const res = await fetch(`http://localhost:3001/media/${itemId}`, {
+      const res = await fetch(`${API_BASE_URL}/media/${itemId}`, {
         method: 'DELETE',
       })
 
@@ -398,7 +401,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
       if (expandedAlbumId === itemId) setExpandedAlbumId(null)
       setInfo('Eintrag wurde gelöscht')
     } else if (type === 'track' && trackId) {
-      const res = await fetch(`http://localhost:3001/media/${itemId}/tracks/${trackId}`, {
+      const res = await fetch(`${API_BASE_URL}/media/${itemId}/tracks/${trackId}`, {
         method: 'DELETE',
       })
 
