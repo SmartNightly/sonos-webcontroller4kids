@@ -32,6 +32,7 @@ function KidsView() {
 
   const [selectedAlbum, setSelectedAlbum] = useState<MediaItem | null>(null)
   const [selectedArtist, setSelectedArtist] = useState<string | null>(null)
+  const [kindFilter, setKindFilter] = useState<'all' | 'album' | 'audiobook'>('all')
 
   // 🔊 Sonos-Raum-Auswahl
   const [rooms, setRooms] = useState<string[]>([])
@@ -39,6 +40,11 @@ function KidsView() {
   const [roomPickerOpen, setRoomPickerOpen] = useState(false)
   const [playerOpen, setPlayerOpen] = useState(false)
   const [showShuffleRepeat, setShowShuffleRepeat] = useState(true)
+  const [roomIcons, setRoomIcons] = useState<Record<string, string>>({})
+  
+  // Track-Modus: Ermöglicht Navigation durch Album-Tracks
+  const [trackModeAlbum, setTrackModeAlbum] = useState<MediaItem | null>(null)
+  const [trackModeCurrentTrack, setTrackModeCurrentTrack] = useState<MediaTrack | null>(null)
 
   // Status-Polling: synchronisiere Sonos-Status alle 2 Sekunden
   useEffect(() => {
@@ -174,6 +180,7 @@ useEffect(() => {
 
       setRooms(enabled)
       setShowShuffleRepeat(data.showShuffleRepeat !== undefined ? data.showShuffleRepeat : true)
+      setRoomIcons(data.roomIcons || {})
 
       let initialRoom: string | null = null
 
@@ -208,9 +215,16 @@ useEffect(() => {
     try {
       setBusy(true)
       setError(null)
+      
+      // Track-Modus deaktivieren (ganzes Album wird gespielt)
+      setTrackModeAlbum(null)
+      setTrackModeCurrentTrack(null)
 
-      // Clear queue first
+      // Clear queue first and wait for it to complete
       await fetch(`http://192.168.114.21:5005/${encodeURIComponent(room)}/clearqueue`)
+      
+      // Delay to ensure clearqueue is fully processed by Sonos
+      await new Promise(resolve => setTimeout(resolve, 300))
 
       const res = await fetch('http://localhost:3001/play', {
         method: 'POST',
@@ -242,9 +256,16 @@ useEffect(() => {
     try {
       setBusy(true)
       setError(null)
+      
+      // Track-Modus aktivieren
+      setTrackModeAlbum(album)
+      setTrackModeCurrentTrack(track)
 
-      // Clear queue first
+      // Clear queue first and wait for it to complete
       await fetch(`http://192.168.114.21:5005/${encodeURIComponent(room)}/clearqueue`)
+      
+      // Delay to ensure clearqueue is fully processed by Sonos
+      await new Promise(resolve => setTimeout(resolve, 300))
 
       const res = await fetch('http://localhost:3001/play', {
         method: 'POST',
@@ -270,20 +291,74 @@ useEffect(() => {
     }
   }
 
-  const renderTopBar = (showBackButton?: boolean, onBackClick?: () => void, backLabel?: string) => (
+  const playNextTrack = async () => {
+    if (!trackModeAlbum || !trackModeCurrentTrack) {
+      // Kein Track-Modus -> normales Sonos Next
+      const room = ensureRoomSelected()
+      if (!room) return
+      await fetch(`http://192.168.114.21:5005/${encodeURIComponent(room)}/next`)
+      return
+    }
+
+    // Track-Modus: Nächsten Track im Album finden
+    const tracks = trackModeAlbum.tracks || []
+    const currentIndex = tracks.findIndex(t => t.id === trackModeCurrentTrack.id)
+    
+    if (currentIndex >= 0 && currentIndex < tracks.length - 1) {
+      const nextTrack = tracks[currentIndex + 1]
+      await playTrack(trackModeAlbum, nextTrack)
+    }
+  }
+
+  const playPreviousTrack = async () => {
+    if (!trackModeAlbum || !trackModeCurrentTrack) {
+      // Kein Track-Modus -> normales Sonos Previous
+      const room = ensureRoomSelected()
+      if (!room) return
+      await fetch(`http://192.168.114.21:5005/${encodeURIComponent(room)}/previous`)
+      return
+    }
+
+    // Track-Modus: Vorherigen Track im Album finden
+    const tracks = trackModeAlbum.tracks || []
+    const currentIndex = tracks.findIndex(t => t.id === trackModeCurrentTrack.id)
+    
+    if (currentIndex > 0) {
+      const prevTrack = tracks[currentIndex - 1]
+      await playTrack(trackModeAlbum, prevTrack)
+    } else if (currentIndex === 0) {
+      // Erster Track -> nochmals von vorne starten
+      await playTrack(trackModeAlbum, trackModeCurrentTrack)
+    }
+  }
+
+  const renderTopBar = (showBackButton?: boolean, onBackClick?: () => void, backLabel?: string) => {
+    const getFilterIcon = () => {
+      if (kindFilter === 'album') return '♪'
+      if (kindFilter === 'audiobook') return '📖'
+      return '⚪' // all
+    }
+
+    const cycleFilter = () => {
+      if (kindFilter === 'all') setKindFilter('audiobook')
+      else if (kindFilter === 'audiobook') setKindFilter('album')
+      else setKindFilter('all')
+    }
+
+    return (
     <div style={styles.topBar}>
       {/* Back Button / Title - left side (optional) */}
       {showBackButton ? (
         <button
           style={{
             ...styles.topBarBackButton,
-            cursor: onBackClick ? 'pointer' : 'default',
+            cursor: onBackClick ? 'pointer' : 'pointer',
             opacity: 1,
-            pointerEvents: onBackClick ? 'auto' : 'none',
+            pointerEvents: 'auto',
           }}
-          onClick={onBackClick}
+          onClick={onBackClick || cycleFilter}
         >
-          {onBackClick ? '← ' : ''}{backLabel || 'Zurück'}
+          {onBackClick ? `← ${backLabel || 'Zurück'}` : getFilterIcon()}
         </button>
       ) : (
         <div style={{ ...styles.topBarBackButton, visibility: 'hidden' }} />
@@ -317,11 +392,13 @@ useEffect(() => {
         >
           {rooms.length === 0
             ? 'Kein Raum'
-            : selectedRoom ?? 'Raum wählen'}
+            : selectedRoom 
+              ? (roomIcons[selectedRoom] ? `${roomIcons[selectedRoom]} ${selectedRoom}` : selectedRoom)
+              : 'Raum wählen'}
         </button>
       </div>
     </div>
-  )
+  )}
 
   const renderRoomOverlay = () => {
     return (
@@ -357,7 +434,7 @@ useEffect(() => {
                 }
               }}
             >
-              {room}
+              {roomIcons[room] ? `${roomIcons[room]} ${room}` : room}
             </button>
           ))}
         </div>
@@ -433,14 +510,7 @@ useEffect(() => {
             {/* Center: Prev, Play/Pause, Next */}
             <button
               style={styles.playerMainButton}
-              onClick={async () => {
-                if (!room) return
-                await fetch('http://localhost:3001/sonos/control', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ room, action: 'previous' }),
-                })
-              }}
+              onClick={() => playPreviousTrack()}
             >◀◀</button>
             <button
               style={{
@@ -469,14 +539,7 @@ useEffect(() => {
             >{playing ? '❚❚' : '▶'}</button>
             <button
               style={styles.playerMainButton}
-              onClick={async () => {
-                if (!room) return
-                await fetch('http://localhost:3001/sonos/control', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ room, action: 'next' }),
-                })
-              }}
+              onClick={() => playNextTrack()}
             >▶▶</button>
 
             {/* Right: Volume Controls */}
@@ -509,10 +572,29 @@ useEffect(() => {
   }
 
   if (loading) return <div style={styles.screen}>Lade Medien…</div>
-  if (error) return <div style={styles.screen}>{error}</div>
+  
+  // Bei Fehler: Navigation trotzdem anzeigen
+  if (error) {
+    const filterIcon = kindFilter === 'album' ? '♪' : kindFilter === 'audiobook' ? '📖' : '⚪'
+    return (
+      <div style={styles.screen}>
+        {renderTopBar(true, undefined, filterIcon)}
+        {renderRoomOverlay()}
+        {renderPlayerOverlay()}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>
+          {error}
+        </div>
+      </div>
+    )
+  }
 
-  // Nur Alben für Artist-/Album-Ansicht
-  const albums = media.filter(m => m.kind === 'album')
+  // Filter Medien nach Kind
+  const albums = media.filter(m => {
+    if (kindFilter === 'all') return true
+    if (kindFilter === 'album') return m.kind === 'album'
+    if (kindFilter === 'audiobook') return m.kind === 'audiobook'
+    return true
+  })
 
   // ============= Ebene 3: Album-Detail (Tracks) =============
   if (selectedAlbum) {
@@ -588,7 +670,16 @@ useEffect(() => {
             <button
               key={album.id}
               style={styles.card}
-              onClick={() => setSelectedAlbum(album)}
+              onClick={() => {
+                if (!album.tracks || album.tracks.length === 0) {
+                  // Keine Tracks vorhanden -> direkt abspielen
+                  playAlbum(album)
+                  setPlaying(true)
+                } else {
+                  // Tracks vorhanden -> Detail-Ansicht öffnen
+                  setSelectedAlbum(album)
+                }
+              }}
             >
               <img
                 src={album.coverUrl}
@@ -671,6 +762,7 @@ interface SonosConfig {
   enabledRooms?: string[]
   defaultRoom?: string
   showShuffleRepeat?: boolean
+  roomIcons?: Record<string, string>
 }
 
 function AdminView() {
@@ -681,6 +773,9 @@ function AdminView() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [info, setInfo] = useState<string | null>(null)
+  const [existingMedia, setExistingMedia] = useState<MediaItem[]>([])
+  const [hasMore, setHasMore] = useState(false)
+  const [offset, setOffset] = useState(0)
 
 
   // Sonos-Konfiguration
@@ -691,6 +786,7 @@ function AdminView() {
   const [sonosLoading, setSonosLoading] = useState(false)
   const [sonosError, setSonosError] = useState<string | null>(null)
   const [showShuffleRepeatSetting, setShowShuffleRepeatSetting] = useState(true)
+  const [roomIconsAdmin, setRoomIconsAdmin] = useState<Record<string, string>>({})
 
 
   useEffect(() => {
@@ -703,39 +799,79 @@ function AdminView() {
         setSonosRooms(data.rooms || [])
         setEnabledRooms(data.enabledRooms || data.rooms || [])
         setShowShuffleRepeatSetting(data.showShuffleRepeat !== undefined ? data.showShuffleRepeat : true)
+        setRoomIconsAdmin(data.roomIcons || {})
       } catch (err) {
         console.error('Konnte Sonos-Konfiguration nicht laden:', err)
       }
     }
 
+    const loadExistingMedia = async () => {
+      try {
+        const res = await fetch('http://localhost:3001/media')
+        if (!res.ok) return
+        const data = (await res.json()) as MediaItem[]
+        setExistingMedia(data)
+      } catch (err) {
+        console.error('Konnte Media-Liste nicht laden:', err)
+      }
+    }
+
     loadSonosConfig()
+    loadExistingMedia()
   }, [])
 
 
-  const search = async () => {
+  const search = async (loadMore = false) => {
     if (!query.trim()) return
     setLoading(true)
     setError(null)
-    setInfo(null)
+    if (!loadMore) {
+      setInfo(null)
+      setOffset(0)
+    }
+
+    const currentOffset = loadMore ? offset : 0
 
     try {
       const res = await fetch(
         `http://localhost:3001/search/apple?q=${encodeURIComponent(
           query,
-        )}&entity=${entity}`,
+        )}&entity=${entity}&offset=${currentOffset}`,
       )
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
         throw new Error(body.error || `HTTP ${res.status}`)
       }
       const data = (await res.json()) as AppleSearchResult[]
-      setResults(data)
+      
+      if (loadMore) {
+        setResults(prev => [...prev, ...data])
+      } else {
+        setResults(data)
+      }
+      
+      // Wenn genau 100 Resultate, gibt es vermutlich mehr
+      setHasMore(data.length === 100)
+      setOffset(currentOffset + data.length)
     } catch (err) {
       console.error(err)
       setError('Fehler bei der Suche')
     } finally {
       setLoading(false)
     }
+  }
+
+  const isItemExists = (r: AppleSearchResult, entity: 'album' | 'song'): boolean => {
+    if (entity === 'album' && r.appleAlbumId) {
+      return existingMedia.some(item => item.id === `album_${r.appleAlbumId}`)
+    }
+    if (entity === 'song' && r.appleSongId) {
+      // Prüfe ob Song in irgendeinem Album bereits existiert
+      return existingMedia.some(item => 
+        item.tracks?.some(track => track.appleSongId === r.appleSongId)
+      )
+    }
+    return false
   }
 
   const addToMedia = async (r: AppleSearchResult, entity: 'album' | 'song') => {
@@ -790,11 +926,25 @@ function AdminView() {
         throw new Error(body.error || `HTTP ${res.status}`)
       }
 
-      setInfo(
-        entity === 'album'
-          ? `Album "${r.title}" wurde mit Songs in media.json gespeichert`
-          : `Song "${r.title}" wurde zum Album in media.json hinzugefügt`,
-      )
+      const responseData = await res.json().catch(() => null)
+      const trackCount = responseData?.trackCount ?? 0
+
+      // Media-Liste aktualisieren
+      const mediaRes = await fetch('http://localhost:3001/media')
+      if (mediaRes.ok) {
+        const data = (await mediaRes.json()) as MediaItem[]
+        setExistingMedia(data)
+      }
+
+      if (entity === 'album') {
+        if (trackCount === 0) {
+          setInfo(`Album "${r.title}" wurde gespeichert ⚠️ Keine Tracks gefunden (Album ist trotzdem abspielbar)`)
+        } else {
+          setInfo(`Album "${r.title}" wurde mit ${trackCount} Songs in media.json gespeichert`)
+        }
+      } else {
+        setInfo(`Song "${r.title}" wurde zum Album in media.json hinzugefügt`)
+      }
     } catch (err) {
       console.error(err)
       setError('Konnte Eintrag nicht speichern')
@@ -1056,6 +1206,54 @@ function AdminView() {
                 Für kleine Kinder kann es verwirrend sein, diese Optionen zu sehen.
               </div>
             </div>
+
+            {/* Room Icons Configuration */}
+            <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid #333' }}>
+              <div style={{ fontSize: '0.9rem', marginBottom: 8 }}>Raumsymbole (Emojis für Kinder)</div>
+              <div style={{ fontSize: '0.7rem', opacity: 0.6, marginBottom: 8 }}>
+                Füge jedem Raum ein Emoji/Symbol hinzu, damit Kinder die Räume leichter erkennen.
+              </div>
+              {sonosRooms.map(room => (
+                <div key={room} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                  <input
+                    type="text"
+                    value={roomIconsAdmin[room] || ''}
+                    onChange={(e) => {
+                      const newIcons = { ...roomIconsAdmin, [room]: e.target.value }
+                      setRoomIconsAdmin(newIcons)
+                    }}
+                    placeholder="🏠"
+                    style={{
+                      width: 50,
+                      padding: '4px 8px',
+                      fontSize: '1.2rem',
+                      textAlign: 'center',
+                      backgroundColor: '#111',
+                      color: '#fff',
+                      border: '1px solid #444',
+                      borderRadius: 4,
+                    }}
+                  />
+                  <span style={{ fontSize: '0.85rem', flex: 1 }}>{room}</span>
+                </div>
+              ))}
+              <button
+                style={{ ...styles.button, marginTop: 8 }}
+                onClick={async () => {
+                  try {
+                    await fetch('http://localhost:3001/admin/sonos/room-icons', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ roomIcons: roomIconsAdmin }),
+                    })
+                  } catch (err) {
+                    console.error('Fehler beim Speichern der Raumsymbole:', err)
+                  }
+                }}
+              >
+                Raumsymbole speichern
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -1070,6 +1268,7 @@ function AdminView() {
               style={styles.input}
               value={query}
               onChange={e => setQuery(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && search()}
               placeholder="Titel, Interpret, Album…"
             />
             <select
@@ -1080,7 +1279,7 @@ function AdminView() {
               <option value="album">Album</option>
               <option value="song">Song</option>
             </select>
-            <button style={styles.button} onClick={search} disabled={loading}>
+            <button style={styles.button} onClick={() => search()} disabled={loading}>
               Suchen
             </button>
           </div>
@@ -1108,14 +1307,33 @@ function AdminView() {
                     {r.artist} {r.album ? `– ${r.album}` : ''}
                   </div>
                 </div>
-                <button
-                  style={styles.smallButton}
-                  onClick={() => addToMedia(r, entity)}
-                >
-                  Hinzufügen
-                </button>
+                {isItemExists(r, entity) ? (
+                  <button
+                    style={{ ...styles.smallButton, opacity: 0.5, cursor: 'not-allowed' }}
+                    disabled
+                  >
+                    Vorhanden
+                  </button>
+                ) : (
+                  <button
+                    style={styles.smallButton}
+                    onClick={() => addToMedia(r, entity)}
+                  >
+                    Hinzufügen
+                  </button>
+                )}
               </div>
             ))}
+            {hasMore && !loading && (
+              <div style={{ padding: '16px', textAlign: 'center' }}>
+                <button
+                  style={styles.button}
+                  onClick={() => search(true)}
+                >
+                  Weitere Resultate laden (100+)
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

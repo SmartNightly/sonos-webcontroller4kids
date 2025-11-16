@@ -10,6 +10,7 @@ type AppConfig = {
   enabledRooms: string[] // Räume, die im Frontend auswählbar sind
   defaultRoom?: string | undefined   // persistent gewählter Raum
   showShuffleRepeat?: boolean // Shuffle/Repeat Buttons im Player anzeigen (default: true)
+  roomIcons?: Record<string, string> // Emoji/Symbol pro Raum (z.B. { "Büro": "💼", "Kinderzimmer": "🧸" })
 }
 
 const DEFAULT_SONOS_BASE_URL = 'http://192.168.114.21:5005'
@@ -29,6 +30,7 @@ function loadConfig(): AppConfig {
       enabledRooms,
       defaultRoom: parsed.defaultRoom, // kann undefined sein
       showShuffleRepeat: parsed.showShuffleRepeat !== undefined ? parsed.showShuffleRepeat : true,
+      roomIcons: parsed.roomIcons || {},
     }
   } catch {
     return {
@@ -37,6 +39,7 @@ function loadConfig(): AppConfig {
       enabledRooms: [],
       defaultRoom: undefined,
       showShuffleRepeat: true,
+      roomIcons: {},
     }
   }
 }
@@ -481,6 +484,20 @@ app.post('/admin/sonos/settings', (req: Request, res: Response) => {
   res.json(newConfig)
 })
 
+app.post('/admin/sonos/room-icons', (req: Request, res: Response) => {
+  const { roomIcons } = req.body as { roomIcons?: Record<string, string> }
+
+  const config = loadConfig()
+
+  const newConfig: AppConfig = {
+    ...config,
+    roomIcons: roomIcons || config.roomIcons || {},
+  }
+
+  saveConfig(newConfig)
+  res.json(newConfig)
+})
+
 
 // Generischer Sonos-Control-Endpoint
 // Body: { room: string, action: string, value?: number }
@@ -770,10 +787,10 @@ function buildSonosUrl(item: MediaItem, room: string, track?: MediaTrack): strin
     return url
   }
 
-  // 2) Apple Music – komplettes Album
-  if (item.service === 'appleMusic' && item.appleId && item.kind === 'album') {
+  // 2) Apple Music – komplettes Album oder Audiobook
+  if (item.service === 'appleMusic' && item.appleId) {
     const url = `${baseUrl}/${encodeURIComponent(room)}/applemusic/now/album:${item.appleId}`
-    console.log('Spiele Album-URL:', url)
+    console.log('Spiele Album/Audiobook-URL:', url)
     return url
   }
 
@@ -875,6 +892,7 @@ app.listen(PORT, () => {
 app.get('/search/apple', async (req: Request, res: Response) => {
   const term = (req.query.q as string) || ''
   const entity = (req.query.entity as string) || 'album' // 'song' | 'album'
+  const offset = parseInt((req.query.offset as string) || '0', 10)
 
   if (!term.trim()) {
     return res.status(400).json({ error: 'Parameter q (Suchbegriff) ist erforderlich' })
@@ -884,7 +902,9 @@ app.get('/search/apple', async (req: Request, res: Response) => {
     term,
     media: 'music',
     entity,
-    limit: '25',
+    limit: '100',
+    offset: offset.toString(),
+    country: 'ch',
   })
 
   const url = `https://itunes.apple.com/search?${params.toString()}`
@@ -960,6 +980,8 @@ app.post('/media/apple/album', async (req: Request, res: Response) => {
     }
     const data = await response.json()
 
+    console.log(`iTunes API returned ${data.resultCount} results for album ${appleAlbumId}`)
+
     const tracks: MediaTrack[] = (data.results || [])
       .filter((r: any) => r.wrapperType === 'track' || r.kind === 'song')
       .map((r: any) => ({
@@ -969,6 +991,12 @@ app.post('/media/apple/album', async (req: Request, res: Response) => {
         trackNumber: r.trackNumber,
         durationMs: r.trackTimeMillis,
       }))
+
+    if (tracks.length === 0) {
+      console.warn(`⚠️  Keine Tracks gefunden für Album ${appleAlbumId} (${title}). Möglicherweise regional eingeschränkt.`)
+    } else {
+      console.log(`✓ ${tracks.length} Tracks gefunden für Album ${title}`)
+    }
 
     if (existingAlbum) {
       // Merge: füge fehlende Tracks (nach appleSongId) hinzu
@@ -996,7 +1024,7 @@ app.post('/media/apple/album', async (req: Request, res: Response) => {
       existingAlbum.appleId = appleAlbumId
 
       saveMedia(items)
-      return res.status(200).json(existingAlbum)
+      return res.status(200).json({ ...existingAlbum, trackCount: tracks.length })
     }
 
     const newAlbum: MediaItem = {
@@ -1014,7 +1042,7 @@ app.post('/media/apple/album', async (req: Request, res: Response) => {
     items.push(newAlbum)
     saveMedia(items)
 
-    res.status(201).json(newAlbum)
+    res.status(201).json({ ...newAlbum, trackCount: tracks.length })
   } catch (err) {
     console.error('Fehler beim Album-Lookup:', err)
     res.status(502).json({ error: 'Album-Tracks konnten nicht geladen werden' })

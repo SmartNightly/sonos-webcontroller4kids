@@ -236,6 +236,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [info, setInfo] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const [expandedAlbumId, setExpandedAlbumId] = useState<string | null>(null)
 
@@ -449,12 +450,39 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
       {error && <div style={styles.errorText}>{error}</div>}
       {info && <div style={styles.infoText}>{info}</div>}
 
+      {/* Search Field */}
+      <div style={{ marginBottom: '8px' }}>
+        <input
+          type="text"
+          placeholder="Suche nach Titel, Artist, Album..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={styles.searchInput}
+        />
+      </div>
+
       <div style={styles.list}>
         {media.length === 0 ? (
           <div style={styles.emptyText}>Keine Einträge vorhanden</div>
         ) : (
-          media.map(item => {
+          [...media]
+            .filter(item => {
+              if (!searchQuery.trim()) return true
+              const query = searchQuery.toLowerCase()
+              return (
+                item.title.toLowerCase().includes(query) ||
+                (item.artist && item.artist.toLowerCase().includes(query)) ||
+                (item.album && item.album.toLowerCase().includes(query))
+              )
+            })
+            .sort((a, b) => {
+              const artistA = (a.artist || '').toLowerCase()
+              const artistB = (b.artist || '').toLowerCase()
+              return artistA.localeCompare(artistB)
+            })
+            .map(item => {
             const isExpanded = expandedAlbumId === item.id && item.tracks && item.tracks.length > 0
+            const hasNoTracks = !item.tracks || item.tracks.length === 0
             return (
             <div
               key={item.id}
@@ -493,6 +521,11 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
                       ? ` • ${item.tracks.length} Tracks`
                       : ''}
                   </div>
+                  {hasNoTracks && (
+                    <div style={styles.warningText}>
+                      ⚠️ Keine Tracks vorhanden (Album ist trotzdem abspielbar)
+                    </div>
+                  )}
                 </div>
                 <div style={styles.itemActions}>
                   <button
@@ -592,6 +625,22 @@ const styles: Record<string, React.CSSProperties> = {
   title: {
     fontSize: '1.2rem',
     margin: 0,
+  },
+  warningText: {
+    fontSize: '0.75rem',
+    color: '#ffa500',
+    marginTop: '4px',
+    fontStyle: 'italic',
+  },
+  searchInput: {
+    width: '100%',
+    padding: '8px 12px',
+    fontSize: '0.9rem',
+    backgroundColor: '#222',
+    color: '#fff',
+    border: '1px solid #444',
+    borderRadius: '4px',
+    boxSizing: 'border-box',
   },
   closeButton: {
     background: 'none',

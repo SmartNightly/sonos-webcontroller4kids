@@ -15,8 +15,16 @@
   "enabledRooms": [
     "Büro",
     "Kinderzimmer",
-    "Küche"
+    "Spielzimmer"
   ],
   "defaultRoom": "Büro",
-  "showShuffleRepeat": false
+  "showShuffleRepeat": false,
+  "roomIcons": {
+    "Kinderzimmer": "🛏️ 👦🏼",
+    "Spielzimmer": "🚂 👦🏼",
+    "Schlafzimmer": "🛏️ 👩‍❤️‍👨",
+    "Büro": "🖥️",
+    "Wohnzimmer": "🛋️",
+    "Küche": "👨🏻‍🍳"
+  }
 }
