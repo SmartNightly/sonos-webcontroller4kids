@@ -6,13 +6,16 @@ WORKDIR /app/frontend
 COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ ./
+# Ensure all config files are present
+RUN ls -la
 RUN npm run build
 
 # Build Backend
 WORKDIR /app/backend
 COPY backend/package*.json ./
 RUN npm ci
-COPY backend/ ./
+COPY backend/tsconfig.json ./
+COPY backend/src ./src
 RUN npm run build
 
 # Production image
