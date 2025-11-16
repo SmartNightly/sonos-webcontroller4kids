@@ -1845,6 +1845,10 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '4px',
     fontSize: '0.9rem',
     marginRight: '4px',
+    backgroundColor: '#222',
+    color: '#fff',
+    border: '1px solid #444',
+    borderRadius: '4px',
   },
   button: {
     padding: '4px 8px',

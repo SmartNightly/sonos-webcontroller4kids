@@ -17,7 +17,7 @@
     "Kinderzimmer",
     "Spielzimmer"
   ],
-  "defaultRoom": "Büro",
+  "defaultRoom": "Kinderzimmer",
   "showShuffleRepeat": false,
   "roomIcons": {
     "Kinderzimmer": "🛏️ 👦🏼",
@@ -27,6 +27,6 @@
     "Wohnzimmer": "🛋️",
     "Küche": "👨🏻‍🍳"
   },
-  "showTracklistAlbums": false,
-  "showTracklistAudiobooks": true
+  "showTracklistAlbums": true,
+  "showTracklistAudiobooks": false
 }

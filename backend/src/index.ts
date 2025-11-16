@@ -389,7 +389,37 @@ app.get('/admin/sonos', (req: Request, res: Response) => {
   }
 })
 
-
+// Test-Endpoint für Sonos-Verbindung
+app.get('/admin/sonos/test', async (req: Request, res: Response) => {
+  try {
+    const config = loadConfig()
+    const baseUrl = config.sonosBaseUrl || DEFAULT_SONOS_BASE_URL
+    const testUrl = `${baseUrl}/zones`
+    
+    console.log('Teste Sonos API Verbindung:', testUrl)
+    
+    const response = await fetch(testUrl)
+    const data = await response.json()
+    
+    res.json({
+      status: 'ok',
+      sonosBaseUrl: baseUrl,
+      reachable: true,
+      zones: data.length || 0,
+      message: `Sonos API erreichbar, ${data.length || 0} Zonen gefunden`
+    })
+  } catch (err: any) {
+    console.error('Sonos API Test fehlgeschlagen:', err)
+    const config = loadConfig()
+    res.status(502).json({
+      status: 'error',
+      sonosBaseUrl: config.sonosBaseUrl || DEFAULT_SONOS_BASE_URL,
+      reachable: false,
+      error: err.message || 'Unbekannter Fehler',
+      message: 'Sonos API nicht erreichbar'
+    })
+  }
+})
 
 // Sonos-Räume aus sonos-http-api holen und Konfiguration speichern
 app.post('/admin/sonos/discover', async (req: Request, res: Response) => {
