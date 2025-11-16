@@ -4315,24 +4315,5 @@
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music5/v4/98/70/4b/98704bcb-0924-a6fb-51f6-ac0b491a7ca4/886444703666.jpg/600x600bb.jpg",
     "appleId": "981049250",
     "tracks": []
-  },
-  {
-    "id": "album_1727454847",
-    "title": "Pingu NOOT NOOT Song (2024 Remaster) - Single",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Misutra",
-    "album": "Pingu NOOT NOOT Song (2024 Remaster) - Single",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/ed/41/9d/ed419d1b-c4ca-5a82-8d93-747770137847/artwork.jpg/600x600bb.jpg",
-    "appleId": "1727454847",
-    "tracks": [
-      {
-        "id": "album_1727454847_track_1727454848",
-        "title": "Pingu NOOT NOOT Song (2024 Remaster)",
-        "appleSongId": "1727454848",
-        "trackNumber": 1,
-        "durationMs": 68679
-      }
-    ]
   }
 ]

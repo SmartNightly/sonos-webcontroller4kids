@@ -26,5 +26,7 @@
     "Büro": "🖥️",
     "Wohnzimmer": "🛋️",
     "Küche": "👨🏻‍🍳"
-  }
+  },
+  "showTracklistAlbums": false,
+  "showTracklistAudiobooks": true
 }

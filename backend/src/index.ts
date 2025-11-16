@@ -906,24 +906,6 @@ app.post('/play', async (req: Request, res: Response) => {
   }
 })
 
-
-// Serve static frontend files in production
-const frontendPath = path.join(__dirname, '..', '..', 'frontend', 'dist')
-if (fs.existsSync(frontendPath)) {
-  app.use(express.static(frontendPath))
-  
-  // SPA fallback - serve index.html for all non-API routes
-  app.get('*', (req: Request, res: Response) => {
-    if (!req.path.startsWith('/api') && !req.path.startsWith('/media') && !req.path.startsWith('/admin') && !req.path.startsWith('/sonos') && !req.path.startsWith('/search') && !req.path.startsWith('/play')) {
-      res.sendFile(path.join(frontendPath, 'index.html'))
-    }
-  })
-}
-
-app.listen(PORT, () => {
-  console.log(`Backend läuft auf http://localhost:${PORT}`)
-})
-
 app.get('/search/apple', async (req: Request, res: Response) => {
   const term = (req.query.q as string) || ''
   const entity = (req.query.entity as string) || 'album' // 'song' | 'album'
@@ -1150,3 +1132,22 @@ app.post('/media/apple/song', (req: Request, res: Response) => {
   res.status(201).json({ album: albumItem.id, track: newTrack })
 })
 
+
+// Serve static frontend files in production (MUSS AM ENDE kommen!)
+const frontendPath = path.join(__dirname, '..', '..', 'frontend', 'dist')
+if (fs.existsSync(frontendPath)) {
+  app.use(express.static(frontendPath))
+  
+  // SPA fallback - serve index.html for all non-API routes
+  app.use((req: Request, res: Response, next) => {
+    if (!req.path.startsWith('/api') && !req.path.startsWith('/media') && !req.path.startsWith('/admin') && !req.path.startsWith('/sonos') && !req.path.startsWith('/search') && !req.path.startsWith('/play')) {
+      res.sendFile(path.join(frontendPath, 'index.html'))
+    } else {
+      next()
+    }
+  })
+}
+
+app.listen(PORT, () => {
+  console.log(`Backend läuft auf http://localhost:${PORT}`)
+})
