@@ -973,7 +973,42 @@ app.post('/play', async (req: Request, res: Response) => {
   try {
     console.log('Rufe Sonos-HTTP-API auf mit:', url)
     const response = await fetch(url)
+    
     if (!response.ok) {
+      const responseData = await response.json().catch(() => ({}))
+      
+      // Workaround: Wenn Album-Abspielen fehlschlägt und Tracks vorhanden sind,
+      // versuche den ersten Track als Fallback (hilft bei Apple Music Cache-Problemen)
+      if (
+        response.status === 500 &&
+        !track &&
+        item.service === 'appleMusic' &&
+        item.tracks &&
+        item.tracks.length > 0
+      ) {
+        console.log('Album-Abspielen fehlgeschlagen, versuche ersten Track als Fallback...')
+        const firstTrack = item.tracks[0]
+        if (firstTrack) {
+          const fallbackUrl = buildSonosUrl(item, room, firstTrack)
+          
+          console.log('Rufe Sonos-HTTP-API mit erstem Track auf:', fallbackUrl)
+          const fallbackResponse = await fetch(fallbackUrl)
+          
+          if (!fallbackResponse.ok) {
+            throw new Error(`Sonos API returned ${fallbackResponse.status} (auch mit Track-Fallback)`)
+          }
+          
+          return res.json({
+            status: 'ok',
+            message: `Playback gestartet (erster Track)`,
+            id,
+            room,
+            track: firstTrack.title,
+            fallback: true,
+          })
+        }
+      }
+      
       throw new Error(`Sonos API returned ${response.status}`)
     }
 
