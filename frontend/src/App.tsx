@@ -143,7 +143,7 @@ useEffect(() => {
       // Nur Loader anzeigen, wenn wir keinen gültigen Cache hatten
       setLoading(prev => prev && true)
 
-      const res = await fetch('${API_BASE_URL}/media')
+      const res = await fetch(`${API_BASE_URL}/media`)
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}`)
       }
@@ -174,7 +174,7 @@ useEffect(() => {
 useEffect(() => {
   const loadSonosConfig = async () => {
     try {
-      const res = await fetch('${API_BASE_URL}/admin/sonos')
+      const res = await fetch(`${API_BASE_URL}/admin/sonos`)
       if (!res.ok) return
 
       const data = (await res.json()) as SonosConfig
@@ -233,7 +233,7 @@ useEffect(() => {
       // Delay to ensure clearqueue is fully processed by Sonos
       await new Promise(resolve => setTimeout(resolve, 300))
 
-      const res = await fetch('${API_BASE_URL}/play', {
+      const res = await fetch(`${API_BASE_URL}/play`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -274,7 +274,7 @@ useEffect(() => {
       // Delay to ensure clearqueue is fully processed by Sonos
       await new Promise(resolve => setTimeout(resolve, 300))
 
-      const res = await fetch('${API_BASE_URL}/play', {
+      const res = await fetch(`${API_BASE_URL}/play`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -431,7 +431,7 @@ useEffect(() => {
                 setRoomPickerOpen(false)
 
                 try {
-                  await fetch('${API_BASE_URL}/admin/sonos/default-room', {
+                  await fetch(`${API_BASE_URL}/admin/sonos/default-room`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ defaultRoom: room }),
@@ -474,7 +474,7 @@ useEffect(() => {
               onClick={async () => {
                 if (!room || !showShuffleRepeat) return
                 const action = shuffle ? 'shuffleOff' : 'shuffleOn'
-                await fetch('${API_BASE_URL}/sonos/control', {
+                await fetch(`${API_BASE_URL}/sonos/control`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ room, action }),
@@ -504,7 +504,7 @@ useEffect(() => {
                   newMode = 'off'
                   action = 'repeatOff'
                 }
-                await fetch('${API_BASE_URL}/sonos/control', {
+                await fetch(`${API_BASE_URL}/sonos/control`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ room, action }),
@@ -528,14 +528,14 @@ useEffect(() => {
               onClick={async () => {
                 if (!room) return
                 if (playing) {
-                  await fetch('${API_BASE_URL}/sonos/control', {
+                  await fetch(`${API_BASE_URL}/sonos/control`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ room, action: 'pause' }),
                   })
                   setPlaying(false)
                 } else {
-                  await fetch('${API_BASE_URL}/sonos/control', {
+                  await fetch(`${API_BASE_URL}/sonos/control`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ room, action: 'play' }),
@@ -554,7 +554,7 @@ useEffect(() => {
               style={styles.playerCompactButton}
               onClick={async () => {
                 if (!room) return
-                await fetch('${API_BASE_URL}/sonos/control', {
+                await fetch(`${API_BASE_URL}/sonos/control`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ room, action: 'volumeDown' }),
@@ -565,7 +565,7 @@ useEffect(() => {
               style={styles.playerCompactButton}
               onClick={async () => {
                 if (!room) return
-                await fetch('${API_BASE_URL}/sonos/control', {
+                await fetch(`${API_BASE_URL}/sonos/control`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ room, action: 'volumeUp' }),
@@ -820,7 +820,7 @@ function AdminView() {
   useEffect(() => {
     const loadSonosConfig = async () => {
       try {
-        const res = await fetch('${API_BASE_URL}/admin/sonos')
+        const res = await fetch(`${API_BASE_URL}/admin/sonos`)
         if (!res.ok) return
         const data = (await res.json()) as SonosConfig
         setSonosBaseUrl(data.sonosBaseUrl)
@@ -837,7 +837,7 @@ function AdminView() {
 
     const loadExistingMedia = async () => {
       try {
-        const res = await fetch('${API_BASE_URL}/media')
+        const res = await fetch(`${API_BASE_URL}/media`)
         if (!res.ok) return
         const data = (await res.json()) as MediaItem[]
         setExistingMedia(data)
@@ -923,7 +923,7 @@ function AdminView() {
       let res: Response
 
       if (entity === 'album') {
-        res = await fetch('${API_BASE_URL}/media/apple/album', {
+        res = await fetch(`${API_BASE_URL}/media/apple/album`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -936,7 +936,7 @@ function AdminView() {
           }),
         })
       } else {
-        res = await fetch('${API_BASE_URL}/media/apple/song', {
+        res = await fetch(`${API_BASE_URL}/media/apple/song`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -960,7 +960,7 @@ function AdminView() {
       const trackCount = responseData?.trackCount ?? 0
 
       // Media-Liste aktualisieren
-      const mediaRes = await fetch('${API_BASE_URL}/media')
+      const mediaRes = await fetch(`${API_BASE_URL}/media`)
       if (mediaRes.ok) {
         const data = (await mediaRes.json()) as MediaItem[]
         setExistingMedia(data)
@@ -992,7 +992,7 @@ function AdminView() {
     setInfo(null)
 
     try {
-      const res = await fetch('${API_BASE_URL}/admin/sonos/discover', {
+      const res = await fetch(`${API_BASE_URL}/admin/sonos/discover`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sonosBaseUrl }),
@@ -1040,7 +1040,7 @@ function AdminView() {
     setSonosError(null)
     setInfo(null)
     try {
-      const res = await fetch('${API_BASE_URL}/admin/sonos/rooms', {
+      const res = await fetch(`${API_BASE_URL}/admin/sonos/rooms`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ enabledRooms }),
@@ -1218,7 +1218,7 @@ function AdminView() {
                     const newValue = e.target.checked
                     setShowShuffleRepeatSetting(newValue)
                     try {
-                      await fetch('${API_BASE_URL}/admin/sonos/settings', {
+                      await fetch(`${API_BASE_URL}/admin/sonos/settings`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ showShuffleRepeat: newValue }),
@@ -1252,7 +1252,7 @@ function AdminView() {
                     const newValue = e.target.checked
                     setShowTracklistAlbumsSetting(newValue)
                     try {
-                      await fetch('${API_BASE_URL}/admin/sonos/tracklist-settings', {
+                      await fetch(`${API_BASE_URL}/admin/sonos/tracklist-settings`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ showTracklistAlbums: newValue }),
@@ -1275,7 +1275,7 @@ function AdminView() {
                     const newValue = e.target.checked
                     setShowTracklistAudiobooksSetting(newValue)
                     try {
-                      await fetch('${API_BASE_URL}/admin/sonos/tracklist-settings', {
+                      await fetch(`${API_BASE_URL}/admin/sonos/tracklist-settings`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ showTracklistAudiobooks: newValue }),
@@ -1325,7 +1325,7 @@ function AdminView() {
                 style={{ ...styles.button, marginTop: 8 }}
                 onClick={async () => {
                   try {
-                    await fetch('${API_BASE_URL}/admin/sonos/room-icons', {
+                    await fetch(`${API_BASE_URL}/admin/sonos/room-icons`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({ roomIcons: roomIconsAdmin }),
