@@ -11,6 +11,8 @@ type AppConfig = {
   defaultRoom?: string | undefined   // persistent gewählter Raum
   showShuffleRepeat?: boolean // Shuffle/Repeat Buttons im Player anzeigen (default: true)
   roomIcons?: Record<string, string> // Emoji/Symbol pro Raum (z.B. { "Büro": "💼", "Kinderzimmer": "🧸" })
+  showTracklistAlbums?: boolean // Tracklist bei Alben anzeigen (default: true)
+  showTracklistAudiobooks?: boolean // Tracklist bei Hörbüchern anzeigen (default: true)
 }
 
 const DEFAULT_SONOS_BASE_URL = 'http://192.168.114.21:5005'
@@ -31,6 +33,8 @@ function loadConfig(): AppConfig {
       defaultRoom: parsed.defaultRoom, // kann undefined sein
       showShuffleRepeat: parsed.showShuffleRepeat !== undefined ? parsed.showShuffleRepeat : true,
       roomIcons: parsed.roomIcons || {},
+      showTracklistAlbums: parsed.showTracklistAlbums !== undefined ? parsed.showTracklistAlbums : true,
+      showTracklistAudiobooks: parsed.showTracklistAudiobooks !== undefined ? parsed.showTracklistAudiobooks : true,
     }
   } catch {
     return {
@@ -40,6 +44,8 @@ function loadConfig(): AppConfig {
       defaultRoom: undefined,
       showShuffleRepeat: true,
       roomIcons: {},
+      showTracklistAlbums: true,
+      showTracklistAudiobooks: true,
     }
   }
 }
@@ -492,6 +498,24 @@ app.post('/admin/sonos/room-icons', (req: Request, res: Response) => {
   const newConfig: AppConfig = {
     ...config,
     roomIcons: roomIcons || config.roomIcons || {},
+  }
+
+  saveConfig(newConfig)
+  res.json(newConfig)
+})
+
+app.post('/admin/sonos/tracklist-settings', (req: Request, res: Response) => {
+  const { showTracklistAlbums, showTracklistAudiobooks } = req.body as { 
+    showTracklistAlbums?: boolean
+    showTracklistAudiobooks?: boolean
+  }
+
+  const config = loadConfig()
+
+  const newConfig: AppConfig = {
+    ...config,
+    showTracklistAlbums: showTracklistAlbums !== undefined ? showTracklistAlbums : (config.showTracklistAlbums ?? true),
+    showTracklistAudiobooks: showTracklistAudiobooks !== undefined ? showTracklistAudiobooks : (config.showTracklistAudiobooks ?? true),
   }
 
   saveConfig(newConfig)

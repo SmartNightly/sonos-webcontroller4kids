@@ -41,6 +41,8 @@ function KidsView() {
   const [playerOpen, setPlayerOpen] = useState(false)
   const [showShuffleRepeat, setShowShuffleRepeat] = useState(true)
   const [roomIcons, setRoomIcons] = useState<Record<string, string>>({})
+  const [showTracklistAlbums, setShowTracklistAlbums] = useState(true)
+  const [showTracklistAudiobooks, setShowTracklistAudiobooks] = useState(true)
   
   // Track-Modus: Ermöglicht Navigation durch Album-Tracks
   const [trackModeAlbum, setTrackModeAlbum] = useState<MediaItem | null>(null)
@@ -181,6 +183,8 @@ useEffect(() => {
       setRooms(enabled)
       setShowShuffleRepeat(data.showShuffleRepeat !== undefined ? data.showShuffleRepeat : true)
       setRoomIcons(data.roomIcons || {})
+      setShowTracklistAlbums(data.showTracklistAlbums !== undefined ? data.showTracklistAlbums : true)
+      setShowTracklistAudiobooks(data.showTracklistAudiobooks !== undefined ? data.showTracklistAudiobooks : true)
 
       let initialRoom: string | null = null
 
@@ -600,6 +604,13 @@ useEffect(() => {
   if (selectedAlbum) {
     const album = selectedAlbum
     const tracks = album.tracks || []
+    
+    // Prüfe ob Trackliste angezeigt werden soll basierend auf Album-Typ
+    const shouldShowTracks = album.kind === 'audiobook' 
+      ? showTracklistAudiobooks 
+      : showTracklistAlbums
+    
+    const hasTracksToShow = tracks.length > 0 && shouldShowTracks
 
     return (
       <div style={styles.screen}>
@@ -627,25 +638,27 @@ useEffect(() => {
             </div>
           </div>
 
-          {/* Right: Tracks List */}
-          <div style={styles.albumDetailTracks}>
-            {tracks.map(t => (
-              <button
-                key={t.id}
-                style={styles.trackRowCompact}
-                onClick={() => playTrack(album, t)}
-                disabled={busy}
-              >
-                <div style={styles.trackNumberCompact}>
-                  {t.trackNumber ?? '•'}
-                </div>
-                <div style={styles.trackTitleCompact}>{t.title}</div>
-                <div style={styles.trackDurationCompact}>
-                  {t.durationMs ? formatDuration(t.durationMs) : ''}
-                </div>
-              </button>
-            ))}
-          </div>
+          {/* Right: Tracks List (nur wenn Einstellung aktiv) */}
+          {hasTracksToShow && (
+            <div style={styles.albumDetailTracks}>
+              {tracks.map(t => (
+                <button
+                  key={t.id}
+                  style={styles.trackRowCompact}
+                  onClick={() => playTrack(album, t)}
+                  disabled={busy}
+                >
+                  <div style={styles.trackNumberCompact}>
+                    {t.trackNumber ?? '•'}
+                  </div>
+                  <div style={styles.trackTitleCompact}>{t.title}</div>
+                  <div style={styles.trackDurationCompact}>
+                    {t.durationMs ? formatDuration(t.durationMs) : ''}
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     )
@@ -666,29 +679,37 @@ useEffect(() => {
         {busy && <div style={styles.busy}>Bitte warten…</div>}
 
         <div style={styles.grid}>
-          {artistAlbums.map(album => (
-            <button
-              key={album.id}
-              style={styles.card}
-              onClick={() => {
-                if (!album.tracks || album.tracks.length === 0) {
-                  // Keine Tracks vorhanden -> direkt abspielen
-                  playAlbum(album)
-                  setPlaying(true)
-                } else {
-                  // Tracks vorhanden -> Detail-Ansicht öffnen
-                  setSelectedAlbum(album)
-                }
-              }}
-            >
-              <img
-                src={album.coverUrl}
-                alt={album.title}
-                style={styles.cover}
-              />
-              <div style={styles.cardTitle}>{album.title}</div>
-            </button>
-          ))}
+          {artistAlbums.map(album => {
+            // Prüfe ob Trackliste für diesen Album-Typ angezeigt werden soll
+            const shouldShowTracks = album.kind === 'audiobook' 
+              ? showTracklistAudiobooks 
+              : showTracklistAlbums
+            const hasTracksToShow = album.tracks && album.tracks.length > 0 && shouldShowTracks
+            
+            return (
+              <button
+                key={album.id}
+                style={styles.card}
+                onClick={() => {
+                  if (!hasTracksToShow) {
+                    // Keine Tracks vorhanden oder ausgeblendet -> direkt abspielen
+                    playAlbum(album)
+                    setPlaying(true)
+                  } else {
+                    // Tracks vorhanden UND Anzeige aktiviert -> Detail-Ansicht öffnen
+                    setSelectedAlbum(album)
+                  }
+                }}
+              >
+                <img
+                  src={album.coverUrl}
+                  alt={album.title}
+                  style={styles.cover}
+                />
+                <div style={styles.cardTitle}>{album.title}</div>
+              </button>
+            )
+          })}
         </div>
       </div>
     )
@@ -763,6 +784,8 @@ interface SonosConfig {
   defaultRoom?: string
   showShuffleRepeat?: boolean
   roomIcons?: Record<string, string>
+  showTracklistAlbums?: boolean
+  showTracklistAudiobooks?: boolean
 }
 
 function AdminView() {
@@ -787,6 +810,8 @@ function AdminView() {
   const [sonosError, setSonosError] = useState<string | null>(null)
   const [showShuffleRepeatSetting, setShowShuffleRepeatSetting] = useState(true)
   const [roomIconsAdmin, setRoomIconsAdmin] = useState<Record<string, string>>({})
+  const [showTracklistAlbumsSetting, setShowTracklistAlbumsSetting] = useState(true)
+  const [showTracklistAudiobooksSetting, setShowTracklistAudiobooksSetting] = useState(true)
 
 
   useEffect(() => {
@@ -800,6 +825,8 @@ function AdminView() {
         setEnabledRooms(data.enabledRooms || data.rooms || [])
         setShowShuffleRepeatSetting(data.showShuffleRepeat !== undefined ? data.showShuffleRepeat : true)
         setRoomIconsAdmin(data.roomIcons || {})
+        setShowTracklistAlbumsSetting(data.showTracklistAlbums !== undefined ? data.showTracklistAlbums : true)
+        setShowTracklistAudiobooksSetting(data.showTracklistAudiobooks !== undefined ? data.showTracklistAudiobooks : true)
       } catch (err) {
         console.error('Konnte Sonos-Konfiguration nicht laden:', err)
       }
@@ -1205,6 +1232,60 @@ function AdminView() {
               <div style={{ fontSize: '0.7rem', opacity: 0.6, marginTop: 4, marginLeft: 24 }}>
                 Für kleine Kinder kann es verwirrend sein, diese Optionen zu sehen.
               </div>
+            </div>
+
+            {/* Tracklist Display Settings */}
+            <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid #333' }}>
+              <div style={{ fontSize: '0.9rem', marginBottom: 8 }}>Trackliste anzeigen</div>
+              <div style={{ fontSize: '0.7rem', opacity: 0.6, marginBottom: 12 }}>
+                Für Kinder, die noch nicht lesen können, kann die Trackliste irritieren. Wenn ausgeblendet, verhalten sich Alben wie solche ohne Tracks.
+              </div>
+              
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <input
+                  type="checkbox"
+                  checked={showTracklistAlbumsSetting}
+                  onChange={async (e) => {
+                    const newValue = e.target.checked
+                    setShowTracklistAlbumsSetting(newValue)
+                    try {
+                      await fetch('http://localhost:3001/admin/sonos/tracklist-settings', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ showTracklistAlbums: newValue }),
+                      })
+                    } catch (err) {
+                      console.error('Fehler beim Speichern:', err)
+                    }
+                  }}
+                />
+                <span style={{ fontSize: '0.85rem' }}>
+                  Trackliste bei Alben anzeigen
+                </span>
+              </label>
+
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <input
+                  type="checkbox"
+                  checked={showTracklistAudiobooksSetting}
+                  onChange={async (e) => {
+                    const newValue = e.target.checked
+                    setShowTracklistAudiobooksSetting(newValue)
+                    try {
+                      await fetch('http://localhost:3001/admin/sonos/tracklist-settings', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ showTracklistAudiobooks: newValue }),
+                      })
+                    } catch (err) {
+                      console.error('Fehler beim Speichern:', err)
+                    }
+                  }}
+                />
+                <span style={{ fontSize: '0.85rem' }}>
+                  Trackliste bei Hörbüchern anzeigen
+                </span>
+              </label>
             </div>
 
             {/* Room Icons Configuration */}
