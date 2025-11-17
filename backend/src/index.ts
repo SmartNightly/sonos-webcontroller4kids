@@ -13,6 +13,7 @@ type AppConfig = {
   roomIcons?: Record<string, string> // Emoji/Symbol pro Raum (z.B. { "Büro": "💼", "Kinderzimmer": "🧸" })
   showTracklistAlbums?: boolean // Tracklist bei Alben anzeigen (default: true)
   showTracklistAudiobooks?: boolean // Tracklist bei Hörbüchern anzeigen (default: true)
+  maxVolume?: Record<string, number> // Maximale Lautstärke pro Raum (0-100)
 }
 
 const DEFAULT_SONOS_BASE_URL = 'http://192.168.114.21:5005'
@@ -35,6 +36,7 @@ function loadConfig(): AppConfig {
         roomIcons: {},
         showTracklistAlbums: true,
         showTracklistAudiobooks: true,
+        maxVolume: {},
       }
     }
     
@@ -54,6 +56,7 @@ function loadConfig(): AppConfig {
       roomIcons: parsed.roomIcons || {},
       showTracklistAlbums: parsed.showTracklistAlbums !== undefined ? parsed.showTracklistAlbums : true,
       showTracklistAudiobooks: parsed.showTracklistAudiobooks !== undefined ? parsed.showTracklistAudiobooks : true,
+      maxVolume: parsed.maxVolume || {},
     }
   } catch (err) {
     console.error('Fehler beim Laden von config.json:', err)
@@ -66,6 +69,7 @@ function loadConfig(): AppConfig {
       roomIcons: {},
       showTracklistAlbums: true,
       showTracklistAudiobooks: true,
+      maxVolume: {},
     }
   }
 }
@@ -618,13 +622,17 @@ app.post('/admin/sonos/default-room', (req: Request, res: Response) => {
 })
 
 app.post('/admin/sonos/settings', (req: Request, res: Response) => {
-  const { showShuffleRepeat } = req.body as { showShuffleRepeat?: boolean }
+  const { showShuffleRepeat, maxVolume } = req.body as { 
+    showShuffleRepeat?: boolean
+    maxVolume?: Record<string, number>
+  }
 
   const config = loadConfig()
 
   const newConfig: AppConfig = {
     ...config,
     showShuffleRepeat: showShuffleRepeat !== undefined ? showShuffleRepeat : (config.showShuffleRepeat ?? true),
+    maxVolume: maxVolume !== undefined ? maxVolume : (config.maxVolume || {}),
   }
 
   saveConfig(newConfig)
@@ -675,6 +683,7 @@ app.post('/sonos/control', async (req: Request, res: Response) => {
 
   const config = loadConfig()
   const baseUrl = config.sonosBaseUrl || DEFAULT_SONOS_BASE_URL
+  const maxVol = config.maxVolume?.[room] ?? 100 // default: 100 wenn nicht gesetzt
 
   // Map action to sonos-http-api path
   let path = ''
@@ -686,14 +695,33 @@ app.post('/sonos/control', async (req: Request, res: Response) => {
       path = action === 'previous' ? 'previous' : action
       break
     case 'volumeUp':
-      path = `volume/+${value ?? 5}`
+      // Prüfe, ob wir das maxVolume überschreiten würden
+      // Hole aktuelles Volume vom Raum
+      try {
+        const stateRes = await fetch(`${config.sonosBaseUrl}/${encodeURIComponent(room)}/state`)
+        const stateData = await stateRes.json()
+        const currentVol = stateData.volume ?? 0
+        const targetVol = currentVol + (value ?? 5)
+        
+        if (targetVol > maxVol) {
+          // Setze auf maxVolume statt zu erhöhen
+          path = `volume/${maxVol}`
+        } else {
+          path = `volume/+${value ?? 5}`
+        }
+      } catch (err) {
+        // Bei Fehler: normal erhöhen (fallback)
+        path = `volume/+${value ?? 5}`
+      }
       break
     case 'volumeDown':
       path = `volume/-${value ?? 5}`
       break
     case 'setVolume':
       if (typeof value !== 'number') return res.status(400).json({ error: 'value erforderlich für setVolume' })
-      path = `volume/${value}`
+      // Limitiere auf maxVolume
+      const limitedValue = Math.min(value, maxVol)
+      path = `volume/${limitedValue}`
       break
     case 'mute':
       path = 'mute'

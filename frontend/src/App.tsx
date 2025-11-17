@@ -50,6 +50,7 @@ function KidsView() {
   const [roomIcons, setRoomIcons] = useState<Record<string, string>>({})
   const [showTracklistAlbums, setShowTracklistAlbums] = useState(true)
   const [showTracklistAudiobooks, setShowTracklistAudiobooks] = useState(true)
+  const [maxVolume, setMaxVolume] = useState<Record<string, number>>({})
   
   // Track-Modus: Ermöglicht Navigation durch Album-Tracks
   const [trackModeAlbum, setTrackModeAlbum] = useState<MediaItem | null>(null)
@@ -193,6 +194,7 @@ useEffect(() => {
       setRoomIcons(data.roomIcons || {})
       setShowTracklistAlbums(data.showTracklistAlbums !== undefined ? data.showTracklistAlbums : true)
       setShowTracklistAudiobooks(data.showTracklistAudiobooks !== undefined ? data.showTracklistAudiobooks : true)
+      setMaxVolume(data.maxVolume || {})
 
       let initialRoom: string | null = null
 
@@ -585,9 +587,16 @@ useEffect(() => {
               }}
             >−</button>
             <button
-              style={styles.playerCompactButton}
+              style={{
+                ...styles.playerCompactButton,
+                // Zeige visuell an, wenn maxVolume erreicht ist
+                ...(selectedRoom && volume !== null && maxVolume[selectedRoom] && volume >= maxVolume[selectedRoom]
+                  ? { opacity: 0.5, cursor: 'not-allowed' }
+                  : {}),
+              }}
               onClick={async () => {
                 if (!room) return
+                // Backend prüft bereits maxVolume und limitiert, aber wir zeigen es visuell
                 await fetch(`${API_BASE_URL}/sonos/control`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
@@ -877,6 +886,7 @@ interface SonosConfig {
   roomIcons?: Record<string, string>
   showTracklistAlbums?: boolean
   showTracklistAudiobooks?: boolean
+  maxVolume?: Record<string, number>
 }
 
 function AdminView() {
@@ -904,6 +914,7 @@ function AdminView() {
   const [roomIconsAdmin, setRoomIconsAdmin] = useState<Record<string, string>>({})
   const [showTracklistAlbumsSetting, setShowTracklistAlbumsSetting] = useState(true)
   const [showTracklistAudiobooksSetting, setShowTracklistAudiobooksSetting] = useState(true)
+  const [maxVolumeAdmin, setMaxVolumeAdmin] = useState<Record<string, number>>({})
 
 
   useEffect(() => {
@@ -919,6 +930,7 @@ function AdminView() {
         setRoomIconsAdmin(data.roomIcons || {})
         setShowTracklistAlbumsSetting(data.showTracklistAlbums !== undefined ? data.showTracklistAlbums : true)
         setShowTracklistAudiobooksSetting(data.showTracklistAudiobooks !== undefined ? data.showTracklistAudiobooks : true)
+        setMaxVolumeAdmin(data.maxVolume || {})
       } catch (err) {
         console.error('Konnte Sonos-Konfiguration nicht laden:', err)
       }
@@ -1426,6 +1438,62 @@ function AdminView() {
                 }}
               >
                 Raumsymbole speichern
+              </button>
+            </div>
+
+            {/* Max Volume Configuration */}
+            <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid #333' }}>
+              <div style={{ fontSize: '0.9rem', marginBottom: 8 }}>Maximale Lautstärke pro Raum</div>
+              <div style={{ fontSize: '0.7rem', opacity: 0.6, marginBottom: 8 }}>
+                Schützt Kinderhörgeräte durch Limitierung der maximalen Lautstärke (0-100). Leeres Feld = kein Limit (100).
+              </div>
+              {sonosRooms.map(room => (
+                <div key={room} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={maxVolumeAdmin[room] ?? ''}
+                    onChange={(e) => {
+                      const val = e.target.value === '' ? undefined : Number(e.target.value)
+                      const newMaxVol = { ...maxVolumeAdmin }
+                      if (val === undefined) {
+                        delete newMaxVol[room]
+                      } else {
+                        newMaxVol[room] = Math.min(100, Math.max(0, val))
+                      }
+                      setMaxVolumeAdmin(newMaxVol)
+                    }}
+                    placeholder="100"
+                    style={{
+                      width: 60,
+                      padding: '4px 8px',
+                      fontSize: '0.9rem',
+                      textAlign: 'center',
+                      backgroundColor: '#111',
+                      color: '#fff',
+                      border: '1px solid #444',
+                      borderRadius: 4,
+                    }}
+                  />
+                  <span style={{ fontSize: '0.85rem', flex: 1 }}>{room}</span>
+                </div>
+              ))}
+              <button
+                style={{ ...styles.button, marginTop: 8 }}
+                onClick={async () => {
+                  try {
+                    await fetch(`${API_BASE_URL}/admin/sonos/settings`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ maxVolume: maxVolumeAdmin }),
+                    })
+                  } catch (err) {
+                    console.error('Fehler beim Speichern der max. Lautstärke:', err)
+                  }
+                }}
+              >
+                Maximale Lautstärke speichern
               </button>
             </div>
           </div>
