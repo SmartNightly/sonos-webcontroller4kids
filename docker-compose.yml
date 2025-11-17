@@ -5,10 +5,11 @@ services:
     build: .
     container_name: sonos-webcontroller4kids
     ports:
-      - "3001:3001"
+      - "${PORT:-3344}:${PORT:-3344}"
     volumes:
       - ./media-data:/app/media-data
     environment:
       - NODE_ENV=production
+      - PORT=${PORT:-3344}
     network_mode: host
     restart: unless-stopped

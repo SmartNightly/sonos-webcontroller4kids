@@ -95,7 +95,7 @@ function saveConfig(config: AppConfig) {
 }
 
 const app = express()
-const PORT = 3344
+const PORT = parseInt(process.env.PORT || '3344', 10)
 
 app.use(cors())
 app.use(express.json())

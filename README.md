@@ -33,7 +33,8 @@ services:
     image: smartnightly/sonos-webcontroller4kids:latest
     container_name: sonos-webcontroller4kids
     
-    network_mode: host
+    ports:
+      - "3344:3344"  # Ändere 3344 auf deinen gewünschten Port
     
     volumes:
       # Passe den Pfad an deine Synology-Struktur an
@@ -43,11 +44,13 @@ services:
     
     environment:
       - NODE_ENV=production
+      - PORT=3344  # Optional: Ändere den internen Port
 ```
 
 4. **Passe den Volume-Pfad an** (z.B. `/volume1/docker/...`)
-5. **Deploy the stack**
-6. **Zugriff:** `http://synology-ip:3001`
+5. **Optional: Ändere den Port** (Standard: 3344)
+6. **Deploy the stack**
+7. **Zugriff:** `http://synology-ip:3344` (oder dein konfigurierter Port)
 
 ### Deployment mit Docker Compose
 
@@ -76,27 +79,40 @@ docker-compose up -d
 # Backend
 cd backend
 npm install
-npm run dev
+npm run dev  # läuft auf Port 3344
 
 # Frontend (in neuem Terminal)
 cd frontend
 npm install
-npm run dev
+npm run dev  # läuft auf Port 5173
 ```
 
-Backend: `http://localhost:3001`  
-Frontend: `http://localhost:5173`
+Backend: `http://localhost:3344`  
+Frontend: `http://localhost:5173` (Proxy zu Backend)
 
 ### Lokales Docker Build
 
 ```bash
 docker build -t sonos-webcontroller4kids:latest .
-docker run -p 3001:3001 -v ./media-data:/app/media-data --network host sonos-webcontroller4kids:latest
+docker run -p 3344:3344 -v ./media-data:/app/media-data sonos-webcontroller4kids:latest
+
+# Mit eigenem Port:
+# PORT=8080 docker run -p 8080:8080 -e PORT=8080 -v ./media-data:/app/media-data sonos-webcontroller4kids:latest
 ```
 
 ## Konfiguration
 
-Die Konfiguration erfolgt über das Admin-Interface unter `http://your-ip:3001` → Admin-Tab.
+### Port-Konfiguration
+
+Der Port kann über die Umgebungsvariable `PORT` angepasst werden:
+
+- **Standard:** 3344
+- **Docker Compose:** Setze `PORT=8080` in der `.env` Datei oder direkt in `docker-compose.yml`
+- **Portainer:** Setze `PORT=8080` unter "Environment variables"
+
+### Admin-Interface
+
+Die Konfiguration erfolgt über das Admin-Interface unter `http://your-ip:3344?admin=1`.
 
 ### Wichtige Einstellungen:
 

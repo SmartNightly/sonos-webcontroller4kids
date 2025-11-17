@@ -34,6 +34,9 @@ COPY --from=builder /app/frontend/dist ./frontend/dist
 # Copy media-data
 COPY media-data ./media-data
 
+# Set default port
+ENV PORT=3344
+
 # Expose port
 EXPOSE 3344
 

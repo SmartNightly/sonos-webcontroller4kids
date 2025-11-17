@@ -8,7 +8,7 @@ services:
     container_name: sonos-webcontroller4kids
     
     ports:
-      - "3001:3001"
+      - "${PORT:-3344}:${PORT:-3344}"
     
     volumes:
       # Passe den Pfad für Synology an:
@@ -21,3 +21,4 @@ services:
     
     environment:
       - NODE_ENV=production
+      - PORT=${PORT:-3344}
