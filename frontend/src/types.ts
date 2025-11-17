@@ -14,10 +14,8 @@ export interface MediaItem {
   artist?: string
   album?: string
   coverUrl: string
-  artistImageUrl?: string // Artist-Bild von Apple Music
   sonosUri?: string
   appleId?: string
-  appleArtistId?: string // Apple Music Artist ID
   tracks?: MediaTrack[]
 }
 
@@ -28,10 +26,8 @@ export interface AppleSearchResult {
   artist?: string
   album?: string
   coverUrl: string
-  artistImageUrl?: string
   appleAlbumId?: string
   appleSongId?: string
-  appleArtistId?: string
 }
 
 export interface SonosConfig {

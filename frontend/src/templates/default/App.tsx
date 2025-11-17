@@ -831,12 +831,9 @@ useEffect(() => {
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([artistName, artistAlbums]) => {
       const firstAlbum = artistAlbums[0]
-      // Verwende Artist-Bild falls vorhanden, sonst Album-Cover
-      const imageUrl = firstAlbum.artistImageUrl || firstAlbum.coverUrl
       return {
         artistName,
-        coverUrl: imageUrl,
-        hasArtistImage: !!firstAlbum.artistImageUrl,
+        coverUrl: firstAlbum.coverUrl,
       }
     })
 
@@ -964,155 +961,6 @@ function TemplateSelector() {
           </button>
         ))}
       </div>
-
-      {message && (
-        <div style={{
-          marginTop: 12,
-          padding: '8px 12px',
-          borderRadius: 6,
-          backgroundColor: message.type === 'success' ? '#2a4' : '#a42',
-          fontSize: '0.85rem',
-        }}>
-          {message.text}
-        </div>
-      )}
-    </div>
-  )
-}
-
-/* ==================== Artist Image Loader Component ==================== */
-
-function ArtistImageLoader() {
-  const [loading, setLoading] = useState(false)
-  const [progress, setProgress] = useState<{ current: number, total: number } | null>(null)
-  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
-
-  const loadArtistImages = async () => {
-    setLoading(true)
-    setMessage(null)
-    setProgress(null)
-
-    try {
-      // Lade aktuelle Medien
-      const mediaRes = await fetch(`${API_BASE_URL}/media`)
-      if (!mediaRes.ok) throw new Error('Fehler beim Laden der Medien')
-      const media = await mediaRes.json() as MediaItem[]
-
-      // Finde alle Alben mit appleArtistId aber ohne artistImageUrl
-      const albumsNeedingImages = media.filter(item => 
-        item.appleArtistId && !item.artistImageUrl
-      )
-
-      if (albumsNeedingImages.length === 0) {
-        setMessage({ type: 'success', text: 'Alle Artists haben bereits Bilder' })
-        setLoading(false)
-        return
-      }
-
-      setProgress({ current: 0, total: albumsNeedingImages.length })
-
-      let successCount = 0
-      let errorCount = 0
-
-      for (let i = 0; i < albumsNeedingImages.length; i++) {
-        const album = albumsNeedingImages[i]
-        setProgress({ current: i + 1, total: albumsNeedingImages.length })
-
-        try {
-          // Artist-Bild von API abrufen
-          const res = await fetch(
-            `${API_BASE_URL}/search/apple/artist-image?artistId=${album.appleArtistId}`
-          )
-
-          if (!res.ok) {
-            errorCount++
-            continue
-          }
-
-          const artistData = await res.json()
-
-          if (!artistData.artistImageUrl) {
-            errorCount++
-            continue
-          }
-
-          // Album mit Artist-Bild aktualisieren
-          const updateRes = await fetch(`${API_BASE_URL}/media/apple/album`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              id: album.id,
-              appleAlbumId: album.appleId,
-              title: album.title,
-              artist: album.artist,
-              album: album.album,
-              coverUrl: album.coverUrl,
-              kind: album.kind,
-              appleArtistId: album.appleArtistId,
-              artistImageUrl: artistData.artistImageUrl,
-            }),
-          })
-
-          if (updateRes.ok) {
-            successCount++
-          } else {
-            errorCount++
-          }
-        } catch (err) {
-          console.error(`Fehler bei ${album.artist}:`, err)
-          errorCount++
-        }
-      }
-
-      setProgress(null)
-      setMessage({
-        type: successCount > 0 ? 'success' : 'error',
-        text: `${successCount} Artist-Bilder geladen${errorCount > 0 ? `, ${errorCount} Fehler` : ''}`,
-      })
-
-      // Seite nach 3 Sekunden neu laden, um Änderungen anzuzeigen
-      if (successCount > 0) {
-        setTimeout(() => window.location.reload(), 3000)
-      }
-    } catch (err) {
-      console.error('Fehler beim Laden der Artist-Bilder:', err)
-      setMessage({ type: 'error', text: 'Fehler beim Laden der Artist-Bilder' })
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid #333' }}>
-      <div style={{ fontSize: '0.9rem', marginBottom: 8 }}>Artist-Bilder</div>
-      <div style={{ fontSize: '0.7rem', opacity: 0.6, marginBottom: 12 }}>
-        Lädt automatisch Artist-Fotos von Apple Music für alle Alben mit Apple Music Artist-ID. 
-        Diese werden dann in der Künstler-Ansicht anstelle der Album-Cover angezeigt.
-      </div>
-
-      <button
-        style={{
-          ...styles.button,
-          opacity: loading ? 0.6 : 1,
-          cursor: loading ? 'not-allowed' : 'pointer',
-        }}
-        onClick={loadArtistImages}
-        disabled={loading}
-      >
-        {loading ? 'Lädt Artist-Bilder…' : 'Artist-Bilder laden'}
-      </button>
-
-      {progress && (
-        <div style={{
-          marginTop: 12,
-          padding: '8px 12px',
-          borderRadius: 6,
-          backgroundColor: '#333',
-          fontSize: '0.85rem',
-        }}>
-          Fortschritt: {progress.current} / {progress.total}
-        </div>
-      )}
 
       {message && (
         <div style={{
@@ -1289,8 +1137,6 @@ function AdminView() {
             album: r.album || r.title,
             coverUrl: r.coverUrl,
             kind: importKind,
-            appleArtistId: r.appleArtistId,
-            artistImageUrl: r.artistImageUrl,
           }),
         })
       } else {
@@ -1755,9 +1601,6 @@ function AdminView() {
 
             {/* Template Selection */}
             <TemplateSelector />
-
-            {/* Artist Images */}
-            <ArtistImageLoader />
           </div>
         </div>
       )}

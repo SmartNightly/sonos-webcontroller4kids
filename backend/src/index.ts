@@ -120,10 +120,8 @@ type MediaItem = {
   artist?: string
   album?: string
   coverUrl: string
-  artistImageUrl?: string // Artist-Bild von Apple Music
   sonosUri?: string       // nur für Favoriten nötig
   appleId?: string        // Album-ID (collectionId)
-  appleArtistId?: string  // Artist-ID von Apple Music
   tracks?: MediaTrack[]   // Child-Songs
 }
 
@@ -1196,10 +1194,8 @@ app.get('/search/apple', async (req: Request, res: Response) => {
         artist: item.artistName,
         album: item.collectionName,
         coverUrl: item.artworkUrl100?.replace('100x100bb', '600x600bb') || '',
-        artistImageUrl: undefined, // Wird später geladen
         appleAlbumId: item.collectionId ? String(item.collectionId) : undefined,
         appleSongId: item.trackId ? String(item.trackId) : undefined,
-        appleArtistId: item.artistId ? String(item.artistId) : undefined,
       }
     })
 
@@ -1212,7 +1208,7 @@ app.get('/search/apple', async (req: Request, res: Response) => {
 
 
 app.post('/media/apple/album', async (req: Request, res: Response) => {
-  const { id, appleAlbumId, title, artist, album, coverUrl, kind, appleArtistId, artistImageUrl } = req.body as {
+  const { id, appleAlbumId, title, artist, album, coverUrl, kind } = req.body as {
     id?: string
     appleAlbumId?: string
     title?: string
@@ -1220,8 +1216,6 @@ app.post('/media/apple/album', async (req: Request, res: Response) => {
     album?: string
     coverUrl?: string
     kind?: 'album' | 'audiobook'
-    appleArtistId?: string
-    artistImageUrl?: string
   }
 
   if (!id || !appleAlbumId || !title) {
@@ -1292,8 +1286,6 @@ app.post('/media/apple/album', async (req: Request, res: Response) => {
       if (album) existingAlbum.album = album
       if (coverUrl) existingAlbum.coverUrl = coverUrl
       if (kind) existingAlbum.kind = kind
-      if (appleArtistId) existingAlbum.appleArtistId = appleArtistId
-      if (artistImageUrl) existingAlbum.artistImageUrl = artistImageUrl
       existingAlbum.appleId = appleAlbumId
 
       saveMedia(items)
@@ -1309,8 +1301,6 @@ app.post('/media/apple/album', async (req: Request, res: Response) => {
       album: album || title,
       coverUrl: coverUrl || '',
       appleId: appleAlbumId,
-      ...(appleArtistId ? { appleArtistId } : {}),
-      ...(artistImageUrl ? { artistImageUrl } : {}),
       tracks,
     }
 
@@ -1388,49 +1378,6 @@ app.post('/media/apple/song', (req: Request, res: Response) => {
   saveMedia(items)
 
   res.status(201).json({ album: albumItem.id, track: newTrack })
-})
-
-// Artist-Bild von Apple Music abrufen
-app.get('/search/apple/artist-image', async (req: Request, res: Response) => {
-  const artistId = (req.query.artistId as string) || ''
-
-  if (!artistId.trim()) {
-    return res.status(400).json({ error: 'Parameter artistId ist erforderlich' })
-  }
-
-  const url = `https://itunes.apple.com/lookup?id=${artistId}&entity=album&limit=5&country=ch`
-
-  try {
-    const response = await fetch(url)
-    if (!response.ok) {
-      throw new Error(`iTunes API returned ${response.status}`)
-    }
-
-    const data = await response.json()
-    console.log(`Artist-Image Lookup für ${artistId}: ${data.resultCount} Ergebnisse`)
-    
-    // Suche nach Alben des Artists
-    const albums = (data.results || []).filter((r: any) => r.wrapperType === 'collection')
-    
-    if (albums.length > 0) {
-      const firstAlbum = albums[0]
-      const artistImageUrl = firstAlbum.artworkUrl100?.replace('100x100bb', '600x600bb') || ''
-      
-      console.log(`Artist-Bild gefunden für ${firstAlbum.artistName}`)
-      
-      return res.json({
-        artistId,
-        artistName: firstAlbum.artistName,
-        artistImageUrl,
-      })
-    }
-
-    console.warn(`Kein Album gefunden für Artist ${artistId}`)
-    res.status(404).json({ error: 'Kein Artist-Bild gefunden' })
-  } catch (err) {
-    console.error('Fehler beim Laden des Artist-Bilds:', err)
-    res.status(502).json({ error: 'Fehler beim Abrufen der Artist-Information' })
-  }
 })
 
 
