@@ -15,9 +15,10 @@
   "enabledRooms": [
     "Büro",
     "Kinderzimmer",
-    "Spielzimmer"
+    "Spielzimmer",
+    "Wohnzimmer"
   ],
-  "defaultRoom": "Büro",
+  "defaultRoom": "Wohnzimmer",
   "showShuffleRepeat": false,
   "roomIcons": {
     "Kinderzimmer": "🛏️ 👦🏼",
@@ -27,6 +28,18 @@
     "Wohnzimmer": "🛋️",
     "Küche": "👨🏻‍🍳"
   },
-  "showTracklistAlbums": true,
-  "showTracklistAudiobooks": false
+  "showTracklistAlbums": false,
+  "showTracklistAudiobooks": false,
+  "maxVolume": {
+    "Lounge": 30,
+    "Werkstatt": 30,
+    "Büro": 30,
+    "Wintergarten": 30,
+    "Bad": 30,
+    "Küche": 30,
+    "Kinderzimmer": 30,
+    "Spielzimmer": 30,
+    "Wohnzimmer": 30,
+    "Schlafzimmer": 30
+  }
 }
