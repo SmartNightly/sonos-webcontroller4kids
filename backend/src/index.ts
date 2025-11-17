@@ -1398,7 +1398,7 @@ app.get('/search/apple/artist-image', async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Parameter artistId ist erforderlich' })
   }
 
-  const url = `https://itunes.apple.com/lookup?id=${artistId}&entity=album&limit=1`
+  const url = `https://itunes.apple.com/lookup?id=${artistId}&entity=album&limit=5&country=ch`
 
   try {
     const response = await fetch(url)
@@ -1407,34 +1407,25 @@ app.get('/search/apple/artist-image', async (req: Request, res: Response) => {
     }
 
     const data = await response.json()
+    console.log(`Artist-Image Lookup für ${artistId}: ${data.resultCount} Ergebnisse`)
     
-    // Erstes Ergebnis sollte der Artist sein (wenn wrapperType = "artist")
-    const artistData = (data.results || []).find((r: any) => r.wrapperType === 'artist')
+    // Suche nach Alben des Artists
+    const albums = (data.results || []).filter((r: any) => r.wrapperType === 'collection')
     
-    if (artistData && artistData.artistLinkUrl) {
-      // Artist-Bild aus der artistLinkUrl extrahieren
-      // Format: https://music.apple.com/ch/artist/{name}/{id}
-      // Artwork ist manchmal als separates Feld verf\u00fcgbar
-      const artistImageUrl = artistData.artworkUrl100?.replace('100x100bb', '600x600bb') || ''
+    if (albums.length > 0) {
+      const firstAlbum = albums[0]
+      const artistImageUrl = firstAlbum.artworkUrl100?.replace('100x100bb', '600x600bb') || ''
+      
+      console.log(`Artist-Bild gefunden für ${firstAlbum.artistName}`)
       
       return res.json({
         artistId,
-        artistName: artistData.artistName,
-        artistImageUrl,
-        artistLinkUrl: artistData.artistLinkUrl,
-      })
-    }
-
-    // Fallback: Verwende das Cover des ersten Albums
-    const firstAlbum = (data.results || []).find((r: any) => r.wrapperType === 'collection')
-    if (firstAlbum) {
-      return res.json({
-        artistId,
         artistName: firstAlbum.artistName,
-        artistImageUrl: firstAlbum.artworkUrl100?.replace('100x100bb', '600x600bb') || '',
+        artistImageUrl,
       })
     }
 
+    console.warn(`Kein Album gefunden für Artist ${artistId}`)
     res.status(404).json({ error: 'Kein Artist-Bild gefunden' })
   } catch (err) {
     console.error('Fehler beim Laden des Artist-Bilds:', err)

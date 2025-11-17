@@ -4915,5 +4915,17 @@
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/48/bf/00/mzi.ujeijgow.jpg/600x600bb.jpg",
     "appleId": "389374417",
     "tracks": []
+  },
+  {
+    "id": "album_1715528593",
+    "title": "HALO",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Rea Garvey",
+    "album": "HALO",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/30/d0/3e/30d03e6a-cb50-3a50-f84f-90f447905711/23UM1IM22638.rgb.jpg/600x600bb.jpg",
+    "appleId": "1715528593",
+    "appleArtistId": "13432258",
+    "tracks": []
   }
 ]
