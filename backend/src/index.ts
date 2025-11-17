@@ -107,7 +107,7 @@ type MediaTrack = {
 type MediaItem = {
   id: string              // interne Album-ID (z.B. "pingu_album_01")
   title: string
-  kind: 'album' | 'favorite' | 'other'
+  kind: 'album' | 'audiobook' | 'playlist' | 'favorite' | 'other'
   service: 'appleMusic' | 'spotify'
   artist?: string
   album?: string
@@ -334,6 +334,61 @@ app.delete('/media/:albumId/tracks/:trackId', (req: Request, res: Response) => {
   }
 
   res.json({ status: 'deleted', albumId, trackId })
+})
+
+// Bulk-Update für mehrere Medien-Items (PATCH /media/bulk)
+app.patch('/media/bulk', (req: Request, res: Response) => {
+  const { ids, updates } = req.body as {
+    ids?: string[]
+    updates?: Partial<MediaItem>
+  }
+
+  if (!ids || !Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ error: 'ids array ist erforderlich' })
+  }
+
+  if (!updates || typeof updates !== 'object') {
+    return res.status(400).json({ error: 'updates object ist erforderlich' })
+  }
+
+  let items: MediaItem[]
+  try {
+    items = loadMedia()
+  } catch (err) {
+    console.error('Fehler beim Laden von media.json:', err)
+    return res.status(500).json({ error: 'Media file could not be loaded' })
+  }
+
+  let updatedCount = 0
+
+  // Aktualisiere alle Items mit den angegebenen IDs
+  items = items.map(item => {
+    if (ids.includes(item.id)) {
+      updatedCount++
+      return {
+        ...item,
+        ...updates,
+        // ID darf nicht überschrieben werden
+        id: item.id,
+        // Tracks dürfen nicht überschrieben werden (falls vorhanden)
+        ...(item.tracks ? { tracks: item.tracks } : {}),
+      }
+    }
+    return item
+  })
+
+  if (updatedCount === 0) {
+    return res.status(404).json({ error: 'Keine Items mit den angegebenen IDs gefunden' })
+  }
+
+  try {
+    saveMedia(items)
+  } catch (err) {
+    console.error('Fehler beim Schreiben von media.json:', err)
+    return res.status(500).json({ error: 'Media file could not be saved' })
+  }
+
+  res.json({ status: 'ok', updatedCount })
 })
 
 // Track in Album aktualisieren (PUT /media/:albumId/tracks/:trackId)
@@ -1083,13 +1138,14 @@ app.get('/search/apple', async (req: Request, res: Response) => {
 
 
 app.post('/media/apple/album', async (req: Request, res: Response) => {
-  const { id, appleAlbumId, title, artist, album, coverUrl } = req.body as {
+  const { id, appleAlbumId, title, artist, album, coverUrl, kind } = req.body as {
     id?: string
     appleAlbumId?: string
     title?: string
     artist?: string
     album?: string
     coverUrl?: string
+    kind?: 'album' | 'audiobook'
   }
 
   if (!id || !appleAlbumId || !title) {
@@ -1159,6 +1215,7 @@ app.post('/media/apple/album', async (req: Request, res: Response) => {
       if (artist) existingAlbum.artist = artist
       if (album) existingAlbum.album = album
       if (coverUrl) existingAlbum.coverUrl = coverUrl
+      if (kind) existingAlbum.kind = kind
       existingAlbum.appleId = appleAlbumId
 
       saveMedia(items)
@@ -1168,7 +1225,7 @@ app.post('/media/apple/album', async (req: Request, res: Response) => {
     const newAlbum: MediaItem = {
       id,
       title,
-      kind: 'album',
+      kind: kind || 'album',
       service: 'appleMusic',
       ...(artist ? { artist } : {}),
       album: album || title,

@@ -126,7 +126,7 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
                 />
               </div>
               <div style={styles.formGroup}>
-                <label style={styles.label}>Kind</label>
+                <label style={styles.label}>Art</label>
                 <select
                   style={styles.formSelect}
                   value={kind}
@@ -240,6 +240,11 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
   const [error, setError] = useState<string | null>(null)
   const [info, setInfo] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  
+  // Multi-Select State
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [bulkEditArtist, setBulkEditArtist] = useState('')
+  const [bulkEditKind, setBulkEditKind] = useState<'album' | 'audiobook' | 'playlist'>('album')
 
   const [expandedAlbumId, setExpandedAlbumId] = useState<string | null>(null)
 
@@ -423,6 +428,64 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
     setTimeout(() => setInfo(null), 2000)
   }
 
+  const handleBulkUpdate = async () => {
+    if (selectedIds.size === 0) return
+
+    try {
+      const updates: Record<string, any> = {}
+      if (bulkEditArtist.trim()) {
+        updates.artist = bulkEditArtist.trim()
+      }
+      updates.kind = bulkEditKind
+
+      const res = await fetch(`${API_BASE_URL}/media/bulk`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ids: Array.from(selectedIds),
+          updates,
+        }),
+      })
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw new Error(body.error || 'Fehler beim Massenupdate')
+      }
+
+      // Aktualisiere lokale Daten
+      setMedia(prev =>
+        prev.map(m =>
+          selectedIds.has(m.id)
+            ? { ...m, ...updates }
+            : m,
+        ),
+      )
+
+      setInfo(`${selectedIds.size} Elemente erfolgreich aktualisiert`)
+      setTimeout(() => setInfo(null), 3000)
+
+      // Zurücksetzen
+      setSelectedIds(new Set())
+      setBulkEditArtist('')
+      setBulkEditKind('album')
+    } catch (err: any) {
+      setError(err.message)
+      setTimeout(() => setError(null), 3000)
+    }
+  }
+
+  const toggleSelection = (id: string) => {
+    setSelectedIds(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
+  }
+
   if (loading) {
     return (
       <div style={styles.container}>
@@ -464,6 +527,73 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
         />
       </div>
 
+      {/* Multi-Select Controls */}
+      <div style={styles.multiSelectControls}>
+        <button
+          style={styles.selectButton}
+          onClick={() => {
+            const filtered = media.filter(item => {
+              if (!searchQuery.trim()) return true
+              const query = searchQuery.toLowerCase()
+              return (
+                item.title.toLowerCase().includes(query) ||
+                (item.artist && item.artist.toLowerCase().includes(query)) ||
+                (item.album && item.album.toLowerCase().includes(query))
+              )
+            })
+            setSelectedIds(new Set(filtered.map(item => item.id)))
+          }}
+        >
+          Alle auswählen
+        </button>
+        <button
+          style={styles.selectButton}
+          onClick={() => setSelectedIds(new Set())}
+        >
+          Auswahl aufheben
+        </button>
+        <span style={styles.selectionCount}>
+          {selectedIds.size > 0 ? `${selectedIds.size} ausgewählt` : ''}
+        </span>
+      </div>
+
+      {/* Bulk Edit Panel */}
+      {selectedIds.size > 0 && (
+        <div style={styles.bulkEditPanel}>
+          <h3 style={styles.bulkEditTitle}>
+            Massenbearbeitung ({selectedIds.size} Elemente)
+          </h3>
+          <div style={styles.bulkEditRow}>
+            <label style={styles.bulkEditLabel}>Artist:</label>
+            <input
+              type="text"
+              value={bulkEditArtist}
+              onChange={(e) => setBulkEditArtist(e.target.value)}
+              placeholder="Neuer Artist für ausgewählte Elemente"
+              style={styles.bulkEditInput}
+            />
+          </div>
+          <div style={styles.bulkEditRow}>
+            <label style={styles.bulkEditLabel}>Art:</label>
+            <select
+              value={bulkEditKind}
+              onChange={(e) => setBulkEditKind(e.target.value as 'album' | 'audiobook' | 'playlist')}
+              style={styles.bulkEditSelect}
+            >
+              <option value="album">Album</option>
+              <option value="audiobook">Audiobook</option>
+              <option value="playlist">Playlist</option>
+            </select>
+          </div>
+          <button
+            style={styles.bulkEditApplyButton}
+            onClick={handleBulkUpdate}
+          >
+            Änderungen auf {selectedIds.size} Elemente anwenden
+          </button>
+        </div>
+      )}
+
       <div style={styles.list}>
         {media.length === 0 ? (
           <div style={styles.emptyText}>Keine Einträge vorhanden</div>
@@ -500,20 +630,34 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
                   : {}),
               }}
             >
-              <div
-                style={styles.itemHeader}
-                onClick={() =>
-                  setExpandedAlbumId(
-                    expandedAlbumId === item.id ? null : item.id,
-                  )
-                }
-              >
+              <div style={styles.itemHeader}>
+                {/* Checkbox für Multi-Select */}
+                <input
+                  type="checkbox"
+                  checked={selectedIds.has(item.id)}
+                  onChange={() => toggleSelection(item.id)}
+                  onClick={(e) => e.stopPropagation()}
+                  style={styles.checkbox}
+                />
+                
                 <img
                   src={item.coverUrl}
                   alt={item.title}
                   style={styles.itemCover}
+                  onClick={() =>
+                    setExpandedAlbumId(
+                      expandedAlbumId === item.id ? null : item.id,
+                    )
+                  }
                 />
-                <div style={styles.itemInfo}>
+                <div
+                  style={styles.itemInfo}
+                  onClick={() =>
+                    setExpandedAlbumId(
+                      expandedAlbumId === item.id ? null : item.id,
+                    )
+                  }
+                >
                   <div style={styles.itemTitle}>{item.title}</div>
                   {item.artist && (
                     <div style={styles.itemArtist}>{item.artist}</div>
@@ -896,6 +1040,87 @@ const styles: Record<string, React.CSSProperties> = {
     textAlign: 'center',
     padding: '16px',
     opacity: 0.6,
+  },
+  multiSelectControls: {
+    display: 'flex',
+    gap: '8px',
+    alignItems: 'center',
+    marginBottom: '8px',
+    padding: '8px',
+    backgroundColor: '#1a1a1a',
+    borderRadius: '4px',
+  },
+  selectButton: {
+    padding: '6px 12px',
+    fontSize: '0.8rem',
+    borderRadius: '4px',
+    border: 'none',
+    backgroundColor: '#444',
+    color: '#fff',
+    cursor: 'pointer',
+  },
+  selectionCount: {
+    fontSize: '0.85rem',
+    opacity: 0.8,
+    marginLeft: 'auto',
+  },
+  bulkEditPanel: {
+    backgroundColor: '#1a3a1a',
+    border: '1px solid #4a4',
+    borderRadius: '8px',
+    padding: '12px',
+    marginBottom: '8px',
+  },
+  bulkEditTitle: {
+    fontSize: '1rem',
+    margin: '0 0 12px 0',
+    color: '#8f8',
+  },
+  bulkEditRow: {
+    display: 'flex',
+    gap: '8px',
+    alignItems: 'center',
+    marginBottom: '8px',
+  },
+  bulkEditLabel: {
+    fontSize: '0.85rem',
+    width: '60px',
+    opacity: 0.9,
+  },
+  bulkEditInput: {
+    flex: 1,
+    padding: '8px',
+    borderRadius: '4px',
+    border: '1px solid #4a4',
+    backgroundColor: '#222',
+    color: '#fff',
+    fontSize: '0.9rem',
+  },
+  bulkEditSelect: {
+    flex: 1,
+    padding: '8px',
+    borderRadius: '4px',
+    border: '1px solid #4a4',
+    backgroundColor: '#222',
+    color: '#fff',
+    fontSize: '0.9rem',
+  },
+  bulkEditApplyButton: {
+    width: '100%',
+    padding: '10px',
+    borderRadius: '6px',
+    border: 'none',
+    backgroundColor: '#4CAF50',
+    color: '#fff',
+    cursor: 'pointer',
+    fontSize: '0.9rem',
+    fontWeight: 'bold',
+  },
+  checkbox: {
+    width: '20px',
+    height: '20px',
+    cursor: 'pointer',
+    flexShrink: 0,
   },
 }
 

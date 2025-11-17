@@ -31,6 +31,7 @@ function KidsView() {
     album?: string
     positionMs?: number
     durationMs?: number
+    trackNo?: number
   } | null>(null)
 
   const [selectedAlbum, setSelectedAlbum] = useState<MediaItem | null>(null)
@@ -90,6 +91,7 @@ function KidsView() {
             album: data.track.album,
             positionMs: data.track.positionMs,
             durationMs: data.track.durationMs,
+            trackNo: data.trackNo,
           })
         } else {
           setCurrentTrack(null)
@@ -381,7 +383,7 @@ useEffect(() => {
       >
         {currentTrack ? (
           <span style={{ fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block', textAlign: 'center' }}>
-            <span style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>▶ {currentTrack.title || 'Unbekannt'}</span>
+            <span style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>{currentTrack.trackNo ? `${currentTrack.trackNo}. ` : ''}{currentTrack.title || 'Unbekannt'}</span>
             {currentTrack.artist && <span style={{ fontSize: '0.85rem' }}> • {currentTrack.artist}</span>}
             {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && 
               <span style={{ fontSize: '0.85rem' }}> • {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}</span>
@@ -881,6 +883,7 @@ function AdminView() {
   const [tab, setTab] = useState<'search' | 'editor' | 'settings'>('search')
   const [query, setQuery] = useState('')
   const [entity, setEntity] = useState<'album' | 'song'>('album')
+  const [importKind, setImportKind] = useState<'album' | 'audiobook'>('album')
   const [results, setResults] = useState<AppleSearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -1019,6 +1022,7 @@ function AdminView() {
             artist: r.artist,
             album: r.album || r.title,
             coverUrl: r.coverUrl,
+            kind: importKind,
           }),
         })
       } else {
@@ -1448,6 +1452,14 @@ function AdminView() {
             >
               <option value="album">Album</option>
               <option value="song">Song</option>
+            </select>
+            <select
+              style={styles.select}
+              value={importKind}
+              onChange={e => setImportKind(e.target.value as 'album' | 'audiobook')}
+            >
+              <option value="album">Als Album</option>
+              <option value="audiobook">Als Audiobook</option>
             </select>
             <button style={styles.button} onClick={() => search()} disabled={loading}>
               Suchen

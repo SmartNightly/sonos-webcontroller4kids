@@ -1,642 +1,8 @@
 [
   {
-    "id": "pingu_01",
-    "title": "Pingu – Folge 1",
-    "kind": "audiobook",
-    "service": "appleMusic",
-    "artist": "Pingu",
-    "album": "Pingu – Folge 1",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/ce/e6/c1/cee6c1cb-b569-489d-a224-adc32fac8632/886446549200.jpg/600x600bb.jpg",
-    "sonosUri": "favorite/Kinderlieder%20Gute%20Nacht",
-    "appleId": "1234567890"
-  },
-  {
-    "id": "album_1542625408",
-    "title": "Heimspiel",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Bligg",
-    "album": "Heimspiel",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/28/23/27/28232786-b919-64d1-996b-63921ec8f879/886448948988.jpg/600x600bb.jpg",
-    "appleId": "1542625408",
-    "tracks": [
-      {
-        "id": "album_1542625408_track_1542625628",
-        "title": "Denkmal",
-        "appleSongId": "1542625628",
-        "trackNumber": 1,
-        "durationMs": 219227
-      },
-      {
-        "id": "album_1542625408_track_1542625632",
-        "title": "D'Schueh",
-        "appleSongId": "1542625632",
-        "trackNumber": 2,
-        "durationMs": 182640
-      },
-      {
-        "id": "album_1542625408_track_1542625634",
-        "title": "Rägetanz",
-        "appleSongId": "1542625634",
-        "trackNumber": 3,
-        "durationMs": 204560
-      },
-      {
-        "id": "album_1542625408_track_1542625636",
-        "title": "D'Wüsseschaft",
-        "appleSongId": "1542625636",
-        "trackNumber": 4,
-        "durationMs": 182893
-      },
-      {
-        "id": "album_1542625408_track_1542625638",
-        "title": "Papa",
-        "appleSongId": "1542625638",
-        "trackNumber": 5,
-        "durationMs": 224160
-      },
-      {
-        "id": "album_1542625408_track_1542625639",
-        "title": "Geiler",
-        "appleSongId": "1542625639",
-        "trackNumber": 6,
-        "durationMs": 187400
-      },
-      {
-        "id": "album_1542625408_track_1542625643",
-        "title": "Wiederseh",
-        "appleSongId": "1542625643",
-        "trackNumber": 7,
-        "durationMs": 183187
-      },
-      {
-        "id": "album_1542625408_track_1542625645",
-        "title": "Liebesbrief",
-        "appleSongId": "1542625645",
-        "trackNumber": 8,
-        "durationMs": 196533
-      },
-      {
-        "id": "album_1542625408_track_1542625648",
-        "title": "Sanduhr",
-        "appleSongId": "1542625648",
-        "trackNumber": 9,
-        "durationMs": 242800
-      },
-      {
-        "id": "album_1542625408_track_1542625649",
-        "title": "Wind",
-        "appleSongId": "1542625649",
-        "trackNumber": 10,
-        "durationMs": 149893
-      }
-    ]
-  },
-  {
-    "id": "album_1759987625",
-    "title": "Tavolata",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Bligg",
-    "album": "Tavolata",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f9/82/d5/f982d5e6-58cb-0e54-0fd2-b79c8ff30589/196872095463.jpg/600x600bb.jpg",
-    "appleId": "1759987625",
-    "tracks": [
-      {
-        "id": "album_1759987625_track_1759987638",
-        "title": "B.L.I. Doppel G (Tavolata Version)",
-        "appleSongId": "1759987638",
-        "trackNumber": 1,
-        "durationMs": 182360
-      },
-      {
-        "id": "album_1759987625_track_1759987852",
-        "title": "Rosalie (Tavolata Version)",
-        "appleSongId": "1759987852",
-        "trackNumber": 2,
-        "durationMs": 247240
-      },
-      {
-        "id": "album_1759987625_track_1759987858",
-        "title": "Mosaik (Tavolata Version)",
-        "appleSongId": "1759987858",
-        "trackNumber": 3,
-        "durationMs": 223027
-      },
-      {
-        "id": "album_1759987625_track_1759987859",
-        "title": "Manhattan (Tavolata Version)",
-        "appleSongId": "1759987859",
-        "trackNumber": 4,
-        "durationMs": 216133
-      },
-      {
-        "id": "album_1759987625_track_1759987862",
-        "title": "Signal (Tavolata Version)",
-        "appleSongId": "1759987862",
-        "trackNumber": 5,
-        "durationMs": 222040
-      },
-      {
-        "id": "album_1759987625_track_1759987864",
-        "title": "Us Mänsch (Tavolata Version)",
-        "appleSongId": "1759987864",
-        "trackNumber": 6,
-        "durationMs": 239320
-      },
-      {
-        "id": "album_1759987625_track_1759987867",
-        "title": "Musigg i dä Schwiiz (Tavolata Version)",
-        "appleSongId": "1759987867",
-        "trackNumber": 7,
-        "durationMs": 244667
-      },
-      {
-        "id": "album_1759987625_track_1759987870",
-        "title": "Alles scho mal ghört (Tavolata Version)",
-        "appleSongId": "1759987870",
-        "trackNumber": 8,
-        "durationMs": 228973
-      },
-      {
-        "id": "album_1759987625_track_1759987873",
-        "title": "Chef (Tavolata Version)",
-        "appleSongId": "1759987873",
-        "trackNumber": 9,
-        "durationMs": 228480
-      },
-      {
-        "id": "album_1759987625_track_1759987875",
-        "title": "Legändä & Heldä (Tavolata Version)",
-        "appleSongId": "1759987875",
-        "trackNumber": 10,
-        "durationMs": 217667
-      },
-      {
-        "id": "album_1759987625_track_1759988059",
-        "title": "Milchstrass (Tavolata Version)",
-        "appleSongId": "1759988059",
-        "trackNumber": 11,
-        "durationMs": 256080
-      }
-    ]
-  },
-  {
-    "id": "album_1721856727",
-    "title": "Brass aber herzlich ()",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Bligg",
-    "album": "Brass aber herzlich (Deluxe Edition)",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/52/51/b2/5251b2f2-42b3-66cc-b37c-28016d884b7b/196871703338.jpg/600x600bb.jpg",
-    "appleId": "1721856727",
-    "tracks": [
-      {
-        "id": "album_1721856727_track_1721856731",
-        "title": "Mit Paukä & Trompetä",
-        "appleSongId": "1721856731",
-        "trackNumber": 1,
-        "durationMs": 193640
-      },
-      {
-        "id": "album_1721856727_track_1721856918",
-        "title": "Chef (Version)",
-        "appleSongId": "1721856918",
-        "trackNumber": 2,
-        "durationMs": 216133
-      },
-      {
-        "id": "album_1721856727_track_1721856920",
-        "title": "Stadt / Land (YBBB Version)",
-        "appleSongId": "1721856920",
-        "trackNumber": 3,
-        "durationMs": 241093
-      },
-      {
-        "id": "album_1721856727_track_1721856923",
-        "title": "Romeo und Julia (YBBB Version)",
-        "appleSongId": "1721856923",
-        "trackNumber": 4,
-        "durationMs": 205693
-      },
-      {
-        "id": "album_1721856727_track_1721856925",
-        "title": "Okay (YBBB Version)",
-        "appleSongId": "1721856925",
-        "trackNumber": 5,
-        "durationMs": 253587
-      },
-      {
-        "id": "album_1721856727_track_1721856927",
-        "title": "Legändä & Heldä (YBBB Version)",
-        "appleSongId": "1721856927",
-        "trackNumber": 6,
-        "durationMs": 212493
-      },
-      {
-        "id": "album_1721856727_track_1721856928",
-        "title": "Spiegel (feat. Xavier Naidoo) [YBBB Version]",
-        "appleSongId": "1721856928",
-        "trackNumber": 7,
-        "durationMs": 229827
-      },
-      {
-        "id": "album_1721856727_track_1721856931",
-        "title": "Manhattan (YBBB Version)",
-        "appleSongId": "1721856931",
-        "trackNumber": 8,
-        "durationMs": 188040
-      },
-      {
-        "id": "album_1721856727_track_1721856935",
-        "title": "Annie May (YBBB Version)",
-        "appleSongId": "1721856935",
-        "trackNumber": 9,
-        "durationMs": 229547
-      },
-      {
-        "id": "album_1721856727_track_1721856937",
-        "title": "I'd Kill For You (feat. Jessy Howe) [YBBB Version]",
-        "appleSongId": "1721856937",
-        "trackNumber": 10,
-        "durationMs": 178027
-      },
-      {
-        "id": "album_1721856727_track_1721856941",
-        "title": "Abfahrt (Intermezzo)",
-        "appleSongId": "1721856941",
-        "trackNumber": 11,
-        "durationMs": 52133
-      },
-      {
-        "id": "album_1721856727_track_1721857099",
-        "title": "Fahr e Mal (YBBB Version)",
-        "appleSongId": "1721857099",
-        "trackNumber": 12,
-        "durationMs": 174213
-      },
-      {
-        "id": "album_1721856727_track_1721857109",
-        "title": "Rendezvous (YBBB Version)",
-        "appleSongId": "1721857109",
-        "trackNumber": 13,
-        "durationMs": 220573
-      },
-      {
-        "id": "album_1721856727_track_1721857113",
-        "title": "S.O.S (YBBB Version)",
-        "appleSongId": "1721857113",
-        "trackNumber": 14,
-        "durationMs": 223760
-      },
-      {
-        "id": "album_1721856727_track_1721857116",
-        "title": "Mit Paukä & Trompetä (Instrumental)",
-        "appleSongId": "1721857116",
-        "trackNumber": 15,
-        "durationMs": 183973
-      },
-      {
-        "id": "album_1721856727_track_1721857117",
-        "title": "Chef (YBBB Version - Instrumental)",
-        "appleSongId": "1721857117",
-        "trackNumber": 16,
-        "durationMs": 215187
-      },
-      {
-        "id": "album_1721856727_track_1721857119",
-        "title": "Stadt / Land (YBBB Version - Instrumental)",
-        "appleSongId": "1721857119",
-        "trackNumber": 17,
-        "durationMs": 239413
-      },
-      {
-        "id": "album_1721856727_track_1721857121",
-        "title": "Romeo und Julia (YBBB Version - Instrumental)",
-        "appleSongId": "1721857121",
-        "trackNumber": 18,
-        "durationMs": 204893
-      },
-      {
-        "id": "album_1721856727_track_1721857123",
-        "title": "Okay (YBBB Version - Instrumental)",
-        "appleSongId": "1721857123",
-        "trackNumber": 19,
-        "durationMs": 252520
-      },
-      {
-        "id": "album_1721856727_track_1721857126",
-        "title": "Legändä & Heldä (YBBB Version - Instrumental)",
-        "appleSongId": "1721857126",
-        "trackNumber": 20,
-        "durationMs": 210547
-      },
-      {
-        "id": "album_1721856727_track_1721857277",
-        "title": "Spiegel (feat. Xavier Naidoo) [YBBB Version - Instrumental]",
-        "appleSongId": "1721857277",
-        "trackNumber": 21,
-        "durationMs": 232080
-      },
-      {
-        "id": "album_1721856727_track_1721857281",
-        "title": "Manhattan (YBBB Version - Instrumental)",
-        "appleSongId": "1721857281",
-        "trackNumber": 22,
-        "durationMs": 186307
-      },
-      {
-        "id": "album_1721856727_track_1721857282",
-        "title": "Annie May (YBBB Version - Instrumental)",
-        "appleSongId": "1721857282",
-        "trackNumber": 23,
-        "durationMs": 227867
-      },
-      {
-        "id": "album_1721856727_track_1721857285",
-        "title": "I'd Kill For You (feat. Jessy Howe) [YBBB Version - Instrumental]",
-        "appleSongId": "1721857285",
-        "trackNumber": 24,
-        "durationMs": 177320
-      },
-      {
-        "id": "album_1721856727_track_1721857286",
-        "title": "Fahr e Mal (YBBB Version - Instrumental)",
-        "appleSongId": "1721857286",
-        "trackNumber": 25,
-        "durationMs": 225667
-      },
-      {
-        "id": "album_1721856727_track_1721857290",
-        "title": "Rendezvous (YBBB Version - Instrumental)",
-        "appleSongId": "1721857290",
-        "trackNumber": 26,
-        "durationMs": 220253
-      },
-      {
-        "id": "album_1721856727_track_1721857296",
-        "title": "S.O.S (YBBB Version - Instrumental)",
-        "appleSongId": "1721857296",
-        "trackNumber": 27,
-        "durationMs": 221627
-      }
-    ]
-  },
-  {
-    "id": "album_1628609463",
-    "title": "Finale",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Bligg",
-    "album": "Finale",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/5f/0f/ad/5f0fad14-fdaf-77d5-1b23-22f4b0d0f918/196589053480.jpg/600x600bb.jpg",
-    "appleId": "1628609463",
-    "tracks": [
-      {
-        "id": "album_1628609463_track_1628609676",
-        "title": "Berge versetze",
-        "appleSongId": "1628609676",
-        "trackNumber": 1,
-        "durationMs": 207400
-      },
-      {
-        "id": "album_1628609463_track_1628609681",
-        "title": "Jetzt mal ehrlich",
-        "appleSongId": "1628609681",
-        "trackNumber": 2,
-        "durationMs": 178187
-      },
-      {
-        "id": "album_1628609463_track_1628609684",
-        "title": "Mit dir",
-        "appleSongId": "1628609684",
-        "trackNumber": 3,
-        "durationMs": 212133
-      },
-      {
-        "id": "album_1628609463_track_1628609685",
-        "title": "Grau & Lila",
-        "appleSongId": "1628609685",
-        "trackNumber": 4,
-        "durationMs": 159667
-      },
-      {
-        "id": "album_1628609463_track_1628609689",
-        "title": "Mona Lisa",
-        "appleSongId": "1628609689",
-        "trackNumber": 5,
-        "durationMs": 196413
-      },
-      {
-        "id": "album_1628609463_track_1628609692",
-        "title": "Lebowski",
-        "appleSongId": "1628609692",
-        "trackNumber": 6,
-        "durationMs": 151750
-      },
-      {
-        "id": "album_1628609463_track_1628609694",
-        "title": "Roger",
-        "appleSongId": "1628609694",
-        "trackNumber": 7,
-        "durationMs": 166024
-      },
-      {
-        "id": "album_1628609463_track_1628609695",
-        "title": "Bin dänn mal Wäg",
-        "appleSongId": "1628609695",
-        "trackNumber": 8,
-        "durationMs": 166720
-      }
-    ]
-  },
-  {
-    "id": "album_1850418332",
-    "title": "HECKISTIIGER (feat. Tina Weirather, Michael Schweizer & Marc Berthod) - Single",
-    "kind": "album",
-    "service": "appleMusic",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/48/79/fc/4879fc3d-3ae5-29f1-b37c-fdf79876c556/7649995049415_3000.jpg/600x600bb.jpg",
-    "appleId": "1850418332",
-    "tracks": [
-      {
-        "id": "song_1850418335",
-        "title": "HECKISTIIGER (feat. Tina Weirather, Michael Schweizer & Marc Berthod)",
-        "appleSongId": "1850418335"
-      }
-    ],
-    "artist": "Discohelm",
-    "album": "HECKISTIIGER (feat. Tina Weirather, Michael Schweizer & Marc Berthod) - Single"
-  },
-  {
-    "id": "album_1713845538",
-    "title": "1989 (Taylor's Version) [Deluxe]",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Taylor Swift",
-    "album": "1989 (Taylor's Version) [Deluxe]",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8e/35/6c/8e356cc2-0be4-b83b-d29e-b578623df2ac/23UM1IM34052.rgb.jpg/600x600bb.jpg",
-    "appleId": "1713845538",
-    "tracks": [
-      {
-        "id": "album_1713845538_track_1713845554",
-        "title": "Welcome To New York (Taylor's Version)",
-        "appleSongId": "1713845554",
-        "trackNumber": 1,
-        "durationMs": 212600
-      },
-      {
-        "id": "album_1713845538_track_1713845737",
-        "title": "Blank Space (Taylor's Version)",
-        "appleSongId": "1713845737",
-        "trackNumber": 2,
-        "durationMs": 231833
-      },
-      {
-        "id": "album_1713845538_track_1713845746",
-        "title": "Style (Taylor's Version)",
-        "appleSongId": "1713845746",
-        "trackNumber": 3,
-        "durationMs": 231000
-      },
-      {
-        "id": "album_1713845538_track_1713845779",
-        "title": "Out Of The Woods (Taylor's Version)",
-        "appleSongId": "1713845779",
-        "trackNumber": 4,
-        "durationMs": 235800
-      },
-      {
-        "id": "album_1713845538_track_1713845784",
-        "title": "All You Had To Do Was Stay (Taylor's Version)",
-        "appleSongId": "1713845784",
-        "trackNumber": 5,
-        "durationMs": 193289
-      },
-      {
-        "id": "album_1713845538_track_1713845786",
-        "title": "Shake It Off (Taylor's Version)",
-        "appleSongId": "1713845786",
-        "trackNumber": 6,
-        "durationMs": 219209
-      },
-      {
-        "id": "album_1713845538_track_1713845994",
-        "title": "I Wish You Would (Taylor's Version)",
-        "appleSongId": "1713845994",
-        "trackNumber": 7,
-        "durationMs": 207650
-      },
-      {
-        "id": "album_1713845538_track_1713846092",
-        "title": "Bad Blood (Taylor's Version)",
-        "appleSongId": "1713846092",
-        "trackNumber": 8,
-        "durationMs": 211104
-      },
-      {
-        "id": "album_1713845538_track_1713846100",
-        "title": "Wildest Dreams (Taylor's Version)",
-        "appleSongId": "1713846100",
-        "trackNumber": 9,
-        "durationMs": 220433
-      },
-      {
-        "id": "album_1713845538_track_1713846103",
-        "title": "How You Get The Girl (Taylor's Version)",
-        "appleSongId": "1713846103",
-        "trackNumber": 10,
-        "durationMs": 247533
-      },
-      {
-        "id": "album_1713845538_track_1713846228",
-        "title": "This Love (Taylor’s Version)",
-        "appleSongId": "1713846228",
-        "trackNumber": 11,
-        "durationMs": 250100
-      },
-      {
-        "id": "album_1713845538_track_1713846232",
-        "title": "I Know Places (Taylor's Version)",
-        "appleSongId": "1713846232",
-        "trackNumber": 12,
-        "durationMs": 195700
-      },
-      {
-        "id": "album_1713845538_track_1713846238",
-        "title": "Clean (Taylor's Version)",
-        "appleSongId": "1713846238",
-        "trackNumber": 13,
-        "durationMs": 271000
-      },
-      {
-        "id": "album_1713845538_track_1713846243",
-        "title": "Wonderland (Taylor's Version)",
-        "appleSongId": "1713846243",
-        "trackNumber": 14,
-        "durationMs": 245567
-      },
-      {
-        "id": "album_1713845538_track_1713846248",
-        "title": "You Are In Love (Taylor's Version)",
-        "appleSongId": "1713846248",
-        "trackNumber": 15,
-        "durationMs": 267389
-      },
-      {
-        "id": "album_1713845538_track_1713846253",
-        "title": "New Romantics (Taylor's Version)",
-        "appleSongId": "1713846253",
-        "trackNumber": 16,
-        "durationMs": 230178
-      },
-      {
-        "id": "album_1713845538_track_1713846497",
-        "title": "\"Slut!\" (Taylor's Version) [From The Vault]",
-        "appleSongId": "1713846497",
-        "trackNumber": 17,
-        "durationMs": 180381
-      },
-      {
-        "id": "album_1713845538_track_1713846513",
-        "title": "Say Don't Go (Taylor's Version) [From The Vault]",
-        "appleSongId": "1713846513",
-        "trackNumber": 18,
-        "durationMs": 279833
-      },
-      {
-        "id": "album_1713845538_track_1713846523",
-        "title": "Now That We Don't Talk (Taylor's Version) [From The Vault]",
-        "appleSongId": "1713846523",
-        "trackNumber": 19,
-        "durationMs": 146437
-      },
-      {
-        "id": "album_1713845538_track_1713846651",
-        "title": "Suburban Legends (Taylor's Version) [From The Vault]",
-        "appleSongId": "1713846651",
-        "trackNumber": 20,
-        "durationMs": 171819
-      },
-      {
-        "id": "album_1713845538_track_1713846658",
-        "title": "Is It Over Now? (Taylor's Version) [From The Vault]",
-        "appleSongId": "1713846658",
-        "trackNumber": 21,
-        "durationMs": 229478
-      },
-      {
-        "id": "album_1713845538_track_1713846670",
-        "title": "Bad Blood (Taylor's Version) [feat. Kendrick Lamar]",
-        "appleSongId": "1713846670",
-        "trackNumber": 22,
-        "durationMs": 199773
-      }
-    ]
-  },
-  {
     "id": "album_1451412511",
     "title": "Chinder Musig Wält, Vol. 1",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Swissmom",
     "album": "Chinder Musig Wält, Vol. 1",
@@ -2473,275 +1839,6 @@
     ]
   },
   {
-    "id": "album_1844323304",
-    "title": "Ländler Tornado",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Heimatliebi",
-    "album": "Ländler Tornado",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/de/ed/f2/deedf2c1-1c9a-9149-1d6f-c0df8d063791/cover_4062851205078.jpg/600x600bb.jpg",
-    "appleId": "1844323304",
-    "tracks": [
-      {
-        "id": "album_1844323304_track_1844323308",
-        "title": "All mini Liebi",
-        "appleSongId": "1844323308",
-        "trackNumber": 1,
-        "durationMs": 202911
-      },
-      {
-        "id": "album_1844323304_track_1844323310",
-        "title": "Allei",
-        "appleSongId": "1844323310",
-        "trackNumber": 2,
-        "durationMs": 212767
-      },
-      {
-        "id": "album_1844323304_track_1844323312",
-        "title": "Feyfleiber",
-        "appleSongId": "1844323312",
-        "trackNumber": 3,
-        "durationMs": 169450
-      },
-      {
-        "id": "album_1844323304_track_1844323313",
-        "title": "Steinä",
-        "appleSongId": "1844323313",
-        "trackNumber": 4,
-        "durationMs": 169531
-      },
-      {
-        "id": "album_1844323304_track_1844323314",
-        "title": "Höch i d'Luft",
-        "appleSongId": "1844323314",
-        "trackNumber": 5,
-        "durationMs": 127229
-      },
-      {
-        "id": "album_1844323304_track_1844323315",
-        "title": "Schäri Schtäi Papeyr",
-        "appleSongId": "1844323315",
-        "trackNumber": 6,
-        "durationMs": 123517
-      },
-      {
-        "id": "album_1844323304_track_1844323317",
-        "title": "Gang mit em Wind",
-        "appleSongId": "1844323317",
-        "trackNumber": 7,
-        "durationMs": 182618
-      },
-      {
-        "id": "album_1844323304_track_1844323319",
-        "title": "Lah gah",
-        "appleSongId": "1844323319",
-        "trackNumber": 8,
-        "durationMs": 179455
-      },
-      {
-        "id": "album_1844323304_track_1844323502",
-        "title": "Sunne, Mond und Stärne",
-        "appleSongId": "1844323502",
-        "trackNumber": 9,
-        "durationMs": 166494
-      },
-      {
-        "id": "album_1844323304_track_1844323503",
-        "title": "Zum Glick",
-        "appleSongId": "1844323503",
-        "trackNumber": 10,
-        "durationMs": 159792
-      }
-    ]
-  },
-  {
-    "id": "album_1435894372",
-    "title": "Schnupf, Schnaps + Edelwyss (Enzian Edition)",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Trauffer",
-    "album": "Schnupf, Schnaps + Edelwyss (Enzian Edition)",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/1b/5e/26/1b5e2699-4939-38b3-21c2-d5f3f6349cb4/886447228609.jpg/600x600bb.jpg",
-    "appleId": "1435894372",
-    "tracks": [
-      {
-        "id": "album_1435894372_track_1435894376",
-        "title": "Alpufzug",
-        "appleSongId": "1435894376",
-        "trackNumber": 1,
-        "durationMs": 114151
-      },
-      {
-        "id": "album_1435894372_track_1435894377",
-        "title": "Dä mit de Chüeh",
-        "appleSongId": "1435894377",
-        "trackNumber": 2,
-        "durationMs": 205402
-      },
-      {
-        "id": "album_1435894372_track_1435894378",
-        "title": "Schnupf, Schnaps + Edelwyss",
-        "appleSongId": "1435894378",
-        "trackNumber": 3,
-        "durationMs": 212270
-      },
-      {
-        "id": "album_1435894372_track_1435894379",
-        "title": "Schärischnitt",
-        "appleSongId": "1435894379",
-        "trackNumber": 4,
-        "durationMs": 242112
-      },
-      {
-        "id": "album_1435894372_track_1435894380",
-        "title": "Geissepeter",
-        "appleSongId": "1435894380",
-        "trackNumber": 5,
-        "durationMs": 198577
-      },
-      {
-        "id": "album_1435894372_track_1435894662",
-        "title": "Liire",
-        "appleSongId": "1435894662",
-        "trackNumber": 6,
-        "durationMs": 230674
-      },
-      {
-        "id": "album_1435894372_track_1435894668",
-        "title": "Schacherseppli",
-        "appleSongId": "1435894668",
-        "trackNumber": 7,
-        "durationMs": 185448
-      },
-      {
-        "id": "album_1435894372_track_1435894671",
-        "title": "Alphorn + Ragete",
-        "appleSongId": "1435894671",
-        "trackNumber": 8,
-        "durationMs": 221269
-      },
-      {
-        "id": "album_1435894372_track_1435894673",
-        "title": "Obsi oder Nizi",
-        "appleSongId": "1435894673",
-        "trackNumber": 9,
-        "durationMs": 232043
-      },
-      {
-        "id": "album_1435894372_track_1435894675",
-        "title": "Bier + Cervelat",
-        "appleSongId": "1435894675",
-        "trackNumber": 10,
-        "durationMs": 195611
-      },
-      {
-        "id": "album_1435894372_track_1435894676",
-        "title": "Heldin",
-        "appleSongId": "1435894676",
-        "trackNumber": 11,
-        "durationMs": 217833
-      },
-      {
-        "id": "album_1435894372_track_1435894678",
-        "title": "Alpechalb",
-        "appleSongId": "1435894678",
-        "trackNumber": 12,
-        "durationMs": 207673
-      },
-      {
-        "id": "album_1435894372_track_1435894679",
-        "title": "Zickechrieg",
-        "appleSongId": "1435894679",
-        "trackNumber": 13,
-        "durationMs": 161901
-      },
-      {
-        "id": "album_1435894372_track_1435894680",
-        "title": "Rössli + Bären",
-        "appleSongId": "1435894680",
-        "trackNumber": 14,
-        "durationMs": 194985
-      },
-      {
-        "id": "album_1435894372_track_1435894683",
-        "title": "Alpzyt",
-        "appleSongId": "1435894683",
-        "trackNumber": 15,
-        "durationMs": 220885
-      },
-      {
-        "id": "album_1435894372_track_1435894684",
-        "title": "Superzucker Sexysummergroove",
-        "appleSongId": "1435894684",
-        "trackNumber": 1,
-        "durationMs": 196989
-      },
-      {
-        "id": "album_1435894372_track_1435894842",
-        "title": "Weschtschwiiz",
-        "appleSongId": "1435894842",
-        "trackNumber": 2,
-        "durationMs": 205097
-      },
-      {
-        "id": "album_1435894372_track_1435894846",
-        "title": "Meh chani nümme gäh",
-        "appleSongId": "1435894846",
-        "trackNumber": 3,
-        "durationMs": 229366
-      },
-      {
-        "id": "album_1435894372_track_1435894851",
-        "title": "Himmelbett",
-        "appleSongId": "1435894851",
-        "trackNumber": 4,
-        "durationMs": 241439
-      },
-      {
-        "id": "album_1435894372_track_1435894852",
-        "title": "Chartehuus",
-        "appleSongId": "1435894852",
-        "trackNumber": 5,
-        "durationMs": 211577
-      },
-      {
-        "id": "album_1435894372_track_1435894861",
-        "title": "Gump i See",
-        "appleSongId": "1435894861",
-        "trackNumber": 6,
-        "durationMs": 243286
-      },
-      {
-        "id": "album_1435894372_track_1435894862",
-        "title": "C'est la vie",
-        "appleSongId": "1435894862",
-        "trackNumber": 7,
-        "durationMs": 206778
-      },
-      {
-        "id": "album_1435894372_track_1435894863",
-        "title": "Weisch du wär",
-        "appleSongId": "1435894863",
-        "trackNumber": 8,
-        "durationMs": 234477
-      },
-      {
-        "id": "album_1435894372_track_1435894865",
-        "title": "Räge Reggae",
-        "appleSongId": "1435894865",
-        "trackNumber": 9,
-        "durationMs": 207884
-      },
-      {
-        "id": "album_1435894372_track_1435894866",
-        "title": "Filmkuss",
-        "appleSongId": "1435894866",
-        "trackNumber": 10,
-        "durationMs": 203789
-      }
-    ]
-  },
-  {
     "id": "album_1842943620",
     "title": "De Ris im Zaubergarte",
     "kind": "audiobook",
@@ -2848,263 +1945,6 @@
         "appleSongId": "1842943947",
         "trackNumber": 14,
         "durationMs": 188263
-      }
-    ]
-  },
-  {
-    "id": "album_1443101198",
-    "title": "Stefanie Heinzmann (Deluxe Edition)",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Stefanie Heinzmann",
-    "album": "Stefanie Heinzmann (Deluxe Edition)",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/37/e7/26/37e726d7-d756-4282-a9a5-b4f527e92d7c/00602527966113.rgb.jpg/600x600bb.jpg",
-    "appleId": "1443101198",
-    "tracks": []
-  },
-  {
-    "id": "album_1806189274",
-    "title": "Rise and Shine Worship",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Michael Kelly",
-    "album": "Rise and Shine Worship",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/20/25/de/2025ded8-4bcb-9168-36e1-730cc8513e2b/000736012353.png/600x600bb.jpg",
-    "appleId": "1806189274",
-    "tracks": [
-      {
-        "id": "album_1806189274_track_1806189275",
-        "title": "You Know Me Completely",
-        "appleSongId": "1806189275",
-        "trackNumber": 1,
-        "durationMs": 208982
-      },
-      {
-        "id": "album_1806189274_track_1806189276",
-        "title": "Unbroken Grace",
-        "appleSongId": "1806189276",
-        "trackNumber": 2,
-        "durationMs": 204097
-      },
-      {
-        "id": "album_1806189274_track_1806189277",
-        "title": "Showered in Grace",
-        "appleSongId": "1806189277",
-        "trackNumber": 3,
-        "durationMs": 187977
-      },
-      {
-        "id": "album_1806189274_track_1806189278",
-        "title": "Saved by Grace",
-        "appleSongId": "1806189278",
-        "trackNumber": 4,
-        "durationMs": 143687
-      },
-      {
-        "id": "album_1806189274_track_1806189279",
-        "title": "Rise in Grace",
-        "appleSongId": "1806189279",
-        "trackNumber": 5,
-        "durationMs": 189374
-      },
-      {
-        "id": "album_1806189274_track_1806189280",
-        "title": "Lift Us Higher",
-        "appleSongId": "1806189280",
-        "trackNumber": 6,
-        "durationMs": 232022
-      },
-      {
-        "id": "album_1806189274_track_1806189281",
-        "title": "Lift Us High, Oh Lord",
-        "appleSongId": "1806189281",
-        "trackNumber": 7,
-        "durationMs": 174075
-      },
-      {
-        "id": "album_1806189274_track_1806189282",
-        "title": "Chains Unbound",
-        "appleSongId": "1806189282",
-        "trackNumber": 8,
-        "durationMs": 198847
-      },
-      {
-        "id": "album_1806189274_track_1806189283",
-        "title": "Holy Velocity",
-        "appleSongId": "1806189283",
-        "trackNumber": 9,
-        "durationMs": 217341
-      },
-      {
-        "id": "album_1806189274_track_1806189284",
-        "title": "Holy Fire",
-        "appleSongId": "1806189284",
-        "trackNumber": 10,
-        "durationMs": 163753
-      },
-      {
-        "id": "album_1806189274_track_1806189286",
-        "title": "Hevenly Lens",
-        "appleSongId": "1806189286",
-        "trackNumber": 11,
-        "durationMs": 174438
-      },
-      {
-        "id": "album_1806189274_track_1806189287",
-        "title": "Glitchin' on the Praise",
-        "appleSongId": "1806189287",
-        "trackNumber": 12,
-        "durationMs": 148719
-      },
-      {
-        "id": "album_1806189274_track_1806189288",
-        "title": "Divine Frequencies",
-        "appleSongId": "1806189288",
-        "trackNumber": 13,
-        "durationMs": 134916
-      },
-      {
-        "id": "album_1806189274_track_1806189289",
-        "title": "Family First",
-        "appleSongId": "1806189289",
-        "trackNumber": 14,
-        "durationMs": 193706
-      },
-      {
-        "id": "album_1806189274_track_1806189410",
-        "title": "Faithful Light",
-        "appleSongId": "1806189410",
-        "trackNumber": 15,
-        "durationMs": 188840
-      },
-      {
-        "id": "album_1806189274_track_1806189411",
-        "title": "Fruits of the Spirt Guide Us",
-        "appleSongId": "1806189411",
-        "trackNumber": 16,
-        "durationMs": 252720
-      }
-    ]
-  },
-  {
-    "id": "album_1601760165",
-    "title": "Never Really Alone - Single",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Michael Kelly",
-    "album": "Never Really Alone - Single",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/6c/17/61/6c1761e2-6161-6834-6764-e9a09997ce3a/artwork.jpg/600x600bb.jpg",
-    "appleId": "1601760165",
-    "tracks": [
-      {
-        "id": "album_1601760165_track_1601760166",
-        "title": "Never Really Alone",
-        "appleSongId": "1601760166",
-        "trackNumber": 1,
-        "durationMs": 329166
-      }
-    ]
-  },
-  {
-    "id": "album_573086977",
-    "title": "Cross the River Home",
-    "kind": "album",
-    "service": "appleMusic",
-    "artist": "Michael Kelly",
-    "album": "Cross the River Home",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/6c/ac/f4/6cacf472-5f00-88ae-d9ac-c310bed375b0/700261368658.jpg/600x600bb.jpg",
-    "appleId": "573086977",
-    "tracks": [
-      {
-        "id": "album_573086977_track_573086985",
-        "title": "Cowboy",
-        "appleSongId": "573086985",
-        "trackNumber": 1,
-        "durationMs": 219680
-      },
-      {
-        "id": "album_573086977_track_573086986",
-        "title": "Dancer",
-        "appleSongId": "573086986",
-        "trackNumber": 2,
-        "durationMs": 178920
-      },
-      {
-        "id": "album_573086977_track_573086987",
-        "title": "Daydream",
-        "appleSongId": "573086987",
-        "trackNumber": 3,
-        "durationMs": 212133
-      },
-      {
-        "id": "album_573086977_track_573086988",
-        "title": "What's Your Heart Say",
-        "appleSongId": "573086988",
-        "trackNumber": 4,
-        "durationMs": 184987
-      },
-      {
-        "id": "album_573086977_track_573087069",
-        "title": "Light in the Window",
-        "appleSongId": "573087069",
-        "trackNumber": 5,
-        "durationMs": 168787
-      },
-      {
-        "id": "album_573086977_track_573087070",
-        "title": "Daffodils",
-        "appleSongId": "573087070",
-        "trackNumber": 6,
-        "durationMs": 214067
-      },
-      {
-        "id": "album_573086977_track_573087071",
-        "title": "Who Found Who",
-        "appleSongId": "573087071",
-        "trackNumber": 7,
-        "durationMs": 245093
-      },
-      {
-        "id": "album_573086977_track_573087072",
-        "title": "Slipping Away",
-        "appleSongId": "573087072",
-        "trackNumber": 8,
-        "durationMs": 160347
-      },
-      {
-        "id": "album_573086977_track_573087073",
-        "title": "Waterman",
-        "appleSongId": "573087073",
-        "trackNumber": 9,
-        "durationMs": 268133
-      },
-      {
-        "id": "album_573086977_track_573087074",
-        "title": "Feather River Canyon",
-        "appleSongId": "573087074",
-        "trackNumber": 10,
-        "durationMs": 189800
-      },
-      {
-        "id": "album_573086977_track_573087076",
-        "title": "Cadillac",
-        "appleSongId": "573087076",
-        "trackNumber": 11,
-        "durationMs": 256427
-      },
-      {
-        "id": "album_573086977_track_573087078",
-        "title": "Maybe Forever",
-        "appleSongId": "573087078",
-        "trackNumber": 12,
-        "durationMs": 313987
-      },
-      {
-        "id": "album_573086977_track_573087081",
-        "title": "Cross the River Home",
-        "appleSongId": "573087081",
-        "trackNumber": 13,
-        "durationMs": 215240
       }
     ]
   },
@@ -3770,7 +2610,7 @@
   {
     "id": "album_1274154966",
     "title": "De Pingu stellt sich chrank",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu stellt sich chrank",
@@ -3781,7 +2621,7 @@
   {
     "id": "album_1274155246",
     "title": "De Pingu als Chuchichef",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu als Chuchichef",
@@ -3792,7 +2632,7 @@
   {
     "id": "album_1274154641",
     "title": "De Pingu a dä Chilbi",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu a dä Chilbi",
@@ -3803,7 +2643,7 @@
   {
     "id": "album_1274150876",
     "title": "De Pingu und Pinga alei deheim",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu und Pinga alei deheim",
@@ -3814,7 +2654,7 @@
   {
     "id": "album_1274157795",
     "title": "De Pingu striitet mit de Mueter",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu striitet mit de Mueter",
@@ -3825,7 +2665,7 @@
   {
     "id": "album_1274153309",
     "title": "Pingu Muess is Bett / Macht Musig",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "Pingu Muess is Bett / Macht Musig",
@@ -3836,7 +2676,7 @@
   {
     "id": "album_1274158068",
     "title": "De Pingu als Pilot",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu als Pilot",
@@ -3847,7 +2687,7 @@
   {
     "id": "album_1274155298",
     "title": "De Pingu ärgeret d'Pinga",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu ärgeret d'Pinga",
@@ -3858,7 +2698,7 @@
   {
     "id": "album_1274151493",
     "title": "De Pingu als Babysitter",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu als Babysitter",
@@ -3869,7 +2709,7 @@
   {
     "id": "album_1274132870",
     "title": "D'Familie Pingu fiiret Wiehnacht",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "D'Familie Pingu fiiret Wiehnacht",
@@ -3880,7 +2720,7 @@
   {
     "id": "album_1274154093",
     "title": "Pingus Usflug",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "Pingus Usflug",
@@ -3891,7 +2731,7 @@
   {
     "id": "album_1274150517",
     "title": "De Pingu als Zauberkünschtler",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu als Zauberkünschtler",
@@ -3902,7 +2742,7 @@
   {
     "id": "album_1274154816",
     "title": "De Pingu im Paradies",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu im Paradies",
@@ -3913,7 +2753,7 @@
   {
     "id": "album_1274152889",
     "title": "De Pingu spielt Superman",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu spielt Superman",
@@ -3924,7 +2764,7 @@
   {
     "id": "album_1274140821",
     "title": "De Opa isch chrank",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Opa isch chrank",
@@ -3935,7 +2775,7 @@
   {
     "id": "album_1274155858",
     "title": "De Pingu hät frei",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu hät frei",
@@ -3946,7 +2786,7 @@
   {
     "id": "album_1274154086",
     "title": "De Pingu baut en Turm",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu baut en Turm",
@@ -3957,7 +2797,7 @@
   {
     "id": "album_1274155598",
     "title": "En dringende Fall",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "En dringende Fall",
@@ -3968,7 +2808,7 @@
   {
     "id": "album_1274152101",
     "title": "De Pingu und s'Spielzüg",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu und s'Spielzüg",
@@ -3979,7 +2819,7 @@
   {
     "id": "album_1274153964",
     "title": "De Pingu gaht go Fische",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu gaht go Fische",
@@ -3990,7 +2830,7 @@
   {
     "id": "album_1274153234",
     "title": "De Zirkus isch da!",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Zirkus isch da!",
@@ -4001,7 +2841,7 @@
   {
     "id": "album_1274155937",
     "title": "De Pingu het en Idee",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu het en Idee",
@@ -4012,7 +2852,7 @@
   {
     "id": "album_1274154399",
     "title": "De Pingu zeigt was er chan",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu zeigt was er chan",
@@ -4023,7 +2863,7 @@
   {
     "id": "album_1274156461",
     "title": "De Pingu brucht Hilf",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu brucht Hilf",
@@ -4034,7 +2874,7 @@
   {
     "id": "album_1274154467",
     "title": "De Pingu als Fotograf",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu als Fotograf",
@@ -4045,7 +2885,7 @@
   {
     "id": "album_1274154965",
     "title": "De Pingu rumt Schnee weg",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu rumt Schnee weg",
@@ -4056,7 +2896,7 @@
   {
     "id": "album_1274154059",
     "title": "De Pingu als Maler",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu als Maler",
@@ -4067,7 +2907,7 @@
   {
     "id": "album_1274155014",
     "title": "De Pingu uf Reise",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu uf Reise",
@@ -4078,7 +2918,7 @@
   {
     "id": "album_1274157838",
     "title": "De Pingu und d'Postkarte",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu und d'Postkarte",
@@ -4089,7 +2929,7 @@
   {
     "id": "album_931579880",
     "title": "Pingu 11 - De Pingu und Sini Streich",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "Pingu 11 - De Pingu und Sini Streich",
@@ -4100,7 +2940,7 @@
   {
     "id": "album_981049250",
     "title": "Pingu 16 - De schlaui Pingu",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "Pingu 16 - De schlaui Pingu",
@@ -4111,7 +2951,7 @@
   {
     "id": "album_1274157658",
     "title": "De Pingu het Geburtstag",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu het Geburtstag",
@@ -4122,7 +2962,7 @@
   {
     "id": "album_1274152011",
     "title": "De Pingu spielt falsch",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu spielt falsch",
@@ -4133,7 +2973,7 @@
   {
     "id": "album_1274151366",
     "title": "De Pingu bim Iishockeyschpiil",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu bim Iishockeyschpiil",
@@ -4144,7 +2984,7 @@
   {
     "id": "album_1274155857",
     "title": "Em Pingu sini Streich",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "Em Pingu sini Streich",
@@ -4155,7 +2995,7 @@
   {
     "id": "album_1274157208",
     "title": "De Pingu und d'Vogelmuetter",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu und d'Vogelmuetter",
@@ -4166,7 +3006,7 @@
   {
     "id": "album_1274152970",
     "title": "De Pingu und s'Ei: Brüten und Geburt - EP",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Pingu",
     "album": "De Pingu und s'Ei: Brüten und Geburt - EP",
@@ -4177,7 +3017,7 @@
   {
     "id": "album_1483671596",
     "title": "Globi hilft der Polizei",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Globi",
     "album": "Globi hilft der Polizei",
@@ -4392,7 +3232,7 @@
   {
     "id": "album_1483530843",
     "title": "Globi bei der Rettungsflugwacht",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Globi",
     "album": "Globi bei der Rettungsflugwacht",
@@ -4579,7 +3419,7 @@
   {
     "id": "album_1483530167",
     "title": "Globi, der schlaue Bauer",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Globi",
     "album": "Globi, der schlaue Bauer",
@@ -4822,7 +3662,7 @@
   {
     "id": "album_1615252210",
     "title": "Globi und die Tiere im Zoo",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Globi",
     "album": "Globi und die Tiere im Zoo",
@@ -5030,7 +3870,7 @@
   {
     "id": "album_1483664441",
     "title": "Globis Zoo",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Globi",
     "album": "Globis Zoo",
@@ -5266,7 +4106,7 @@
   {
     "id": "album_1483672125",
     "title": "Globi und die Bahn",
-    "kind": "album",
+    "kind": "audiobook",
     "service": "appleMusic",
     "artist": "Globi",
     "album": "Globi und die Bahn",
@@ -5734,5 +4574,346 @@
         "durationMs": 160339
       }
     ]
+  },
+  {
+    "id": "album_1274151435",
+    "title": "De Pingu lauft vo deheim weg",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu lauft vo deheim weg",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/07/28/bf/0728bff1-dc7c-9ddb-e9e3-41f7080d4bba/886446547503.jpg/600x600bb.jpg",
+    "appleId": "1274151435",
+    "tracks": []
+  },
+  {
+    "id": "album_1274157720",
+    "title": "De Pingu bim Schlitteränne / D'Pinga gaht verloore",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu bim Schlitteränne / D'Pinga gaht verloore",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/58/95/98/58959886-0a8a-a7c7-474a-29a98f82c381/886446547459.jpg/600x600bb.jpg",
+    "appleId": "1274157720",
+    "tracks": []
+  },
+  {
+    "id": "album_1274154400",
+    "title": "De Pingu versteckt en Brief",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu versteckt en Brief",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/0a/91/ca/0a91ca3a-21ae-d3d4-206c-7f6b70bf4b73/886446547909.jpg/600x600bb.jpg",
+    "appleId": "1274154400",
+    "tracks": []
+  },
+  {
+    "id": "album_1274153326",
+    "title": "De Pingu hilft Poscht Verteile",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu hilft Poscht Verteile",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/32/f3/37/32f33756-2266-c0b9-5ea2-517603e2eb61/886446547367.jpg/600x600bb.jpg",
+    "appleId": "1274153326",
+    "tracks": []
+  },
+  {
+    "id": "album_1274151695",
+    "title": "Em Pingu sini Essensgschicht",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Em Pingu sini Essensgschicht",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/1c/aa/8c/1caa8c02-4406-28a9-47fd-e6d0db965c4d/886446547916.jpg/600x600bb.jpg",
+    "appleId": "1274151695",
+    "tracks": []
+  },
+  {
+    "id": "album_1274155116",
+    "title": "De Pingu und d'Pingi uf em Iis - EP",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu und d'Pingi uf em Iis - EP",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/05/65/c6/0565c6c6-04a4-d0b2-58e9-fbcf2eb1ad33/886446547794.jpg/600x600bb.jpg",
+    "appleId": "1274155116",
+    "tracks": []
+  },
+  {
+    "id": "album_1274152040",
+    "title": "De Pingu zieht s'grossi Los",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu zieht s'grossi Los",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/d1/51/0c/d1510c5f-2606-5ffe-826b-7d14235ba79e/886446549248.jpg/600x600bb.jpg",
+    "appleId": "1274152040",
+    "tracks": []
+  },
+  {
+    "id": "album_1274153235",
+    "title": "Schöni Bescherig",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Schöni Bescherig",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/ca/a6/37/caa63795-fc57-3526-7565-0d0a0b177e82/886446547831.jpg/600x600bb.jpg",
+    "appleId": "1274153235",
+    "tracks": []
+  },
+  {
+    "id": "album_1274151697",
+    "title": "De Pingu spielt Curling",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu spielt Curling",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/c7/8e/93/c78e937f-73d0-4bbe-d8fb-58e045dde0f8/886446547770.jpg/600x600bb.jpg",
+    "appleId": "1274151697",
+    "tracks": []
+  },
+  {
+    "id": "album_1274157203",
+    "title": "De Pingu und die zerbrochnig Vase",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu und die zerbrochnig Vase",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/b3/88/1e/b3881e18-5069-33dc-1129-636b2ee91c22/886446547558.jpg/600x600bb.jpg",
+    "appleId": "1274157203",
+    "tracks": []
+  },
+  {
+    "id": "album_1274157933",
+    "title": "De Pingu und d'Fläscheposcht",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu und d'Fläscheposcht",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/31/be/08/31be080b-818c-b77b-15f3-0ecccc1bb0f2/886446547589.jpg/600x600bb.jpg",
+    "appleId": "1274157933",
+    "tracks": []
+  },
+  {
+    "id": "album_1274155450",
+    "title": "De Pingu fischt um d'Wett",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu fischt um d'Wett",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/b6/d4/d7/b6d4d7d7-f86c-374c-2ef6-cc46c7ad900b/886446547602.jpg/600x600bb.jpg",
+    "appleId": "1274155450",
+    "tracks": []
+  },
+  {
+    "id": "album_1274157585",
+    "title": "Em Pingu sin Museumsbsuech",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Em Pingu sin Museumsbsuech",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/1c/25/71/1c2571e8-405b-72b3-da3d-7b5b56e938dc/886446547756.jpg/600x600bb.jpg",
+    "appleId": "1274157585",
+    "tracks": []
+  },
+  {
+    "id": "album_1274154087",
+    "title": "De Pingu hilft em Drehorgelmaa",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu hilft em Drehorgelmaa",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/7b/75/05/7b75052e-03f6-be7f-a119-13df635c1429/886446547527.jpg/600x600bb.jpg",
+    "appleId": "1274154087",
+    "tracks": []
+  },
+  {
+    "id": "album_1274157119",
+    "title": "De Pingu wird gwarnt",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu wird gwarnt",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/5d/19/b6/5d19b687-7153-c62f-f885-2c111937170f/886446547961.jpg/600x600bb.jpg",
+    "appleId": "1274157119",
+    "tracks": []
+  },
+  {
+    "id": "album_1274151923",
+    "title": "De Pingu bout en Schneemaa",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "De Pingu bout en Schneemaa",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/d8/23/31/d823316f-1553-82b7-a786-1c41790a7f8e/886446547763.jpg/600x600bb.jpg",
+    "appleId": "1274151923",
+    "tracks": []
+  },
+  {
+    "id": "album_949843365",
+    "title": "Pingu 12 - De Pingu de Frächdachs",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu 12 - De Pingu de Frächdachs",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/42/a2/3a/42a23af8-78a8-0225-66dd-6013e607099c/886444703611.jpg/600x600bb.jpg",
+    "appleId": "949843365",
+    "tracks": []
+  },
+  {
+    "id": "album_949842362",
+    "title": "Pingu 13 - De Pingu unterwägs 1",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu 13 - De Pingu unterwägs 1",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/ff/16/c5/ff16c5a9-8911-71f6-d646-575c08e866ce/886444703635.jpg/600x600bb.jpg",
+    "appleId": "949842362",
+    "tracks": []
+  },
+  {
+    "id": "album_389374561",
+    "title": "Pingu, Folge 1 - Pingu und sini Familie",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu, Folge 1 - Pingu und sini Familie",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/7b/af/0b/7baf0b31-b12d-b879-2ed9-912440a8cae6/mzi.auuvzczh.jpg/600x600bb.jpg",
+    "appleId": "389374561",
+    "tracks": []
+  },
+  {
+    "id": "album_389423235",
+    "title": "Pingu 4 - Pingu de Schlaumeier",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu 4 - Pingu de Schlaumeier",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/c0/41/87/mzi.gawtmucw.jpg/600x600bb.jpg",
+    "appleId": "389423235",
+    "tracks": []
+  },
+  {
+    "id": "album_389372353",
+    "title": "Pingu 3 - Pingu de Lusbueb",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu 3 - Pingu de Lusbueb",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/df/8f/ce/mzi.eybcpxdt.jpg/600x600bb.jpg",
+    "appleId": "389372353",
+    "tracks": []
+  },
+  {
+    "id": "album_389375605",
+    "title": "Pingu, Folge 2 - Pingu und sini Fründ",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu, Folge 2 - Pingu und sini Fründ",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/dd/61/7f/mzi.cktbalzd.jpg/600x600bb.jpg",
+    "appleId": "389375605",
+    "tracks": []
+  },
+  {
+    "id": "album_904891407",
+    "title": "Pingu 9 - De Pingu fiiret es Fäscht",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu 9 - De Pingu fiiret es Fäscht",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/e3/e3/3d/e3e33d69-2a3e-68aa-6af3-6a7aac036140/886444703598.jpg/600x600bb.jpg",
+    "appleId": "904891407",
+    "tracks": []
+  },
+  {
+    "id": "album_904894522",
+    "title": "Pingu 8 - De Pingu und s Iis",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu 8 - De Pingu und s Iis",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/8c/8b/21/8c8b2170-204b-ba35-5cd0-35cd5557940e/886444703574.jpg/600x600bb.jpg",
+    "appleId": "904894522",
+    "tracks": []
+  },
+  {
+    "id": "album_931517465",
+    "title": "Pingu 10 - De Pingu uf Reise",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu 10 - De Pingu uf Reise",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music5/v4/af/66/21/af66215f-e285-4877-c7b7-d8af834afb1e/886444703604.jpg/600x600bb.jpg",
+    "appleId": "931517465",
+    "tracks": []
+  },
+  {
+    "id": "album_981050444",
+    "title": "Pingu 17 - De Pingu spielt",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu 17 - De Pingu spielt",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/cf/bc/73/cfbc73b1-cc05-bcc3-cc8e-dd8a2aa1128b/886444703673.jpg/600x600bb.jpg",
+    "appleId": "981050444",
+    "tracks": []
+  },
+  {
+    "id": "album_959882404",
+    "title": "Pingu 14 - De Pingu unterwägs 2",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu 14 - De Pingu unterwägs 2",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music1/v4/52/c8/ed/52c8edc6-2296-333b-7df7-26b3d69c7a29/dj.oztncubz.jpg/600x600bb.jpg",
+    "appleId": "959882404",
+    "tracks": []
+  },
+  {
+    "id": "album_389375246",
+    "title": "Pingu, Folge 7 - Pingu als Künstler",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu, Folge 7 - Pingu als Künstler",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/60/85/79/mzi.sfybnchj.jpg/600x600bb.jpg",
+    "appleId": "389375246",
+    "tracks": []
+  },
+  {
+    "id": "album_959888225",
+    "title": "Pingu 15 - De Pingu hät en Job",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu 15 - De Pingu hät en Job",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music7/v4/19/8a/f0/198af0c5-693d-04e3-a1c5-f8d011d63c7f/dj.mpsvlecr.jpg/600x600bb.jpg",
+    "appleId": "959888225",
+    "tracks": []
+  },
+  {
+    "id": "album_389376299",
+    "title": "Pingu, Folge 5 - Pingu und D'Mueter",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu, Folge 5 - Pingu und D'Mueter",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/b1/67/fb/mzi.tzfhzxfa.jpg/600x600bb.jpg",
+    "appleId": "389376299",
+    "tracks": []
+  },
+  {
+    "id": "album_389374417",
+    "title": "Pingu 6 - Pingu und sini Erläbniss",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Pingu",
+    "album": "Pingu 6 - Pingu und sini Erläbniss",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/48/bf/00/mzi.ujeijgow.jpg/600x600bb.jpg",
+    "appleId": "389374417",
+    "tracks": []
   }
 ]
