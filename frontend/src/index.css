@@ -35,6 +35,13 @@ body {
 /* Alle Elemente erben die weiße Textfarbe */
 * {
   color: inherit;
+  /* Verhindert Textauswahl (für Touch-Geräte) - mit !important für inline Styles */
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  /* Verhindert Touch-Callout-Menü auf iOS */
+  -webkit-touch-callout: none !important;
 }
 
 h1 {

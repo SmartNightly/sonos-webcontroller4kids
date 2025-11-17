@@ -17,7 +17,7 @@
     "Kinderzimmer",
     "Spielzimmer"
   ],
-  "defaultRoom": "Kinderzimmer",
+  "defaultRoom": "Büro",
   "showShuffleRepeat": false,
   "roomIcons": {
     "Kinderzimmer": "🛏️ 👦🏼",

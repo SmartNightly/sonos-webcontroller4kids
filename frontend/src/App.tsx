@@ -455,6 +455,15 @@ useEffect(() => {
   const renderPlayerOverlay = () => {
     const room = selectedRoom
     
+    // Cover-URL ermitteln: Primär aus trackModeAlbum, alternativ Album-Name in media suchen
+    let coverUrl: string | undefined
+    if (trackModeAlbum?.coverUrl) {
+      coverUrl = trackModeAlbum.coverUrl
+    } else if (currentTrack?.album) {
+      const foundAlbum = media.find(m => m.album === currentTrack.album)
+      coverUrl = foundAlbum?.coverUrl
+    }
+    
     return (
       <div 
         style={{
@@ -463,8 +472,17 @@ useEffect(() => {
           opacity: playerOpen ? 1 : 0,
         }}
       >
-        {/* Player Controls - Single Row */}
+        {/* Player Controls - Row mit Cover links */}
         <div style={styles.playerControls}>
+          {/* Links: Album Cover */}
+          {coverUrl && (
+            <img 
+              src={coverUrl} 
+              alt="Cover" 
+              style={styles.playerCover}
+            />
+          )}
+          
           <div style={styles.playerSingleRow}>
             {/* Left: Shuffle & Repeat (invisible placeholders if disabled) */}
             <button
@@ -624,48 +642,60 @@ useEffect(() => {
         {renderRoomOverlay()}
         {renderPlayerOverlay()}
 
-        <div style={styles.albumDetailViewContainer}>
-          {/* Album Cover */}
-          <img
-            src={album.coverUrl}
-            alt={album.title}
-            style={styles.albumDetailViewCover}
-          />
-          
-          {/* Album Info */}
-          <div style={styles.albumDetailViewInfo}>
-            <div style={styles.albumDetailViewTitle}>{album.title}</div>
-            {album.artist && (
-              <div style={styles.albumDetailViewArtist}>{album.artist}</div>
-            )}
+        <div style={styles.albumDetailContainer}>
+          {/* Links: Cover + Info (wie in Tracklist-Ansicht) */}
+          <div style={styles.albumDetailLeft}>
+            <img
+              src={album.coverUrl}
+              alt={album.title}
+              style={styles.albumDetailCover}
+            />
+            <div style={styles.albumDetailInfo}>
+              <div style={styles.albumDetailTitle}>
+                <span style={{ fontWeight: 'bold' }}>{album.title}</span>
+                {album.artist && <span style={{ fontWeight: 'normal' }}> - {album.artist}</span>}
+              </div>
+            </div>
           </div>
-
-          {/* Großer Play Button */}
-          <button
-            style={styles.albumDetailViewPlayButton}
-            onClick={async () => {
-              await playAlbum(album)
-              setPlaying(true)
-              setAlbumDetailView(null) // Schließe Detailansicht nach Start
-            }}
-            disabled={busy}
-          >
-            <div style={styles.albumDetailViewPlayIcon}>▶</div>
-            <div style={styles.albumDetailViewPlayText}>Abspielen</div>
-          </button>
-
-          {/* Optional: Tracklist Button (wenn Tracks vorhanden) */}
-          {hasTracksToShow && (
+          
+          {/* Rechts: Play-Button oben, dann optional Tracklist */}
+          <div style={styles.albumDetailRight}>
+            {/* Großer Play Button oben */}
             <button
-              style={styles.albumDetailViewTracklistButton}
-              onClick={() => {
-                setSelectedAlbum(album)
+              style={styles.albumDetailViewPlayButton}
+              onClick={async () => {
+                await playAlbum(album)
+                setPlaying(true)
                 setAlbumDetailView(null)
               }}
+              disabled={busy}
             >
-              Trackliste anzeigen
+              <div style={styles.albumDetailViewPlayIcon}>▶</div>
+              <div style={styles.albumDetailViewPlayText}>Abspielen</div>
             </button>
-          )}
+
+            {/* Tracklist unterhalb Play-Button (wenn aktiviert) */}
+            {hasTracksToShow && (
+              <div style={styles.albumDetailTracks}>
+                {tracks.map(t => (
+                  <button
+                    key={t.id}
+                    style={styles.trackRowCompact}
+                    onClick={() => playTrack(album, t)}
+                    disabled={busy}
+                  >
+                    <div style={styles.trackNumberCompact}>
+                      {t.trackNumber ?? '•'}
+                    </div>
+                    <div style={styles.trackTitleCompact}>{t.title}</div>
+                    <div style={styles.trackDurationCompact}>
+                      {t.durationMs ? formatDuration(t.durationMs) : ''}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     )
@@ -1497,15 +1527,19 @@ const styles: Record<string, React.CSSProperties> = {
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
+    userSelect: 'none',
+    WebkitUserSelect: 'none',
   },
   title: {
     fontSize: '1.2rem',
     margin: '0 0 8px 0',
     textAlign: 'center',
+    userSelect: 'none',
   },
   titleSmall: {
     fontSize: '1rem',
     margin: '0 0 4px 0',
+    userSelect: 'none',
     textAlign: 'left',
   },
   nowPlaying: {
@@ -1837,6 +1871,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: 8,
+    flex: 1,
   },
   playerMainButton: {
     padding: '16px 24px',
@@ -1965,8 +2000,16 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: '#111',
     borderRadius: 8,
     display: 'flex',
-    flexDirection: 'column',
-    gap: 8,
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center',
+  },
+  playerCover: {
+    width: '100px',
+    height: '100px',
+    borderRadius: 8,
+    objectFit: 'cover' as const,
+    flexShrink: 0,
   },
   playerRow: {
     display: 'flex',
@@ -1998,72 +2041,38 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
   },
 
-  // Kinderfreundliche Album-Detailansicht
-  albumDetailViewContainer: {
+  // Kinderfreundliche Album-Detailansicht (nutzt gleiches Layout wie Tracklist)
+  albumDetailRight: {
+    flex: 1,
     display: 'flex',
     flexDirection: 'column' as const,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '40px 20px',
-    gap: '20px',
-    maxWidth: '600px',
-    margin: '0 auto',
-  },
-  albumDetailViewCover: {
-    width: '280px',
-    height: '280px',
-    borderRadius: '16px',
-    objectFit: 'cover' as const,
-    boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
-  },
-  albumDetailViewInfo: {
-    textAlign: 'center' as const,
-    marginTop: '10px',
-  },
-  albumDetailViewTitle: {
-    fontSize: '1.8rem',
-    fontWeight: 'bold' as const,
-    marginBottom: '8px',
-  },
-  albumDetailViewArtist: {
-    fontSize: '1.3rem',
-    color: '#aaa',
+    gap: 8,
+    overflow: 'hidden',
   },
   albumDetailViewPlayButton: {
     display: 'flex',
     flexDirection: 'row' as const,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '16px',
-    padding: '24px 48px',
-    fontSize: '1.5rem',
+    gap: '12px',
+    padding: '20px 40px',
+    fontSize: '1.3rem',
     fontWeight: 'bold' as const,
     backgroundColor: '#4CAF50',
     color: '#fff',
     border: 'none',
-    borderRadius: '16px',
+    borderRadius: '12px',
     cursor: 'pointer',
     boxShadow: '0 4px 12px rgba(76, 175, 80, 0.4)',
     transition: 'all 0.2s ease',
-    minWidth: '300px',
-    marginTop: '20px',
+    flexShrink: 0,
   },
   albumDetailViewPlayIcon: {
-    fontSize: '2.5rem',
+    fontSize: '2rem',
     lineHeight: '1',
   },
   albumDetailViewPlayText: {
-    fontSize: '1.8rem',
-  },
-  albumDetailViewTracklistButton: {
-    padding: '16px 32px',
-    fontSize: '1.1rem',
-    backgroundColor: '#555',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '12px',
-    cursor: 'pointer',
-    marginTop: '10px',
+    fontSize: '1.5rem',
   },
 }
 
