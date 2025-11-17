@@ -222,7 +222,10 @@ function KidsView() {
 
   const artists = Array.from(artistMap.entries())
     .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([name, albums]) => ({ name, cover: albums[0].coverUrl }))
+    .map(([name, albums]) => ({ 
+      name, 
+      cover: albums[0].artistImageUrl || albums[0].coverUrl 
+    }))
 
   return (
     <div style={styles.screen}>
