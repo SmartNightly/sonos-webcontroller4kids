@@ -7,18 +7,19 @@ services:
     
     container_name: sonos-webcontroller4kids
     
+    # Ändere hier den Port direkt (Format: "host-port:container-port")
+    # Beispiel für Port 8080: "8080:8080"
     ports:
-      - "${PORT:-3344}:${PORT:-3344}"
+      - "3344:3344"
     
     volumes:
       # Passe den Pfad für Synology an:
       # z.B. /volume1/docker/sonos-webcontroller4kids/media-data
       - ./media-data:/app/media-data
     
-    network_mode: host
-    
     restart: unless-stopped
     
     environment:
       - NODE_ENV=production
-      - PORT=${PORT:-3344}
+      # Ändere hier den internen Port (muss mit container-port oben übereinstimmen)
+      - PORT=3344

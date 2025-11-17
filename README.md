@@ -33,8 +33,9 @@ services:
     image: smartnightly/sonos-webcontroller4kids:latest
     container_name: sonos-webcontroller4kids
     
+    # Ändere hier den Port direkt (Format: "host-port:container-port")
     ports:
-      - "3344:3344"  # Ändere 3344 auf deinen gewünschten Port
+      - "3344:3344"  # z.B. "8080:8080" für Port 8080
     
     volumes:
       # Passe den Pfad an deine Synology-Struktur an
@@ -44,13 +45,17 @@ services:
     
     environment:
       - NODE_ENV=production
-      - PORT=3344  # Optional: Ändere den internen Port
+      - PORT=3344  # Muss mit container-port oben übereinstimmen
 ```
 
 4. **Passe den Volume-Pfad an** (z.B. `/volume1/docker/...`)
-5. **Optional: Ändere den Port** (Standard: 3344)
+5. **Optional: Ändere beide Port-Werte** (in `ports:` und `PORT=`)
 6. **Deploy the stack**
 7. **Zugriff:** `http://synology-ip:3344` (oder dein konfigurierter Port)
+
+**Port ändern:** Einfach beide Werte im Stack-Editor anpassen:
+- `ports: - "8080:8080"` 
+- `PORT=8080`
 
 ### Deployment mit Docker Compose
 
