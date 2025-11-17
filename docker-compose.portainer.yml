@@ -19,7 +19,7 @@ services:
     
     restart: unless-stopped
     
+    # Ändere hier den internen Port (muss mit container-port oben übereinstimmen)
     environment:
       - NODE_ENV=production
-      # Ändere hier den internen Port (muss mit container-port oben übereinstimmen)
       - PORT=3344
