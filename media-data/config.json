@@ -41,5 +41,6 @@
     "Spielzimmer": 30,
     "Wohnzimmer": 30,
     "Schlafzimmer": 30
-  }
+  },
+  "activeTemplate": "default"
 }

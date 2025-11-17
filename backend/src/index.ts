@@ -14,6 +14,7 @@ type AppConfig = {
   showTracklistAlbums?: boolean // Tracklist bei Alben anzeigen (default: true)
   showTracklistAudiobooks?: boolean // Tracklist bei Hörbüchern anzeigen (default: true)
   maxVolume?: Record<string, number> // Maximale Lautstärke pro Raum (0-100)
+  activeTemplate?: string // Aktives Frontend-Template (default: 'default')
 }
 
 const DEFAULT_SONOS_BASE_URL = 'http://192.168.114.21:5005'
@@ -37,6 +38,7 @@ function loadConfig(): AppConfig {
         showTracklistAlbums: true,
         showTracklistAudiobooks: true,
         maxVolume: {},
+        activeTemplate: 'default',
       }
     }
     
@@ -57,6 +59,7 @@ function loadConfig(): AppConfig {
       showTracklistAlbums: parsed.showTracklistAlbums !== undefined ? parsed.showTracklistAlbums : true,
       showTracklistAudiobooks: parsed.showTracklistAudiobooks !== undefined ? parsed.showTracklistAudiobooks : true,
       maxVolume: parsed.maxVolume || {},
+      activeTemplate: parsed.activeTemplate || 'default',
     }
   } catch (err) {
     console.error('Fehler beim Laden von config.json:', err)
@@ -70,6 +73,7 @@ function loadConfig(): AppConfig {
       showTracklistAlbums: true,
       showTracklistAudiobooks: true,
       maxVolume: {},
+      activeTemplate: 'default',
     }
   }
 }
@@ -654,24 +658,62 @@ app.post('/admin/sonos/room-icons', (req: Request, res: Response) => {
 })
 
 app.post('/admin/sonos/tracklist-settings', (req: Request, res: Response) => {
-  const { showTracklistAlbums, showTracklistAudiobooks } = req.body as { 
+  const config = loadConfig()
+  const { showTracklistAlbums, showTracklistAudiobooks } = req.body as {
     showTracklistAlbums?: boolean
     showTracklistAudiobooks?: boolean
   }
-
-  const config = loadConfig()
-
-  const newConfig: AppConfig = {
-    ...config,
-    showTracklistAlbums: showTracklistAlbums !== undefined ? showTracklistAlbums : (config.showTracklistAlbums ?? true),
-    showTracklistAudiobooks: showTracklistAudiobooks !== undefined ? showTracklistAudiobooks : (config.showTracklistAudiobooks ?? true),
-  }
-
-  saveConfig(newConfig)
-  res.json(newConfig)
+  
+  if (showTracklistAlbums !== undefined) config.showTracklistAlbums = showTracklistAlbums
+  if (showTracklistAudiobooks !== undefined) config.showTracklistAudiobooks = showTracklistAudiobooks
+  
+  saveConfig(config)
+  res.json(config)
 })
 
+// GET /admin/templates - Liste aller verfügbaren Templates
+app.get('/admin/templates', (req: Request, res: Response) => {
+  const templatesPath = path.join(__dirname, '..', '..', 'frontend', 'src', 'templates')
+  
+  try {
+    if (!fs.existsSync(templatesPath)) {
+      return res.json({ templates: ['default'], active: 'default' })
+    }
+    
+    const templates = fs.readdirSync(templatesPath)
+      .filter(name => {
+        const templatePath = path.join(templatesPath, name)
+        return fs.statSync(templatePath).isDirectory()
+      })
+    
+    const config = loadConfig()
+    res.json({ templates, active: config.activeTemplate || 'default' })
+  } catch (err) {
+    console.error('Fehler beim Laden der Templates:', err)
+    res.status(500).json({ error: 'Templates konnten nicht geladen werden' })
+  }
+})
 
+// POST /admin/templates/active - Aktives Template setzen
+app.post('/admin/templates/active', (req: Request, res: Response) => {
+  const { template } = req.body as { template?: string }
+  
+  if (!template) {
+    return res.status(400).json({ error: 'template ist erforderlich' })
+  }
+  
+  const templatesPath = path.join(__dirname, '..', '..', 'frontend', 'src', 'templates', template)
+  
+  if (!fs.existsSync(templatesPath)) {
+    return res.status(404).json({ error: `Template '${template}' nicht gefunden` })
+  }
+  
+  const config = loadConfig()
+  config.activeTemplate = template
+  saveConfig(config)
+  
+  res.json({ success: true, activeTemplate: template })
+})
 // Generischer Sonos-Control-Endpoint
 // Body: { room: string, action: string, value?: number }
 app.post('/sonos/control', async (req: Request, res: Response) => {
