@@ -36,6 +36,9 @@ function KidsView() {
   const [selectedAlbum, setSelectedAlbum] = useState<MediaItem | null>(null)
   const [selectedArtist, setSelectedArtist] = useState<string | null>(null)
   const [kindFilter, setKindFilter] = useState<'all' | 'album' | 'audiobook'>('all')
+  
+  // Detailansicht mit Play-Button (kinderfreundlich)
+  const [albumDetailView, setAlbumDetailView] = useState<MediaItem | null>(null)
 
   // 🔊 Sonos-Raum-Auswahl
   const [rooms, setRooms] = useState<string[]>([])
@@ -603,6 +606,71 @@ useEffect(() => {
     return true
   })
 
+  // ============= Ebene 3.5: Album-Detailansicht mit Play-Button (kinderfreundlich) =============
+  if (albumDetailView) {
+    const album = albumDetailView
+    const tracks = album.tracks || []
+    
+    // Prüfe ob Trackliste angezeigt werden soll basierend auf Album-Typ
+    const shouldShowTracks = album.kind === 'audiobook' 
+      ? showTracklistAudiobooks 
+      : showTracklistAlbums
+    
+    const hasTracksToShow = tracks.length > 0 && shouldShowTracks
+
+    return (
+      <div style={styles.screen}>
+        {renderTopBar(true, () => setAlbumDetailView(null))}
+        {renderRoomOverlay()}
+        {renderPlayerOverlay()}
+
+        <div style={styles.albumDetailViewContainer}>
+          {/* Album Cover */}
+          <img
+            src={album.coverUrl}
+            alt={album.title}
+            style={styles.albumDetailViewCover}
+          />
+          
+          {/* Album Info */}
+          <div style={styles.albumDetailViewInfo}>
+            <div style={styles.albumDetailViewTitle}>{album.title}</div>
+            {album.artist && (
+              <div style={styles.albumDetailViewArtist}>{album.artist}</div>
+            )}
+          </div>
+
+          {/* Großer Play Button */}
+          <button
+            style={styles.albumDetailViewPlayButton}
+            onClick={async () => {
+              await playAlbum(album)
+              setPlaying(true)
+              setAlbumDetailView(null) // Schließe Detailansicht nach Start
+            }}
+            disabled={busy}
+          >
+            <div style={styles.albumDetailViewPlayIcon}>▶</div>
+            <div style={styles.albumDetailViewPlayText}>Abspielen</div>
+          </button>
+
+          {/* Optional: Tracklist Button (wenn Tracks vorhanden) */}
+          {hasTracksToShow && (
+            <button
+              style={styles.albumDetailViewTracklistButton}
+              onClick={() => {
+                setSelectedAlbum(album)
+                setAlbumDetailView(null)
+              }}
+            >
+              Trackliste anzeigen
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   // ============= Ebene 3: Album-Detail (Tracks) =============
   if (selectedAlbum) {
     const album = selectedAlbum
@@ -683,25 +751,13 @@ useEffect(() => {
 
         <div style={styles.grid}>
           {artistAlbums.map(album => {
-            // Prüfe ob Trackliste für diesen Album-Typ angezeigt werden soll
-            const shouldShowTracks = album.kind === 'audiobook' 
-              ? showTracklistAudiobooks 
-              : showTracklistAlbums
-            const hasTracksToShow = album.tracks && album.tracks.length > 0 && shouldShowTracks
-            
             return (
               <button
                 key={album.id}
                 style={styles.card}
                 onClick={() => {
-                  if (!hasTracksToShow) {
-                    // Keine Tracks vorhanden oder ausgeblendet -> direkt abspielen
-                    playAlbum(album)
-                    setPlaying(true)
-                  } else {
-                    // Tracks vorhanden UND Anzeige aktiviert -> Detail-Ansicht öffnen
-                    setSelectedAlbum(album)
-                  }
+                  // Immer Detailansicht öffnen (kinderfreundlich)
+                  setAlbumDetailView(album)
                 }}
               >
                 <img
@@ -1940,6 +1996,74 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '4px 6px',
     fontSize: '0.8rem',
     cursor: 'pointer',
+  },
+
+  // Kinderfreundliche Album-Detailansicht
+  albumDetailViewContainer: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '40px 20px',
+    gap: '20px',
+    maxWidth: '600px',
+    margin: '0 auto',
+  },
+  albumDetailViewCover: {
+    width: '280px',
+    height: '280px',
+    borderRadius: '16px',
+    objectFit: 'cover' as const,
+    boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+  },
+  albumDetailViewInfo: {
+    textAlign: 'center' as const,
+    marginTop: '10px',
+  },
+  albumDetailViewTitle: {
+    fontSize: '1.8rem',
+    fontWeight: 'bold' as const,
+    marginBottom: '8px',
+  },
+  albumDetailViewArtist: {
+    fontSize: '1.3rem',
+    color: '#aaa',
+  },
+  albumDetailViewPlayButton: {
+    display: 'flex',
+    flexDirection: 'row' as const,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '16px',
+    padding: '24px 48px',
+    fontSize: '1.5rem',
+    fontWeight: 'bold' as const,
+    backgroundColor: '#4CAF50',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '16px',
+    cursor: 'pointer',
+    boxShadow: '0 4px 12px rgba(76, 175, 80, 0.4)',
+    transition: 'all 0.2s ease',
+    minWidth: '300px',
+    marginTop: '20px',
+  },
+  albumDetailViewPlayIcon: {
+    fontSize: '2.5rem',
+    lineHeight: '1',
+  },
+  albumDetailViewPlayText: {
+    fontSize: '1.8rem',
+  },
+  albumDetailViewTracklistButton: {
+    padding: '16px 32px',
+    fontSize: '1.1rem',
+    backgroundColor: '#555',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '12px',
+    cursor: 'pointer',
+    marginTop: '10px',
   },
 }
 
