@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+
+* {
+  font-family: 'Fredoka', sans-serif;
+}
+
+.colorful-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  padding: 12px;
+}
+
+.colorful-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 24px;
+  padding: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.colorful-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.colorful-cover {
+  border-radius: 16px;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.colorful-title {
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-weight: 600;
+}
+
+.rainbow-button {
+  background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+  background-size: 300% 300%;
+  animation: rainbow 3s ease infinite;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s;
+}
+
+.rainbow-button:active {
+  transform: scale(0.95);
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.play-button-huge {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  font-size: 48px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 8px solid white;
+  box-shadow: 0 8px 30px rgba(245, 87, 108, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.color-pink { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.color-blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.color-green { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+.color-orange { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.color-purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.color-yellow { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
