@@ -8,3 +8,17 @@
 node_modules/
 backend/node_modules/
 frontend/node_modules/
+
+# Build output
+backend/dist/
+frontend/dist/
+
+# Compiled test artifacts (tsc shouldn't compile tests, but just in case)
+backend/tests/**/*.js
+backend/tests/**/*.d.ts
+backend/tests/**/*.js.map
+backend/tests/**/*.d.ts.map
+backend/vitest.config.js
+backend/vitest.config.d.ts
+backend/vitest.config.js.map
+backend/vitest.config.d.ts.map
