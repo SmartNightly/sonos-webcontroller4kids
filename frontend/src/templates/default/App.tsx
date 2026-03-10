@@ -236,8 +236,12 @@ useEffect(() => {
       setTrackModeCurrentTrack(null)
 
       // Clear queue first and wait for it to complete
-      await fetch(`http://192.168.114.21:5005/${encodeURIComponent(room)}/clearqueue`)
-      
+      await fetch(`${API_BASE_URL}/sonos/control`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ room, action: 'clearqueue' }),
+      })
+
       // Delay to ensure clearqueue is fully processed by Sonos
       await new Promise(resolve => setTimeout(resolve, 300))
 
@@ -277,8 +281,12 @@ useEffect(() => {
       setTrackModeCurrentTrack(track)
 
       // Clear queue first and wait for it to complete
-      await fetch(`http://192.168.114.21:5005/${encodeURIComponent(room)}/clearqueue`)
-      
+      await fetch(`${API_BASE_URL}/sonos/control`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ room, action: 'clearqueue' }),
+      })
+
       // Delay to ensure clearqueue is fully processed by Sonos
       await new Promise(resolve => setTimeout(resolve, 300))
 
