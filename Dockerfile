@@ -1,11 +1,17 @@
 # Multi-stage build für Frontend und Backend
 FROM node:18-alpine AS builder
 
+# Build args for version metadata (passed at build time)
+ARG GIT_COMMIT=unknown
+ARG BUILD_DATE=unknown
+
 # Build Frontend
 WORKDIR /app/frontend
 COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ ./
+# Copy root package.json for version injection in vite.config.ts
+COPY package.json /app/package.json
 # Ensure all config files are present
 RUN ls -la
 RUN npm run build
@@ -22,6 +28,12 @@ RUN npm run build
 FROM node:18-alpine
 
 WORKDIR /app
+
+# Embed build metadata as environment variables
+ARG GIT_COMMIT=unknown
+ARG BUILD_DATE=unknown
+ENV GIT_COMMIT=$GIT_COMMIT
+ENV BUILD_DATE=$BUILD_DATE
 
 # Copy backend dependencies and built files
 COPY --from=builder /app/backend/node_modules ./backend/node_modules

@@ -888,6 +888,22 @@ function KidsView() {
           </button>
         ))}
       </div>
+
+      {/* Unobtrusive version badge, bottom-right corner */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 4,
+          right: 6,
+          fontSize: '0.6rem',
+          opacity: 0.3,
+          color: '#fff',
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      >
+        v{__APP_VERSION__}
+      </div>
     </div>
   )
 }
@@ -1000,6 +1016,49 @@ function TemplateSelector() {
         >
           {message.text}
         </div>
+      )}
+    </div>
+  )
+}
+
+/* ==================== Version Info Component ==================== */
+
+interface VersionData {
+  version: string
+  gitCommit: string
+  gitCommitShort: string
+  buildDate: string
+}
+
+function VersionInfo() {
+  const [data, setData] = useState<VersionData | null>(null)
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/version`)
+      .then((res) => res.json())
+      .then((d) => setData(d as VersionData))
+      .catch(() => {
+        /* ignore */
+      })
+  }, [])
+
+  return (
+    <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid #333' }}>
+      <div style={{ fontSize: '0.9rem', marginBottom: 4 }}>Version</div>
+      {data ? (
+        <div style={{ fontSize: '0.75rem', opacity: 0.7, lineHeight: 1.6 }}>
+          <div>
+            <strong>Version:</strong> {data.version}
+          </div>
+          <div>
+            <strong>Git Commit:</strong> {data.gitCommitShort}
+          </div>
+          <div>
+            <strong>Build Date:</strong> {data.buildDate}
+          </div>
+        </div>
+      ) : (
+        <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>Loading…</div>
       )}
     </div>
   )
@@ -1641,6 +1700,9 @@ function AdminView() {
 
             {/* Template Selection */}
             <TemplateSelector />
+
+            {/* Version Info */}
+            <VersionInfo />
           </div>
         </div>
       )}

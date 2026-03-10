@@ -7,6 +7,7 @@ import healthRouter from './routes/health'
 import mediaRouter from './routes/media'
 import adminRouter from './routes/admin'
 import sonosRouter from './routes/sonos'
+import versionRouter from './routes/version'
 
 const app = express()
 const PORT = parseInt(process.env.PORT || '3344', 10)
@@ -15,6 +16,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/health', healthRouter)
+app.use('/version', versionRouter)
 app.use('/media', mediaRouter)
 app.use('/admin', adminRouter)
 app.use(sonosRouter) // handles /sonos/control, /sonos/status, /play, /search/apple
@@ -35,7 +37,9 @@ if (fs.existsSync(frontendPath)) {
       !req.path.startsWith('/admin') &&
       !req.path.startsWith('/sonos') &&
       !req.path.startsWith('/search') &&
-      !req.path.startsWith('/play')
+      !req.path.startsWith('/play') &&
+      !req.path.startsWith('/version') &&
+      !req.path.startsWith('/health')
     ) {
       res.sendFile(path.join(frontendPath, 'index.html'))
     } else {
