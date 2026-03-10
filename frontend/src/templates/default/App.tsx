@@ -10,7 +10,27 @@ interface TemplateAppProps {
 }
 
 function App({ isAdmin }: TemplateAppProps) {
-  return isAdmin ? <AdminView /> : <KidsView />
+  if (isAdmin) return <AdminView />
+  return (
+    <>
+      <KidsView />
+      {/* Fixed version badge — always visible in kids view regardless of sub-view */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 4,
+          right: 6,
+          fontSize: '0.6rem',
+          opacity: 0.3,
+          color: '#fff',
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      >
+        v{__APP_VERSION__}
+      </div>
+    </>
+  )
 }
 
 /* ==================== Kids-Ansicht ==================== */
@@ -888,22 +908,6 @@ function KidsView() {
           </button>
         ))}
       </div>
-
-      {/* Unobtrusive version badge, bottom-right corner */}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 4,
-          right: 6,
-          fontSize: '0.6rem',
-          opacity: 0.3,
-          color: '#fff',
-          pointerEvents: 'none',
-          userSelect: 'none',
-        }}
-      >
-        v{__APP_VERSION__}
-      </div>
     </div>
   )
 }
@@ -1038,7 +1042,8 @@ function VersionInfo() {
       .then((res) => res.json())
       .then((d) => setData(d as VersionData))
       .catch(() => {
-        /* ignore */
+        // Fallback to build-time constant when the API is unavailable (e.g. during local dev)
+        setData({ version: __APP_VERSION__, gitCommit: 'dev', gitCommitShort: 'dev', buildDate: 'dev' })
       })
   }, [])
 
