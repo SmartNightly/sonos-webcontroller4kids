@@ -87,7 +87,13 @@ router.put('/:id', (req: Request, res: Response) => {
   if (updates.album !== undefined) item.album = updates.album
   if (updates.coverUrl !== undefined) item.coverUrl = updates.coverUrl
   if (updates.kind !== undefined) item.kind = updates.kind as MediaItem['kind']
-  if (updates.artistImageUrl !== undefined) item.artistImageUrl = updates.artistImageUrl || undefined
+  if (updates.artistImageUrl !== undefined) {
+    if (updates.artistImageUrl) {
+      item.artistImageUrl = updates.artistImageUrl
+    } else {
+      delete item.artistImageUrl
+    }
+  }
 
   try {
     saveMedia(items)
@@ -272,7 +278,7 @@ async function resolveArtistImage(artist: string, items: MediaItem[]): Promise<s
     // Only auto-apply when there is exactly one unambiguous match.
     // When multiple candidates exist the caller returns nothing and
     // the frontend shows a selection dialog instead.
-    if (results.length === 1) return results[0].artistImageUrl
+    if (results.length === 1) return results[0]!.artistImageUrl
     return undefined
   } catch {
     return undefined
@@ -333,7 +339,8 @@ router.post('/apple/album', async (req: Request, res: Response) => {
       existingAlbum.appleId = appleAlbumId
 
       if (artist && !existingAlbum.artistImageUrl) {
-        existingAlbum.artistImageUrl = await resolveArtistImage(artist, items)
+        const resolved = await resolveArtistImage(artist, items)
+        if (resolved) existingAlbum.artistImageUrl = resolved
       }
 
       saveMedia(items)
@@ -353,7 +360,8 @@ router.post('/apple/album', async (req: Request, res: Response) => {
     }
 
     if (artist) {
-      newAlbum.artistImageUrl = await resolveArtistImage(artist, items)
+      const resolved = await resolveArtistImage(artist, items)
+      if (resolved) newAlbum.artistImageUrl = resolved
     }
 
     items.push(newAlbum)
