@@ -116,6 +116,8 @@ function KidsView() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: item.id, room: selectedRoom }),
       })
+      // Auto-open player so the user can see playback controls immediately
+      setPlayerOpen(true)
     } catch (err) {
       console.error(err)
     } finally {
@@ -253,19 +255,27 @@ function KidsView() {
         )}
       </div>
 
-      {/* Mini-Player */}
-      {playerOpen && (
-        <div style={styles.miniPlayer}>
-          <button style={styles.controlButton} onClick={togglePlayPause}>
-            {playing ? '⏸' : '▶'}
-          </button>
-          <div style={styles.trackInfo}>
-            <div style={{ fontWeight: 600 }}>{currentTrack?.title || 'Keine Wiedergabe'}</div>
-            <div style={{ fontSize: '14px', opacity: 0.8 }}>{currentTrack?.artist || ''}</div>
-          </div>
-          <div style={styles.volumeDisplay}>🔊 {volume}</div>
+      {/* Mini-Player — always rendered, slides in/out via CSS transition */}
+      <div
+        style={{
+          ...styles.miniPlayer,
+          maxHeight: playerOpen ? '80px' : '0',
+          opacity: playerOpen ? 1 : 0,
+          overflow: 'hidden',
+          padding: playerOpen ? '12px 16px' : '0 16px',
+          transition:
+            'max-height 300ms ease-in-out, opacity 300ms ease-in-out, padding 300ms ease-in-out',
+        }}
+      >
+        <button style={styles.controlButton} onClick={togglePlayPause}>
+          {playing ? '⏸' : '▶'}
+        </button>
+        <div style={styles.trackInfo}>
+          <div style={{ fontWeight: 600 }}>{currentTrack?.title || 'Keine Wiedergabe'}</div>
+          <div style={{ fontSize: '14px', opacity: 0.8 }}>{currentTrack?.artist || ''}</div>
         </div>
-      )}
+        <div style={styles.volumeDisplay}>🔊 {volume}</div>
+      </div>
 
       {/* Artist Grid */}
       <div style={styles.grid}>

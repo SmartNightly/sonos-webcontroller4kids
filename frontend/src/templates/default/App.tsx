@@ -279,6 +279,9 @@ function KidsView() {
         const body = await res.json().catch(() => ({}))
         throw new Error(body.error || `HTTP ${res.status}`)
       }
+
+      // Auto-open player so the user can see playback controls immediately
+      setPlayerOpen(true)
     } catch (err) {
       console.error(err)
       setError('Konnte nicht abspielen 😕')
@@ -325,6 +328,9 @@ function KidsView() {
         const body = await res.json().catch(() => ({}))
         throw new Error(body.error || `HTTP ${res.status}`)
       }
+
+      // Auto-open player so the user can see playback controls immediately
+      setPlayerOpen(true)
     } catch (err) {
       console.error(err)
       setError('Konnte Track nicht abspielen 😕')

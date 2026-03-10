@@ -75,7 +75,7 @@ npm run format    # Prettier
 ### Tests
 ```bash
 cd backend
-npm test           # Vitest, one-shot — 61 tests in 8 files
+npm test           # Vitest, one-shot — 67 tests in 8 files
 npm run test:watch # Vitest watch mode
 ```
 
@@ -200,10 +200,15 @@ No authentication — assumes local network deployment.
 
 `artistImageUrl` is set per media item via the admin edit modal. In the main overview, all albums by the same artist share the image — the first album in the group that has `artistImageUrl` set wins.
 
+On album import (`POST /media/apple/album`), `artistImageUrl` is resolved automatically:
+1. Reuse from another album by the same artist in the library
+2. Search via `searchArtist()` (og:image scraping) — auto-apply if exactly 1 result, show picker dialog if 2+
+
 ## External APIs
 
 - **Sonos HTTP API**: Room control, playback, volume. All calls proxied through the backend to avoid browser CORS errors.
-- **Apple Music / iTunes Search API**: Album search, metadata, cover URLs
+- **Apple Music / iTunes Search API**: Album search, metadata, cover URLs (`itunes.apple.com/search`, `itunes.apple.com/lookup`)
+- **Apple Music artist pages** (`music.apple.com/ch/artist/{id}`): Scraped for `og:image` meta tag to get artist profile photos. The iTunes API has no artist image endpoint — `og:image` is the only source. Each page fetch has a 3-second `AbortController` timeout.
 
 ## Data Persistence
 
@@ -228,15 +233,20 @@ Two GitHub Actions workflows:
 2. `test` job: Vitest for backend (parallel with lint)
 3. `build` job: `tsc` + `vite build` — only runs after lint + test both pass
 
+**`.github/workflows/ci.yml`** — `test` job runs both backend (`cd backend && npm test`) and frontend (`cd frontend && npm test`).
+
 **`.github/workflows/docker-publish.yml`** — runs on push to `main` and version tags:
 - Builds multi-arch Docker image (`linux/amd64` + `linux/arm64`)
 - Pushes to Docker Hub: `smartnightly/sonos-webcontroller4kids:latest`
 - Injects `GIT_COMMIT` and `BUILD_DATE` as build args
+- **Syncs `DOCKER_HUB_README.md`** to Docker Hub via `peter-evans/dockerhub-description@v4`
 - Deployment target: Synology NAS via Portainer
 
 ## Important Notes
 
 - **Backend auto-restarts on file changes** via `tsx watch`. After editing backend source files, the server reloads automatically. If it doesn't (e.g. after installing packages), kill it manually and run `npm run dev` again.
+- **Player auto-shows on playback**: both templates call `setPlayerOpen(true)` in `playAlbum()`/`playTrack()` after a successful play request. The colorful template uses CSS transitions (`max-height`/`opacity`/`padding`) rather than conditional render so the slide-in animates smoothly.
+- **Docker Hub README**: `DOCKER_HUB_README.md` in repo root is the source of truth for the Docker Hub page. It is auto-synced on every push to `main` via the `docker-publish.yml` workflow — edit it here, not directly on Docker Hub.
 - The in-memory caches in `services/config.ts` and `services/media.ts` are re-initialized on each restart — so a restart also clears any stale cached state.
 - Sonos polling in frontend every 2 seconds for status sync
 - Admin interface accessed via query parameter `?admin=1`
