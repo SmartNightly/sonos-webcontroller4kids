@@ -105,7 +105,7 @@ function KidsView() {
   if (error) return <div style={styles.screen}>{error}</div>
 
   // Nur Alben für die Artist-/Album-Ansichten verwenden
-  const albums = media.filter(m => m.kind === 'album')
+  const albums = media.filter((m) => m.kind === 'album')
 
   // ============= Ebene 3: Album-Detail (Tracks) =============
   if (selectedAlbum) {
@@ -115,45 +115,30 @@ function KidsView() {
     return (
       <div style={styles.screen}>
         <h1 style={styles.titleSmall}>Album</h1>
-        <button
-          style={styles.backButton}
-          onClick={() => setSelectedAlbum(null)}
-        >
+        <button style={styles.backButton} onClick={() => setSelectedAlbum(null)}>
           ← Zurück
         </button>
 
         <div style={styles.albumHeader}>
-          <img
-            src={album.coverUrl}
-            alt={album.title}
-            style={styles.albumCover}
-          />
+          <img src={album.coverUrl} alt={album.title} style={styles.albumCover} />
           <div style={styles.albumMeta}>
             <div style={styles.albumTitle}>{album.title}</div>
-            {album.artist && (
-              <div style={styles.albumArtist}>{album.artist}</div>
-            )}
-            <button
-              style={styles.primaryButton}
-              onClick={() => playAlbum(album)}
-              disabled={busy}
-            >
+            {album.artist && <div style={styles.albumArtist}>{album.artist}</div>}
+            <button style={styles.primaryButton} onClick={() => playAlbum(album)} disabled={busy}>
               {busy ? 'Bitte warten…' : 'Album abspielen'}
             </button>
           </div>
         </div>
 
         <div style={styles.tracksList}>
-          {tracks.map(t => (
+          {tracks.map((t) => (
             <button
               key={t.id}
               style={styles.trackRow}
               onClick={() => playTrack(album, t)}
               disabled={busy}
             >
-              <div style={styles.trackNumber}>
-                {t.trackNumber ?? '•'}
-              </div>
+              <div style={styles.trackNumber}>{t.trackNumber ?? '•'}</div>
               <div style={styles.trackTitle}>{t.title}</div>
               <div style={styles.trackDuration}>
                 {t.durationMs ? formatDuration(t.durationMs) : ''}
@@ -162,9 +147,7 @@ function KidsView() {
           ))}
         </div>
 
-        {nowPlaying && (
-          <div style={styles.nowPlayingBar}>▶ {nowPlaying}</div>
-        )}
+        {nowPlaying && <div style={styles.nowPlayingBar}>▶ {nowPlaying}</div>}
       </div>
     )
   }
@@ -172,40 +155,25 @@ function KidsView() {
   // ============= Ebene 2: Album-Grid für einen Artist =============
   if (selectedArtist) {
     const artistAlbums = albums
-      .filter(a => (a.artist || 'Unbekannt') === selectedArtist)
+      .filter((a) => (a.artist || 'Unbekannt') === selectedArtist)
       .sort((a, b) => a.title.localeCompare(b.title))
 
     return (
       <div style={styles.screen}>
         <h1 style={styles.titleSmall}>Artist</h1>
-        <button
-          style={styles.backButton}
-          onClick={() => setSelectedArtist(null)}
-        >
+        <button style={styles.backButton} onClick={() => setSelectedArtist(null)}>
           ← Zurück zu Artists
         </button>
 
-        <div style={{ marginBottom: 4, fontSize: '0.9rem' }}>
-          {selectedArtist}
-        </div>
+        <div style={{ marginBottom: 4, fontSize: '0.9rem' }}>{selectedArtist}</div>
 
-        {nowPlaying && (
-          <div style={styles.nowPlaying}>▶ {nowPlaying}</div>
-        )}
+        {nowPlaying && <div style={styles.nowPlaying}>▶ {nowPlaying}</div>}
         {busy && <div style={styles.busy}>Bitte warten…</div>}
 
         <div style={styles.grid}>
-          {artistAlbums.map(album => (
-            <button
-              key={album.id}
-              style={styles.card}
-              onClick={() => setSelectedAlbum(album)}
-            >
-              <img
-                src={album.coverUrl}
-                alt={album.title}
-                style={styles.cover}
-              />
+          {artistAlbums.map((album) => (
+            <button key={album.id} style={styles.card} onClick={() => setSelectedAlbum(album)}>
+              <img src={album.coverUrl} alt={album.title} style={styles.cover} />
               <div style={styles.cardTitle}>{album.title}</div>
             </button>
           ))}
@@ -240,23 +208,17 @@ function KidsView() {
   return (
     <div style={styles.screen}>
       <h1 style={styles.title}>Kids Player 🎧</h1>
-      {nowPlaying && (
-        <div style={styles.nowPlaying}>▶ {nowPlaying}</div>
-      )}
+      {nowPlaying && <div style={styles.nowPlaying}>▶ {nowPlaying}</div>}
       {busy && <div style={styles.busy}>Bitte warten…</div>}
 
       <div style={styles.grid}>
-        {artistCards.map(artist => (
+        {artistCards.map((artist) => (
           <button
             key={artist.artistName}
             style={styles.card}
             onClick={() => setSelectedArtist(artist.artistName)}
           >
-            <img
-              src={artist.coverUrl}
-              alt={artist.artistName}
-              style={styles.cover}
-            />
+            <img src={artist.coverUrl} alt={artist.artistName} style={styles.cover} />
             <div style={styles.cardTitle}>{artist.artistName}</div>
           </button>
         ))}
@@ -264,7 +226,6 @@ function KidsView() {
     </div>
   )
 }
-
 
 /* Helper für Track-Dauer */
 
@@ -291,15 +252,13 @@ function AdminView() {
   const [error, setError] = useState<string | null>(null)
   const [info, setInfo] = useState<string | null>(null)
 
-
   // Sonos-Konfiguration
   // Sonos-Konfiguration
   const [sonosBaseUrl, setSonosBaseUrl] = useState('')
-  const [sonosRooms, setSonosRooms] = useState<string[]>([])          // alle
-  const [enabledRooms, setEnabledRooms] = useState<string[]>([])      // rechts
+  const [sonosRooms, setSonosRooms] = useState<string[]>([]) // alle
+  const [enabledRooms, setEnabledRooms] = useState<string[]>([]) // rechts
   const [sonosLoading, setSonosLoading] = useState(false)
   const [sonosError, setSonosError] = useState<string | null>(null)
-
 
   useEffect(() => {
     const loadSonosConfig = async () => {
@@ -318,7 +277,6 @@ function AdminView() {
     loadSonosConfig()
   }, [])
 
-
   const search = async () => {
     if (!query.trim()) return
     setLoading(true)
@@ -327,9 +285,7 @@ function AdminView() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/search/apple?q=${encodeURIComponent(
-          query,
-        )}&entity=${entity}`,
+        `http://localhost:3001/search/apple?q=${encodeURIComponent(query)}&entity=${entity}`,
       )
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
@@ -356,9 +312,7 @@ function AdminView() {
         .replace(/[^a-z0-9]+/g, '_')
         .replace(/^_+|_+$/g, '')
 
-    const id =
-      (entity === 'album' ? `album_${baseId}` : `song_${baseId}`) ||
-      `item_${Date.now()}`
+    const id = (entity === 'album' ? `album_${baseId}` : `song_${baseId}`) || `item_${Date.now()}`
 
     try {
       let res: Response
@@ -443,16 +397,14 @@ function AdminView() {
     }
   }
 
-  const availableRooms = sonosRooms.filter(r => !enabledRooms.includes(r))
+  const availableRooms = sonosRooms.filter((r) => !enabledRooms.includes(r))
 
   const moveRoomRight = (room: string) => {
-    setEnabledRooms(prev =>
-      prev.includes(room) ? prev : [...prev, room],
-    )
+    setEnabledRooms((prev) => (prev.includes(room) ? prev : [...prev, room]))
   }
 
   const moveRoomLeft = (room: string) => {
-    setEnabledRooms(prev => prev.filter(r => r !== room))
+    setEnabledRooms((prev) => prev.filter((r) => r !== room))
   }
 
   const moveAllRight = () => {
@@ -487,8 +439,6 @@ function AdminView() {
     }
   }
 
-  
-
   return (
     <div style={styles.screen}>
       <h1 style={styles.title}>Admin: Sonos Raum-Discovery → config.json</h1>
@@ -500,32 +450,34 @@ function AdminView() {
           <input
             style={styles.input}
             value={sonosBaseUrl}
-            onChange={e => setSonosBaseUrl(e.target.value)}
+            onChange={(e) => setSonosBaseUrl(e.target.value)}
             placeholder="http://192.168.114.21:5005"
           />
-          <button
-            style={styles.button}
-            onClick={discoverSonosRooms}
-            disabled={sonosLoading}
-          >
+          <button style={styles.button} onClick={discoverSonosRooms} disabled={sonosLoading}>
             {sonosLoading ? 'Lade…' : 'Räume laden & speichern'}
           </button>
         </div>
         {sonosError && (
-          <div style={{ color: 'red', fontSize: '0.8rem', marginBottom: 4 }}>
-            {sonosError}
-          </div>
+          <div style={{ color: 'red', fontSize: '0.8rem', marginBottom: 4 }}>{sonosError}</div>
         )}
 
         {/* Dual-List: Links alle Räume, rechts aktive Räume */}
         <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: '0.8rem', marginBottom: 2 }}>Alle Räume</div>
-            <div style={{ maxHeight: 120, overflowY: 'auto', backgroundColor: '#111', borderRadius: 6, padding: 4 }}>
+            <div
+              style={{
+                maxHeight: 120,
+                overflowY: 'auto',
+                backgroundColor: '#111',
+                borderRadius: 6,
+                padding: 4,
+              }}
+            >
               {availableRooms.length === 0 && (
                 <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>Keine weiteren Räume</div>
               )}
-              {availableRooms.map(room => (
+              {availableRooms.map((room) => (
                 <button
                   key={room}
                   style={{
@@ -545,21 +497,28 @@ function AdminView() {
                 </button>
               ))}
             </div>
-            <button
-              style={{ ...styles.smallButton, marginTop: 4 }}
-              onClick={moveAllRight}
-            >
+            <button style={{ ...styles.smallButton, marginTop: 4 }} onClick={moveAllRight}>
               Alle hinzufügen
             </button>
           </div>
 
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.8rem', marginBottom: 2 }}>Aktive Räume (für Kids-Frontend)</div>
-            <div style={{ maxHeight: 120, overflowY: 'auto', backgroundColor: '#111', borderRadius: 6, padding: 4 }}>
+            <div style={{ fontSize: '0.8rem', marginBottom: 2 }}>
+              Aktive Räume (für Kids-Frontend)
+            </div>
+            <div
+              style={{
+                maxHeight: 120,
+                overflowY: 'auto',
+                backgroundColor: '#111',
+                borderRadius: 6,
+                padding: 4,
+              }}
+            >
               {enabledRooms.length === 0 && (
                 <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>Noch keine aktiven Räume</div>
               )}
-              {enabledRooms.map(room => (
+              {enabledRooms.map((room) => (
                 <button
                   key={room}
                   style={{
@@ -579,19 +538,13 @@ function AdminView() {
                 </button>
               ))}
             </div>
-            <button
-              style={{ ...styles.smallButton, marginTop: 4 }}
-              onClick={moveAllLeft}
-            >
+            <button style={{ ...styles.smallButton, marginTop: 4 }} onClick={moveAllLeft}>
               Alle entfernen
             </button>
           </div>
         </div>
 
-        <button
-          style={{ ...styles.button, marginTop: 6 }}
-          onClick={saveEnabledRooms}
-        >
+        <button style={{ ...styles.button, marginTop: 6 }} onClick={saveEnabledRooms}>
           Aktive Räume speichern
         </button>
 
@@ -602,7 +555,6 @@ function AdminView() {
         )}
       </div>
 
-
       {/* Bestehende Apple-Suche */}
       <h1 style={styles.title}>Admin: Apple-Suche → media.json</h1>
 
@@ -610,13 +562,13 @@ function AdminView() {
         <input
           style={styles.input}
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="Titel, Interpret, Album…"
         />
         <select
           style={styles.select}
           value={entity}
-          onChange={e => setEntity(e.target.value as 'album' | 'song')}
+          onChange={(e) => setEntity(e.target.value as 'album' | 'song')}
         >
           <option value="album">Album</option>
           <option value="song">Song</option>
@@ -628,31 +580,22 @@ function AdminView() {
 
       {loading && <div>Lade Suchergebnisse…</div>}
       {error && <div style={{ color: 'red', marginBottom: 4 }}>{error}</div>}
-      {info && (
-        <div style={{ color: 'lightgreen', marginBottom: 4 }}>{info}</div>
-      )}
+      {info && <div style={{ color: 'lightgreen', marginBottom: 4 }}>{info}</div>}
 
       <div style={styles.list}>
-        {results.map(r => (
+        {results.map((r) => (
           <div
             key={`${r.kind}-${r.appleAlbumId}-${r.appleSongId}-${r.title}`}
             style={styles.resultRow}
           >
-            <img
-              src={r.coverUrl}
-              alt={r.title}
-              style={styles.resultCover}
-            />
+            <img src={r.coverUrl} alt={r.title} style={styles.resultCover} />
             <div style={styles.resultInfo}>
               <div>{r.title}</div>
               <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
                 {r.artist} {r.album ? `– ${r.album}` : ''}
               </div>
             </div>
-            <button
-              style={styles.smallButton}
-              onClick={() => addToMedia(r, entity)}
-            >
+            <button style={styles.smallButton} onClick={() => addToMedia(r, entity)}>
               Hinzufügen
             </button>
           </div>

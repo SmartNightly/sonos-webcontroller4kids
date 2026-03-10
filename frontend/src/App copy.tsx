@@ -110,58 +110,39 @@ function KidsView() {
     return (
       <div style={styles.screen}>
         <h1 style={styles.titleSmall}>Album</h1>
-        <button
-          style={styles.backButton}
-          onClick={() => setSelectedAlbum(null)}
-        >
+        <button style={styles.backButton} onClick={() => setSelectedAlbum(null)}>
           ← Zurück
         </button>
 
         <div style={styles.albumHeader}>
-          <img
-            src={album.coverUrl}
-            alt={album.title}
-            style={styles.albumCover}
-          />
+          <img src={album.coverUrl} alt={album.title} style={styles.albumCover} />
           <div style={styles.albumMeta}>
             <div style={styles.albumTitle}>{album.title}</div>
-            {album.artist && (
-              <div style={styles.albumArtist}>{album.artist}</div>
-            )}
-            <button
-              style={styles.primaryButton}
-              onClick={() => playAlbum(album)}
-              disabled={busy}
-            >
+            {album.artist && <div style={styles.albumArtist}>{album.artist}</div>}
+            <button style={styles.primaryButton} onClick={() => playAlbum(album)} disabled={busy}>
               {busy ? 'Bitte warten…' : 'Album abspielen'}
             </button>
           </div>
         </div>
 
         <div style={styles.tracksList}>
-          {tracks.map(t => (
+          {tracks.map((t) => (
             <button
               key={t.id}
               style={styles.trackRow}
               onClick={() => playTrack(album, t)}
               disabled={busy}
             >
-              <div style={styles.trackNumber}>
-                {t.trackNumber ?? '•'}
-              </div>
+              <div style={styles.trackNumber}>{t.trackNumber ?? '•'}</div>
               <div style={styles.trackTitle}>{t.title}</div>
               <div style={styles.trackDuration}>
-                {t.durationMs
-                  ? formatDuration(t.durationMs)
-                  : ''}
+                {t.durationMs ? formatDuration(t.durationMs) : ''}
               </div>
             </button>
           ))}
         </div>
 
-        {nowPlaying && (
-          <div style={styles.nowPlayingBar}>▶ {nowPlaying}</div>
-        )}
+        {nowPlaying && <div style={styles.nowPlayingBar}>▶ {nowPlaying}</div>}
       </div>
     )
   }
@@ -170,14 +151,11 @@ function KidsView() {
   return (
     <div style={styles.screen}>
       <h1 style={styles.title}>Kids Player 🎧</h1>
-      {nowPlaying && (
-        <div style={styles.nowPlaying}>▶ {nowPlaying}</div>
-      )}
+      {nowPlaying && <div style={styles.nowPlaying}>▶ {nowPlaying}</div>}
       {busy && <div style={styles.busy}>Bitte warten…</div>}
       <div style={styles.grid}>
-        {media.map(item => {
-          const isAlbum =
-            item.kind === 'album' && item.tracks && item.tracks.length > 0
+        {media.map((item) => {
+          const isAlbum = item.kind === 'album' && item.tracks && item.tracks.length > 0
 
           return (
             <button
@@ -192,15 +170,9 @@ function KidsView() {
                 }
               }}
             >
-              <img
-                src={item.coverUrl}
-                alt={item.title}
-                style={styles.cover}
-              />
+              <img src={item.coverUrl} alt={item.title} style={styles.cover} />
               <div style={styles.cardTitle}>{item.title}</div>
-              {item.artist && (
-                <div style={styles.cardSubTitle}>{item.artist}</div>
-              )}
+              {item.artist && <div style={styles.cardSubTitle}>{item.artist}</div>}
             </button>
           )
         })}
@@ -236,9 +208,7 @@ function AdminView() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/search/apple?q=${encodeURIComponent(
-          query,
-        )}&entity=${entity}`,
+        `http://localhost:3001/search/apple?q=${encodeURIComponent(query)}&entity=${entity}`,
       )
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
@@ -265,9 +235,7 @@ function AdminView() {
         .replace(/[^a-z0-9]+/g, '_')
         .replace(/^_+|_+$/g, '')
 
-    const id =
-      (entity === 'album' ? `album_${baseId}` : `song_${baseId}`) ||
-      `item_${Date.now()}`
+    const id = (entity === 'album' ? `album_${baseId}` : `song_${baseId}`) || `item_${Date.now()}`
 
     try {
       let res: Response
@@ -325,13 +293,13 @@ function AdminView() {
         <input
           style={styles.input}
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="Titel, Interpret, Album…"
         />
         <select
           style={styles.select}
           value={entity}
-          onChange={e => setEntity(e.target.value as 'album' | 'song')}
+          onChange={(e) => setEntity(e.target.value as 'album' | 'song')}
         >
           <option value="album">Album</option>
           <option value="song">Song</option>
@@ -343,31 +311,22 @@ function AdminView() {
 
       {loading && <div>Lade Suchergebnisse…</div>}
       {error && <div style={{ color: 'red', marginBottom: 4 }}>{error}</div>}
-      {info && (
-        <div style={{ color: 'lightgreen', marginBottom: 4 }}>{info}</div>
-      )}
+      {info && <div style={{ color: 'lightgreen', marginBottom: 4 }}>{info}</div>}
 
       <div style={styles.list}>
-        {results.map(r => (
+        {results.map((r) => (
           <div
             key={`${r.kind}-${r.appleAlbumId}-${r.appleSongId}-${r.title}`}
             style={styles.resultRow}
           >
-            <img
-              src={r.coverUrl}
-              alt={r.title}
-              style={styles.resultCover}
-            />
+            <img src={r.coverUrl} alt={r.title} style={styles.resultCover} />
             <div style={styles.resultInfo}>
               <div>{r.title}</div>
               <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
                 {r.artist} {r.album ? `– ${r.album}` : ''}
               </div>
             </div>
-            <button
-              style={styles.smallButton}
-              onClick={() => addToMedia(r, entity)}
-            >
+            <button style={styles.smallButton} onClick={() => addToMedia(r, entity)}>
               Hinzufügen
             </button>
           </div>

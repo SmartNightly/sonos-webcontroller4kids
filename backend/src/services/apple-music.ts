@@ -40,10 +40,7 @@ export async function searchApple(
       service: 'appleMusic',
       kind: isSong ? 'song' : 'album',
       title:
-        item.trackName ||
-        item.collectionName ||
-        item.collectionCensoredName ||
-        'Unbekannter Titel',
+        item.trackName || item.collectionName || item.collectionCensoredName || 'Unbekannter Titel',
       artist: item.artistName,
       album: item.collectionName,
       coverUrl: item.artworkUrl100?.replace('100x100bb', '600x600bb') || '',

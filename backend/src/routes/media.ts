@@ -20,7 +20,8 @@ router.post('/', (req: Request, res: Response) => {
 
   if (!payload.id || !payload.title || !payload.service || (needsSonosUri && !payload.sonosUri)) {
     return res.status(400).json({
-      error: 'id, title, service und entweder appleId (für Apple Music) oder sonosUri sind erforderlich',
+      error:
+        'id, title, service und entweder appleId (für Apple Music) oder sonosUri sind erforderlich',
     })
   }
 
@@ -32,7 +33,7 @@ router.post('/', (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Media file could not be loaded' })
   }
 
-  if (items.some(i => i.id === payload.id)) {
+  if (items.some((i) => i.id === payload.id)) {
     return res.status(409).json({ error: `Eintrag mit id ${payload.id} existiert bereits` })
   }
 
@@ -74,7 +75,7 @@ router.put('/:id', (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Media file could not be loaded' })
   }
 
-  const index = items.findIndex(i => i.id === id)
+  const index = items.findIndex((i) => i.id === id)
   if (index === -1) {
     return res.status(404).json({ error: `Kein Eintrag mit id ${id} gefunden` })
   }
@@ -109,7 +110,7 @@ router.delete('/:id', (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Media file could not be loaded' })
   }
 
-  const index = items.findIndex(i => i.id === id)
+  const index = items.findIndex((i) => i.id === id)
   if (index === -1) {
     return res.status(404).json({ error: `Kein Eintrag mit id ${id} gefunden` })
   }
@@ -138,7 +139,7 @@ router.delete('/:albumId/tracks/:trackId', (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Media file could not be loaded' })
   }
 
-  const item = items.find(i => i.id === albumId)
+  const item = items.find((i) => i.id === albumId)
   if (!item) {
     return res.status(404).json({ error: `Kein Album mit id ${albumId} gefunden` })
   }
@@ -147,7 +148,7 @@ router.delete('/:albumId/tracks/:trackId', (req: Request, res: Response) => {
     return res.status(404).json({ error: `Album ${albumId} hat keine Tracks` })
   }
 
-  const trackIndex = item.tracks.findIndex(t => t.id === trackId)
+  const trackIndex = item.tracks.findIndex((t) => t.id === trackId)
   if (trackIndex === -1) {
     return res.status(404).json({ error: `Kein Track mit id ${trackId} gefunden` })
   }
@@ -189,7 +190,7 @@ router.patch('/bulk', (req: Request, res: Response) => {
 
   let updatedCount = 0
 
-  items = items.map(item => {
+  items = items.map((item) => {
     if (ids.includes(item.id)) {
       updatedCount++
       return {
@@ -229,7 +230,7 @@ router.put('/:albumId/tracks/:trackId', (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Media file could not be loaded' })
   }
 
-  const item = items.find(i => i.id === albumId)
+  const item = items.find((i) => i.id === albumId)
   if (!item) {
     return res.status(404).json({ error: `Kein Album mit id ${albumId} gefunden` })
   }
@@ -238,7 +239,7 @@ router.put('/:albumId/tracks/:trackId', (req: Request, res: Response) => {
     return res.status(404).json({ error: `Album ${albumId} hat keine Tracks` })
   }
 
-  const track = item.tracks.find(t => t.id === trackId)
+  const track = item.tracks.find((t) => t.id === trackId)
   if (!track) {
     return res.status(404).json({ error: `Kein Track mit id ${trackId} gefunden` })
   }
@@ -273,17 +274,19 @@ router.post('/apple/album', async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'id, appleAlbumId und title sind erforderlich' })
   }
 
-  let items = loadMedia()
+  const items = loadMedia()
 
-  const existingByApple = items.find(i => i.appleId === appleAlbumId)
-  const existingById = items.find(i => i.id === id)
+  const existingByApple = items.find((i) => i.appleId === appleAlbumId)
+  const existingById = items.find((i) => i.id === id)
   const existingAlbum = existingById || existingByApple || null
 
   try {
     const tracks = await fetchAlbumTracks(appleAlbumId, id)
 
     if (tracks.length === 0) {
-      console.warn(`⚠️  Keine Tracks gefunden für Album ${appleAlbumId} (${title}). Möglicherweise regional eingeschränkt.`)
+      console.warn(
+        `⚠️  Keine Tracks gefunden für Album ${appleAlbumId} (${title}). Möglicherweise regional eingeschränkt.`,
+      )
     } else {
       console.log(`✓ ${tracks.length} Tracks gefunden für Album ${title}`)
     }
@@ -291,10 +294,10 @@ router.post('/apple/album', async (req: Request, res: Response) => {
     if (existingAlbum) {
       existingAlbum.tracks = existingAlbum.tracks || []
 
-      const existingAppleIds = new Set(existingAlbum.tracks.map(t => String(t.appleSongId)))
-      const toAdd = tracks.filter(t => !existingAppleIds.has(String(t.appleSongId)))
+      const existingAppleIds = new Set(existingAlbum.tracks.map((t) => String(t.appleSongId)))
+      const toAdd = tracks.filter((t) => !existingAppleIds.has(String(t.appleSongId)))
 
-      const newTracks = toAdd.map(t => ({
+      const newTracks = toAdd.map((t) => ({
         ...t,
         id: `${existingAlbum.id}_track_${t.appleSongId}`,
       }))
@@ -352,9 +355,9 @@ router.post('/apple/song', (req: Request, res: Response) => {
     })
   }
 
-  let items = loadMedia()
+  const items = loadMedia()
 
-  let albumItem = items.find(i => i.appleId === appleAlbumId)
+  let albumItem = items.find((i) => i.appleId === appleAlbumId)
 
   if (!albumItem) {
     albumItem = {
@@ -373,7 +376,7 @@ router.post('/apple/song', (req: Request, res: Response) => {
 
   albumItem.tracks = albumItem.tracks || []
 
-  if (albumItem.tracks.some(t => t.appleSongId === appleSongId)) {
+  if (albumItem.tracks.some((t) => t.appleSongId === appleSongId)) {
     return res.status(409).json({ error: 'Song existiert im Album bereits' })
   }
 

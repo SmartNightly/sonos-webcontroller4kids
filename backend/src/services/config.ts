@@ -30,8 +30,10 @@ function parseConfig(raw: string): AppConfig {
     defaultRoom: parsed.defaultRoom,
     showShuffleRepeat: parsed.showShuffleRepeat !== undefined ? parsed.showShuffleRepeat : true,
     roomIcons: parsed.roomIcons || {},
-    showTracklistAlbums: parsed.showTracklistAlbums !== undefined ? parsed.showTracklistAlbums : true,
-    showTracklistAudiobooks: parsed.showTracklistAudiobooks !== undefined ? parsed.showTracklistAudiobooks : true,
+    showTracklistAlbums:
+      parsed.showTracklistAlbums !== undefined ? parsed.showTracklistAlbums : true,
+    showTracklistAudiobooks:
+      parsed.showTracklistAudiobooks !== undefined ? parsed.showTracklistAudiobooks : true,
     maxVolume: parsed.maxVolume || {},
     activeTemplate: parsed.activeTemplate || 'default',
   }
@@ -44,7 +46,10 @@ function loadFromDisk(): AppConfig {
   }
   const raw = fs.readFileSync(CONFIG_PATH, 'utf-8')
   const config = parseConfig(raw)
-  console.log('config.json geladen:', { rooms: config.rooms.length, enabledRooms: config.enabledRooms.length })
+  console.log('config.json geladen:', {
+    rooms: config.rooms.length,
+    enabledRooms: config.enabledRooms.length,
+  })
   return config
 }
 

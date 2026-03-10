@@ -107,11 +107,9 @@ router.post('/sonos/discover', async (req: Request, res: Response) => {
 
     const oldConfig = loadConfig()
 
-    const enabledRoomsIntersection =
-      oldConfig.enabledRooms?.filter(r => rooms.includes(r)) || []
+    const enabledRoomsIntersection = oldConfig.enabledRooms?.filter((r) => rooms.includes(r)) || []
 
-    const enabledRooms =
-      enabledRoomsIntersection.length > 0 ? enabledRoomsIntersection : rooms
+    const enabledRooms = enabledRoomsIntersection.length > 0 ? enabledRoomsIntersection : rooms
 
     const defaultRoom =
       oldConfig.defaultRoom && enabledRooms.includes(oldConfig.defaultRoom)
@@ -144,7 +142,7 @@ router.post('/sonos/rooms', (req: Request, res: Response) => {
   }
 
   const config = loadConfig()
-  const cleaned = enabledRooms.filter(r => config.rooms.includes(r))
+  const cleaned = enabledRooms.filter((r) => config.rooms.includes(r))
 
   const newConfig: AppConfig = { ...config, enabledRooms: cleaned }
   saveConfig(newConfig)
@@ -179,8 +177,9 @@ router.post('/sonos/settings', (req: Request, res: Response) => {
 
   const newConfig: AppConfig = {
     ...config,
-    showShuffleRepeat: showShuffleRepeat !== undefined ? showShuffleRepeat : (config.showShuffleRepeat ?? true),
-    maxVolume: maxVolume !== undefined ? maxVolume : (config.maxVolume || {}),
+    showShuffleRepeat:
+      showShuffleRepeat !== undefined ? showShuffleRepeat : (config.showShuffleRepeat ?? true),
+    maxVolume: maxVolume !== undefined ? maxVolume : config.maxVolume || {},
   }
 
   saveConfig(newConfig)
@@ -211,7 +210,8 @@ router.post('/sonos/tracklist-settings', (req: Request, res: Response) => {
   const config = loadConfig()
 
   if (showTracklistAlbums !== undefined) config.showTracklistAlbums = showTracklistAlbums
-  if (showTracklistAudiobooks !== undefined) config.showTracklistAudiobooks = showTracklistAudiobooks
+  if (showTracklistAudiobooks !== undefined)
+    config.showTracklistAudiobooks = showTracklistAudiobooks
 
   saveConfig(config)
   res.json(config)
@@ -226,7 +226,7 @@ router.get('/templates', (req: Request, res: Response) => {
       return res.json({ templates: ['default'], active: 'default' })
     }
 
-    const templates = fs.readdirSync(templatesPath).filter(name => {
+    const templates = fs.readdirSync(templatesPath).filter((name) => {
       const templatePath = path.join(templatesPath, name)
       return fs.statSync(templatePath).isDirectory()
     })
@@ -247,7 +247,16 @@ router.post('/templates/active', (req: Request, res: Response) => {
     return res.status(400).json({ error: 'template ist erforderlich' })
   }
 
-  const templatesPath = path.join(__dirname, '..', '..', '..', 'frontend', 'src', 'templates', template)
+  const templatesPath = path.join(
+    __dirname,
+    '..',
+    '..',
+    '..',
+    'frontend',
+    'src',
+    'templates',
+    template,
+  )
 
   if (!fs.existsSync(templatesPath)) {
     return res.status(404).json({ error: `Template '${template}' nicht gefunden` })

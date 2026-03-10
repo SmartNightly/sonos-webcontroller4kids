@@ -14,19 +14,22 @@ function App({ isAdmin }: TemplateAppProps) {
       <div style={styles.adminRedirect}>
         <h2>🎨 Colorful Kids Template</h2>
         <p>Admin-Modus nur im Default-Template verfügbar.</p>
-        <a href="?admin=1" onClick={() => {
-          fetch(`${API_BASE_URL}/admin/templates/active`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ template: 'default' }),
-          }).then(() => window.location.reload())
-        }}>
+        <a
+          href="?admin=1"
+          onClick={() => {
+            fetch(`${API_BASE_URL}/admin/templates/active`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ template: 'default' }),
+            }).then(() => window.location.reload())
+          }}
+        >
           Zum Admin wechseln
         </a>
       </div>
     )
   }
-  
+
   return <KidsView />
 }
 
@@ -43,14 +46,14 @@ function KidsView() {
   const [media, setMedia] = useState<MediaItem[]>([])
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState(false)
-  
+
   const [playing, setPlaying] = useState(false)
   const [volume, setVolume] = useState<number | null>(null)
   const [currentTrack, setCurrentTrack] = useState<{ title?: string; artist?: string } | null>(null)
-  
+
   const [selectedArtist, setSelectedArtist] = useState<string | null>(null)
   const [selectedAlbum, setSelectedAlbum] = useState<MediaItem | null>(null)
-  
+
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
   const [roomIcons, setRoomIcons] = useState<Record<string, string>>({})
   const [playerOpen, setPlayerOpen] = useState(false)
@@ -58,8 +61,8 @@ function KidsView() {
   // Medien laden
   useEffect(() => {
     fetch(`${API_BASE_URL}/media`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setMedia(data)
         setLoading(false)
       })
@@ -69,8 +72,8 @@ function KidsView() {
   // Sonos-Config laden
   useEffect(() => {
     fetch(`${API_BASE_URL}/admin/sonos`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const enabled = data.enabledRooms?.length > 0 ? data.enabledRooms : data.rooms || []
         setRoomIcons(data.roomIcons || {})
         if (data.defaultRoom && enabled.includes(data.defaultRoom)) {
@@ -84,10 +87,12 @@ function KidsView() {
   // Status-Polling
   useEffect(() => {
     if (!selectedRoom) return
-    
+
     const poll = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/sonos/status?room=${encodeURIComponent(selectedRoom)}`)
+        const res = await fetch(
+          `${API_BASE_URL}/sonos/status?room=${encodeURIComponent(selectedRoom)}`,
+        )
         const data = await res.json()
         if (data.state) setPlaying(String(data.state).toLowerCase() === 'playing')
         if (data.volume !== undefined) setVolume(data.volume)
@@ -96,7 +101,7 @@ function KidsView() {
         console.error(err)
       }
     }
-    
+
     poll()
     const timer = setInterval(poll, 2000)
     return () => clearInterval(timer)
@@ -145,8 +150,8 @@ function KidsView() {
 
   // Artist-Detail: Albums anzeigen
   if (selectedArtist) {
-    const artistAlbums = media.filter(m => (m.artist || 'Unbekannt') === selectedArtist)
-    
+    const artistAlbums = media.filter((m) => (m.artist || 'Unbekannt') === selectedArtist)
+
     return (
       <div style={styles.screen}>
         <div style={styles.header}>
@@ -160,7 +165,7 @@ function KidsView() {
             </div>
           )}
         </div>
-        
+
         <div style={styles.grid}>
           {artistAlbums.map((album, idx) => (
             <button
@@ -187,14 +192,14 @@ function KidsView() {
           </button>
           <div style={styles.headerTitle}>{selectedAlbum.title}</div>
         </div>
-        
+
         <div style={styles.albumDetail}>
           <img src={selectedAlbum.coverUrl} alt={selectedAlbum.title} style={styles.albumCover} />
-          
+
           <div style={styles.albumInfo}>
             <h2 style={styles.albumTitle}>{selectedAlbum.title}</h2>
             {selectedAlbum.artist && <div style={styles.albumArtist}>{selectedAlbum.artist}</div>}
-            
+
             <button
               style={styles.playButtonHuge}
               onClick={async () => {
@@ -214,7 +219,7 @@ function KidsView() {
 
   // Artist-Liste (Hauptansicht)
   const artistMap = new Map<string, MediaItem[]>()
-  media.forEach(album => {
+  media.forEach((album) => {
     const name = album.artist || 'Unbekannt'
     if (!artistMap.has(name)) artistMap.set(name, [])
     artistMap.get(name)!.push(album)
@@ -229,13 +234,13 @@ function KidsView() {
       {/* Header */}
       <div style={styles.header}>
         <div style={styles.logo}>🎵 Musik</div>
-        
+
         {currentTrack && (
           <button style={styles.nowPlaying} onClick={() => setPlayerOpen(!playerOpen)}>
             ♫ {currentTrack.title}
           </button>
         )}
-        
+
         {selectedRoom && (
           <div style={styles.roomBadge}>
             {roomIcons[selectedRoom]} {selectedRoom}

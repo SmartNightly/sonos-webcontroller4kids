@@ -38,7 +38,7 @@ function KidsView() {
   const [selectedAlbum, setSelectedAlbum] = useState<MediaItem | null>(null)
   const [selectedArtist, setSelectedArtist] = useState<string | null>(null)
   const [kindFilter, setKindFilter] = useState<'all' | 'album' | 'audiobook'>('all')
-  
+
   // Detailansicht mit Play-Button (kinderfreundlich)
   const [albumDetailView, setAlbumDetailView] = useState<MediaItem | null>(null)
 
@@ -52,7 +52,7 @@ function KidsView() {
   const [showTracklistAlbums, setShowTracklistAlbums] = useState(true)
   const [showTracklistAudiobooks, setShowTracklistAudiobooks] = useState(true)
   const [maxVolume, setMaxVolume] = useState<Record<string, number>>({})
-  
+
   // Track-Modus: Ermöglicht Navigation durch Album-Tracks
   const [trackModeAlbum, setTrackModeAlbum] = useState<MediaItem | null>(null)
   const [trackModeCurrentTrack, setTrackModeCurrentTrack] = useState<MediaTrack | null>(null)
@@ -62,8 +62,6 @@ function KidsView() {
     if (!selectedRoom) return
 
     const pollInterval = 2000 // 2s
-    let timer: number | undefined
-
     const fetchStatus = async () => {
       try {
         const encoded = encodeURIComponent(selectedRoom)
@@ -106,113 +104,114 @@ function KidsView() {
     // Initial fetch
     fetchStatus()
     // Poll every 2s
-    timer = window.setInterval(fetchStatus, pollInterval)
+    const timer = window.setInterval(fetchStatus, pollInterval)
 
     return () => {
-      if (timer !== undefined) clearInterval(timer)
+      clearInterval(timer)
     }
   }, [selectedRoom])
 
   // Medien laden
-useEffect(() => {
-  const CACHE_KEY = 'kidsMediaCache'
-  const CACHE_TTL_MS = 5 * 60 * 1000 // 5 Minuten – kannst du anpassen
+  useEffect(() => {
+    const CACHE_KEY = 'kidsMediaCache'
+    const CACHE_TTL_MS = 5 * 60 * 1000 // 5 Minuten – kannst du anpassen
 
-  type MediaCache = {
-    updatedAt: number
-    items: MediaItem[]
-  }
+    type MediaCache = {
+      updatedAt: number
+      items: MediaItem[]
+    }
 
-  const loadFromCache = () => {
-    try {
-      const raw = localStorage.getItem(CACHE_KEY)
-      if (!raw) return false
+    const loadFromCache = () => {
+      try {
+        const raw = localStorage.getItem(CACHE_KEY)
+        if (!raw) return false
 
-      const parsed = JSON.parse(raw) as MediaCache
-      // Optional: TTL prüfen
-      const age = Date.now() - parsed.updatedAt
-      if (age > CACHE_TTL_MS) {
-        // Cache zu alt → ignorieren
+        const parsed = JSON.parse(raw) as MediaCache
+        // Optional: TTL prüfen
+        const age = Date.now() - parsed.updatedAt
+        if (age > CACHE_TTL_MS) {
+          // Cache zu alt → ignorieren
+          return false
+        }
+
+        setMedia(parsed.items)
+        setLoading(false) // UI sofort befüllen
+        return true
+      } catch (err) {
+        console.warn('Konnte Media-Cache nicht lesen:', err)
         return false
       }
-
-      setMedia(parsed.items)
-      setLoading(false) // UI sofort befüllen
-      return true
-    } catch (err) {
-      console.warn('Konnte Media-Cache nicht lesen:', err)
-      return false
     }
-  }
 
-  const fetchFromBackend = async () => {
-    try {
-      // Nur Loader anzeigen, wenn wir keinen gültigen Cache hatten
-      setLoading(prev => prev && true)
+    const fetchFromBackend = async () => {
+      try {
+        // Nur Loader anzeigen, wenn wir keinen gültigen Cache hatten
+        setLoading((prev) => prev && true)
 
-      const res = await fetch(`${API_BASE_URL}/media`)
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`)
+        const res = await fetch(`${API_BASE_URL}/media`)
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`)
+        }
+        const data = (await res.json()) as MediaItem[]
+        setMedia(data)
+
+        const cache: MediaCache = {
+          updatedAt: Date.now(),
+          items: data,
+        }
+        localStorage.setItem(CACHE_KEY, JSON.stringify(cache))
+      } catch (err) {
+        console.error('Konnte Medien nicht laden:', err)
+        // Wenn gar keine Daten vorhanden sind, Loader beenden
+      } finally {
+        setLoading(false)
       }
-      const data = (await res.json()) as MediaItem[]
-      setMedia(data)
-
-      const cache: MediaCache = {
-        updatedAt: Date.now(),
-        items: data,
-      }
-      localStorage.setItem(CACHE_KEY, JSON.stringify(cache))
-    } catch (err) {
-      console.error('Konnte Medien nicht laden:', err)
-      // Wenn gar keine Daten vorhanden sind, Loader beenden
-    } finally {
-      setLoading(false)
     }
-  }
 
-  loadFromCache()
-  // Egal ob Cache da war oder nicht → im Hintergrund aktualisieren
-  fetchFromBackend()
-}, [])
-
-
+    loadFromCache()
+    // Egal ob Cache da war oder nicht → im Hintergrund aktualisieren
+    fetchFromBackend()
+  }, [])
 
   // Sonos-Config (Räume) laden
-useEffect(() => {
-  const loadSonosConfig = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/admin/sonos`)
-      if (!res.ok) return
+  useEffect(() => {
+    const loadSonosConfig = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/sonos`)
+        if (!res.ok) return
 
-      const data = (await res.json()) as SonosConfig
+        const data = (await res.json()) as SonosConfig
 
-      const enabled = data.enabledRooms && data.enabledRooms.length > 0
-        ? data.enabledRooms
-        : data.rooms || []
+        const enabled =
+          data.enabledRooms && data.enabledRooms.length > 0 ? data.enabledRooms : data.rooms || []
 
-      setRooms(enabled)
-      setShowShuffleRepeat(data.showShuffleRepeat !== undefined ? data.showShuffleRepeat : true)
-      setRoomIcons(data.roomIcons || {})
-      setShowTracklistAlbums(data.showTracklistAlbums !== undefined ? data.showTracklistAlbums : true)
-      setShowTracklistAudiobooks(data.showTracklistAudiobooks !== undefined ? data.showTracklistAudiobooks : true)
-      setMaxVolume(data.maxVolume || {})
+        setRooms(enabled)
+        setShowShuffleRepeat(data.showShuffleRepeat !== undefined ? data.showShuffleRepeat : true)
+        setRoomIcons(data.roomIcons || {})
+        setShowTracklistAlbums(
+          data.showTracklistAlbums !== undefined ? data.showTracklistAlbums : true,
+        )
+        setShowTracklistAudiobooks(
+          data.showTracklistAudiobooks !== undefined ? data.showTracklistAudiobooks : true,
+        )
+        setMaxVolume(data.maxVolume || {})
 
-      let initialRoom: string | null = null
+        let initialRoom: string | null = null
 
-      if (data.defaultRoom && enabled.includes(data.defaultRoom)) {
-        initialRoom = data.defaultRoom
-      } else if (enabled.length > 0) {
-        initialRoom = enabled[0]
+        if (data.defaultRoom && enabled.includes(data.defaultRoom)) {
+          initialRoom = data.defaultRoom
+        } else if (enabled.length > 0) {
+          initialRoom = enabled[0]
+        }
+
+        setSelectedRoom(initialRoom)
+      } catch (err) {
+        console.error('Konnte Sonos-Konfiguration nicht laden:', err)
       }
-
-      setSelectedRoom(initialRoom)
-    } catch (err) {
-      console.error('Konnte Sonos-Konfiguration nicht laden:', err)
     }
-  }
 
-  loadSonosConfig()
-}, [])
+    loadSonosConfig()
+  }, [])
 
   const ensureRoomSelected = (): string | null => {
     if (!selectedRoom) {
@@ -230,7 +229,7 @@ useEffect(() => {
     try {
       setBusy(true)
       setError(null)
-      
+
       // Track-Modus deaktivieren (ganzes Album wird gespielt)
       setTrackModeAlbum(null)
       setTrackModeCurrentTrack(null)
@@ -243,7 +242,7 @@ useEffect(() => {
       })
 
       // Delay to ensure clearqueue is fully processed by Sonos
-      await new Promise(resolve => setTimeout(resolve, 300))
+      await new Promise((resolve) => setTimeout(resolve, 300))
 
       const res = await fetch(`${API_BASE_URL}/play`, {
         method: 'POST',
@@ -275,7 +274,7 @@ useEffect(() => {
     try {
       setBusy(true)
       setError(null)
-      
+
       // Track-Modus aktivieren
       setTrackModeAlbum(album)
       setTrackModeCurrentTrack(track)
@@ -288,7 +287,7 @@ useEffect(() => {
       })
 
       // Delay to ensure clearqueue is fully processed by Sonos
-      await new Promise(resolve => setTimeout(resolve, 300))
+      await new Promise((resolve) => setTimeout(resolve, 300))
 
       const res = await fetch(`${API_BASE_URL}/play`, {
         method: 'POST',
@@ -325,8 +324,8 @@ useEffect(() => {
 
     // Track-Modus: Nächsten Track im Album finden
     const tracks = trackModeAlbum.tracks || []
-    const currentIndex = tracks.findIndex(t => t.id === trackModeCurrentTrack.id)
-    
+    const currentIndex = tracks.findIndex((t) => t.id === trackModeCurrentTrack.id)
+
     if (currentIndex >= 0 && currentIndex < tracks.length - 1) {
       const nextTrack = tracks[currentIndex + 1]
       await playTrack(trackModeAlbum, nextTrack)
@@ -344,8 +343,8 @@ useEffect(() => {
 
     // Track-Modus: Vorherigen Track im Album finden
     const tracks = trackModeAlbum.tracks || []
-    const currentIndex = tracks.findIndex(t => t.id === trackModeCurrentTrack.id)
-    
+    const currentIndex = tracks.findIndex((t) => t.id === trackModeCurrentTrack.id)
+
     if (currentIndex > 0) {
       const prevTrack = tracks[currentIndex - 1]
       await playTrack(trackModeAlbum, prevTrack)
@@ -369,63 +368,88 @@ useEffect(() => {
     }
 
     return (
-    <div style={styles.topBar}>
-      {/* Back Button / Title - left side (optional) */}
-      {showBackButton ? (
-        <button
-          style={{
-            ...styles.topBarBackButton,
-            cursor: onBackClick ? 'pointer' : 'pointer',
-            opacity: 1,
-            pointerEvents: 'auto',
-          }}
-          onClick={onBackClick || cycleFilter}
-        >
-          {onBackClick ? `← ${backLabel || 'Zurück'}` : getFilterIcon()}
-        </button>
-      ) : (
-        <div style={{ ...styles.topBarBackButton, visibility: 'hidden' }} />
-      )}
-
-      {/* Track Info - flexible width */}
-      <div 
-        style={{ ...styles.topBarTrackInfo, cursor: 'pointer' }}
-        onClick={() => setPlayerOpen(!playerOpen)}
-      >
-        {currentTrack ? (
-          <span style={{ fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block', textAlign: 'center' }}>
-            <span style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>{currentTrack.trackNo ? `${currentTrack.trackNo}. ` : ''}{currentTrack.title || 'Unbekannt'}</span>
-            {currentTrack.artist && <span style={{ fontSize: '0.85rem' }}> • {currentTrack.artist}</span>}
-            {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && 
-              <span style={{ fontSize: '0.85rem' }}> • {formatDuration(currentTrack.positionMs)} / {formatDuration(currentTrack.durationMs)}</span>
-            }
-            {volume !== null && <span style={{ fontSize: '0.85rem' }}> • Vol: {volume}</span>}
-          </span>
+      <div style={styles.topBar}>
+        {/* Back Button / Title - left side (optional) */}
+        {showBackButton ? (
+          <button
+            style={{
+              ...styles.topBarBackButton,
+              cursor: onBackClick ? 'pointer' : 'pointer',
+              opacity: 1,
+              pointerEvents: 'auto',
+            }}
+            onClick={onBackClick || cycleFilter}
+          >
+            {onBackClick ? `← ${backLabel || 'Zurück'}` : getFilterIcon()}
+          </button>
         ) : (
-          <span style={{ fontSize: '0.85rem', opacity: 0.5, textAlign: 'center', display: 'block' }}>Nichts abgespielt</span>
+          <div style={{ ...styles.topBarBackButton, visibility: 'hidden' }} />
         )}
-      </div>
 
-      {/* Room Selector - fixed width, aligned right */}
-      <div style={styles.topBarRoom}>
-        <button
-          style={styles.topBarRoomButton}
-          onClick={() => rooms.length > 0 && setRoomPickerOpen(!roomPickerOpen)}
-          disabled={rooms.length === 0}
+        {/* Track Info - flexible width */}
+        <div
+          style={{ ...styles.topBarTrackInfo, cursor: 'pointer' }}
+          onClick={() => setPlayerOpen(!playerOpen)}
         >
-          {rooms.length === 0
-            ? 'Kein Raum'
-            : selectedRoom 
-              ? (roomIcons[selectedRoom] ? `${roomIcons[selectedRoom]} ${selectedRoom}` : selectedRoom)
-              : 'Raum wählen'}
-        </button>
+          {currentTrack ? (
+            <span
+              style={{
+                fontSize: '0.85rem',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                display: 'block',
+                textAlign: 'center',
+              }}
+            >
+              <span style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>
+                {currentTrack.trackNo ? `${currentTrack.trackNo}. ` : ''}
+                {currentTrack.title || 'Unbekannt'}
+              </span>
+              {currentTrack.artist && (
+                <span style={{ fontSize: '0.85rem' }}> • {currentTrack.artist}</span>
+              )}
+              {currentTrack.positionMs !== undefined && currentTrack.durationMs !== undefined && (
+                <span style={{ fontSize: '0.85rem' }}>
+                  {' '}
+                  • {formatDuration(currentTrack.positionMs)} /{' '}
+                  {formatDuration(currentTrack.durationMs)}
+                </span>
+              )}
+              {volume !== null && <span style={{ fontSize: '0.85rem' }}> • Vol: {volume}</span>}
+            </span>
+          ) : (
+            <span
+              style={{ fontSize: '0.85rem', opacity: 0.5, textAlign: 'center', display: 'block' }}
+            >
+              Nichts abgespielt
+            </span>
+          )}
+        </div>
+
+        {/* Room Selector - fixed width, aligned right */}
+        <div style={styles.topBarRoom}>
+          <button
+            style={styles.topBarRoomButton}
+            onClick={() => rooms.length > 0 && setRoomPickerOpen(!roomPickerOpen)}
+            disabled={rooms.length === 0}
+          >
+            {rooms.length === 0
+              ? 'Kein Raum'
+              : selectedRoom
+                ? roomIcons[selectedRoom]
+                  ? `${roomIcons[selectedRoom]} ${selectedRoom}`
+                  : selectedRoom
+                : 'Raum wählen'}
+          </button>
+        </div>
       </div>
-    </div>
-  )}
+    )
+  }
 
   const renderRoomOverlay = () => {
     return (
-      <div 
+      <div
         style={{
           ...styles.roomPanel,
           maxHeight: roomPickerOpen ? '300px' : '0',
@@ -434,7 +458,7 @@ useEffect(() => {
       >
         <div style={styles.roomPanelTitle}>Raum wählen</div>
         <div style={styles.roomPanelList}>
-          {rooms.map(room => (
+          {rooms.map((room) => (
             <button
               key={room}
               style={{
@@ -467,18 +491,18 @@ useEffect(() => {
 
   const renderPlayerOverlay = () => {
     const room = selectedRoom
-    
+
     // Cover-URL ermitteln: Primär aus trackModeAlbum, alternativ Album-Name in media suchen
     let coverUrl: string | undefined
     if (trackModeAlbum?.coverUrl) {
       coverUrl = trackModeAlbum.coverUrl
     } else if (currentTrack?.album) {
-      const foundAlbum = media.find(m => m.album === currentTrack.album)
+      const foundAlbum = media.find((m) => m.album === currentTrack.album)
       coverUrl = foundAlbum?.coverUrl
     }
-    
+
     return (
-      <div 
+      <div
         style={{
           ...styles.playerPanel,
           maxHeight: playerOpen ? '300px' : '0',
@@ -488,14 +512,8 @@ useEffect(() => {
         {/* Player Controls - Row mit Cover links */}
         <div style={styles.playerControls}>
           {/* Links: Album Cover */}
-          {coverUrl && (
-            <img 
-              src={coverUrl} 
-              alt="Cover" 
-              style={styles.playerCover}
-            />
-          )}
-          
+          {coverUrl && <img src={coverUrl} alt="Cover" style={styles.playerCover} />}
+
           <div style={styles.playerSingleRow}>
             {/* Left: Shuffle & Repeat (invisible placeholders if disabled) */}
             <button
@@ -516,7 +534,9 @@ useEffect(() => {
                 setShuffle(!shuffle)
               }}
               disabled={!showShuffleRepeat}
-            >🔀</button>
+            >
+              🔀
+            </button>
             <button
               style={{
                 ...styles.playerCompactButton,
@@ -546,13 +566,14 @@ useEffect(() => {
                 setRepeatMode(newMode)
               }}
               disabled={!showShuffleRepeat}
-            >🔁{repeatMode === 'one' ? '1' : ''}</button>
+            >
+              🔁{repeatMode === 'one' ? '1' : ''}
+            </button>
 
             {/* Center: Prev, Play/Pause, Next */}
-            <button
-              style={styles.playerMainButton}
-              onClick={() => playPreviousTrack()}
-            >◀◀</button>
+            <button style={styles.playerMainButton} onClick={() => playPreviousTrack()}>
+              ◀◀
+            </button>
             <button
               style={{
                 ...styles.playerMainButton,
@@ -577,11 +598,12 @@ useEffect(() => {
                   setPlaying(true)
                 }
               }}
-            >{playing ? '❚❚' : '▶'}</button>
-            <button
-              style={styles.playerMainButton}
-              onClick={() => playNextTrack()}
-            >▶▶</button>
+            >
+              {playing ? '❚❚' : '▶'}
+            </button>
+            <button style={styles.playerMainButton} onClick={() => playNextTrack()}>
+              ▶▶
+            </button>
 
             {/* Right: Volume Controls */}
             <button
@@ -594,12 +616,17 @@ useEffect(() => {
                   body: JSON.stringify({ room, action: 'volumeDown' }),
                 })
               }}
-            >−</button>
+            >
+              −
+            </button>
             <button
               style={{
                 ...styles.playerCompactButton,
                 // Zeige visuell an, wenn maxVolume erreicht ist
-                ...(selectedRoom && volume !== null && maxVolume[selectedRoom] && volume >= maxVolume[selectedRoom]
+                ...(selectedRoom &&
+                volume !== null &&
+                maxVolume[selectedRoom] &&
+                volume >= maxVolume[selectedRoom]
                   ? { opacity: 0.5, cursor: 'not-allowed' }
                   : {}),
               }}
@@ -612,7 +639,9 @@ useEffect(() => {
                   body: JSON.stringify({ room, action: 'volumeUp' }),
                 })
               }}
-            >+</button>
+            >
+              +
+            </button>
           </div>
         </div>
       </div>
@@ -620,7 +649,7 @@ useEffect(() => {
   }
 
   if (loading) return <div style={styles.screen}>Lade Medien…</div>
-  
+
   // Bei Fehler: Navigation trotzdem anzeigen
   if (error) {
     const filterIcon = kindFilter === 'album' ? '♪' : kindFilter === 'audiobook' ? '📖' : '⚪'
@@ -629,7 +658,15 @@ useEffect(() => {
         {renderTopBar(true, undefined, filterIcon)}
         {renderRoomOverlay()}
         {renderPlayerOverlay()}
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1.2rem',
+          }}
+        >
           {error}
         </div>
       </div>
@@ -637,7 +674,7 @@ useEffect(() => {
   }
 
   // Filter Medien nach Kind
-  const albums = media.filter(m => {
+  const albums = media.filter((m) => {
     if (kindFilter === 'all') return true
     if (kindFilter === 'album') return m.kind === 'album'
     if (kindFilter === 'audiobook') return m.kind === 'audiobook'
@@ -648,12 +685,11 @@ useEffect(() => {
   if (albumDetailView) {
     const album = albumDetailView
     const tracks = album.tracks || []
-    
+
     // Prüfe ob Trackliste angezeigt werden soll basierend auf Album-Typ
-    const shouldShowTracks = album.kind === 'audiobook' 
-      ? showTracklistAudiobooks 
-      : showTracklistAlbums
-    
+    const shouldShowTracks =
+      album.kind === 'audiobook' ? showTracklistAudiobooks : showTracklistAlbums
+
     const hasTracksToShow = tracks.length > 0 && shouldShowTracks
 
     return (
@@ -665,11 +701,7 @@ useEffect(() => {
         <div style={styles.albumDetailContainer}>
           {/* Links: Cover + Info (wie in Tracklist-Ansicht) */}
           <div style={styles.albumDetailLeft}>
-            <img
-              src={album.coverUrl}
-              alt={album.title}
-              style={styles.albumDetailCover}
-            />
+            <img src={album.coverUrl} alt={album.title} style={styles.albumDetailCover} />
             <div style={styles.albumDetailInfo}>
               <div style={styles.albumDetailTitle}>
                 <span style={{ fontWeight: 'bold' }}>{album.title}</span>
@@ -677,7 +709,7 @@ useEffect(() => {
               </div>
             </div>
           </div>
-          
+
           {/* Rechts: Play-Button oben, dann optional Tracklist */}
           <div style={styles.albumDetailRight}>
             {/* Großer Play Button oben */}
@@ -697,16 +729,14 @@ useEffect(() => {
             {/* Tracklist unterhalb Play-Button (wenn aktiviert) */}
             {hasTracksToShow && (
               <div style={styles.albumDetailTracks}>
-                {tracks.map(t => (
+                {tracks.map((t) => (
                   <button
                     key={t.id}
                     style={styles.trackRowCompact}
                     onClick={() => playTrack(album, t)}
                     disabled={busy}
                   >
-                    <div style={styles.trackNumberCompact}>
-                      {t.trackNumber ?? '•'}
-                    </div>
+                    <div style={styles.trackNumberCompact}>{t.trackNumber ?? '•'}</div>
                     <div style={styles.trackTitleCompact}>{t.title}</div>
                     <div style={styles.trackDurationCompact}>
                       {t.durationMs ? formatDuration(t.durationMs) : ''}
@@ -725,12 +755,11 @@ useEffect(() => {
   if (selectedAlbum) {
     const album = selectedAlbum
     const tracks = album.tracks || []
-    
+
     // Prüfe ob Trackliste angezeigt werden soll basierend auf Album-Typ
-    const shouldShowTracks = album.kind === 'audiobook' 
-      ? showTracklistAudiobooks 
-      : showTracklistAlbums
-    
+    const shouldShowTracks =
+      album.kind === 'audiobook' ? showTracklistAudiobooks : showTracklistAlbums
+
     const hasTracksToShow = tracks.length > 0 && shouldShowTracks
 
     return (
@@ -762,16 +791,14 @@ useEffect(() => {
           {/* Right: Tracks List (nur wenn Einstellung aktiv) */}
           {hasTracksToShow && (
             <div style={styles.albumDetailTracks}>
-              {tracks.map(t => (
+              {tracks.map((t) => (
                 <button
                   key={t.id}
                   style={styles.trackRowCompact}
                   onClick={() => playTrack(album, t)}
                   disabled={busy}
                 >
-                  <div style={styles.trackNumberCompact}>
-                    {t.trackNumber ?? '•'}
-                  </div>
+                  <div style={styles.trackNumberCompact}>{t.trackNumber ?? '•'}</div>
                   <div style={styles.trackTitleCompact}>{t.title}</div>
                   <div style={styles.trackDurationCompact}>
                     {t.durationMs ? formatDuration(t.durationMs) : ''}
@@ -788,7 +815,7 @@ useEffect(() => {
   // ============= Ebene 2: Album-Grid für einen Artist =============
   if (selectedArtist) {
     const artistAlbums = albums
-      .filter(a => (a.artist || 'Unbekannt') === selectedArtist)
+      .filter((a) => (a.artist || 'Unbekannt') === selectedArtist)
       .sort((a, b) => a.title.localeCompare(b.title))
 
     return (
@@ -800,7 +827,7 @@ useEffect(() => {
         {busy && <div style={styles.busy}>Bitte warten…</div>}
 
         <div style={styles.grid}>
-          {artistAlbums.map(album => {
+          {artistAlbums.map((album) => {
             return (
               <button
                 key={album.id}
@@ -810,11 +837,7 @@ useEffect(() => {
                   setAlbumDetailView(album)
                 }}
               >
-                <img
-                  src={album.coverUrl}
-                  alt={album.title}
-                  style={styles.cover}
-                />
+                <img src={album.coverUrl} alt={album.title} style={styles.cover} />
                 <div style={styles.cardTitle}>{album.title}</div>
               </button>
             )
@@ -854,17 +877,13 @@ useEffect(() => {
       {busy && <div style={styles.busy}>Bitte warten…</div>}
 
       <div style={styles.grid}>
-        {artistCards.map(artist => (
+        {artistCards.map((artist) => (
           <button
             key={artist.artistName}
             style={styles.card}
             onClick={() => setSelectedArtist(artist.artistName)}
           >
-            <img
-              src={artist.coverUrl}
-              alt={artist.artistName}
-              style={styles.cover}
-            />
+            <img src={artist.coverUrl} alt={artist.artistName} style={styles.cover} />
             <div style={styles.cardTitle}>{artist.artistName}</div>
           </button>
         ))}
@@ -872,8 +891,6 @@ useEffect(() => {
     </div>
   )
 }
-
-
 
 /* Helper für Track-Dauer */
 
@@ -890,7 +907,7 @@ function TemplateSelector() {
   const [templates, setTemplates] = useState<string[]>([])
   const [activeTemplate, setActiveTemplate] = useState<string>('default')
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   useEffect(() => {
     loadTemplates()
@@ -923,11 +940,11 @@ function TemplateSelector() {
       }
 
       setActiveTemplate(template)
-      setMessage({ 
-        type: 'success', 
-        text: `Template "${template}" aktiviert - Seite neu laden, um Änderungen zu sehen` 
+      setMessage({
+        type: 'success',
+        text: `Template "${template}" aktiviert - Seite neu laden, um Änderungen zu sehen`,
       })
-      
+
       // Nach 2 Sekunden automatisch neu laden
       setTimeout(() => {
         window.location.reload()
@@ -944,11 +961,12 @@ function TemplateSelector() {
     <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid #333' }}>
       <div style={{ fontSize: '0.9rem', marginBottom: 8 }}>Frontend-Template</div>
       <div style={{ fontSize: '0.7rem', opacity: 0.6, marginBottom: 12 }}>
-        Wähle ein Design-Template für die Kinder-Ansicht. Nach der Auswahl wird die Seite neu geladen.
+        Wähle ein Design-Template für die Kinder-Ansicht. Nach der Auswahl wird die Seite neu
+        geladen.
       </div>
 
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-        {templates.map(template => (
+        {templates.map((template) => (
           <button
             key={template}
             style={{
@@ -971,13 +989,15 @@ function TemplateSelector() {
       </div>
 
       {message && (
-        <div style={{
-          marginTop: 12,
-          padding: '8px 12px',
-          borderRadius: 6,
-          backgroundColor: message.type === 'success' ? '#2a4' : '#a42',
-          fontSize: '0.85rem',
-        }}>
+        <div
+          style={{
+            marginTop: 12,
+            padding: '8px 12px',
+            borderRadius: 6,
+            backgroundColor: message.type === 'success' ? '#2a4' : '#a42',
+            fontSize: '0.85rem',
+          }}
+        >
           {message.text}
         </div>
       )}
@@ -1012,12 +1032,11 @@ function AdminView() {
   const [hasMore, setHasMore] = useState(false)
   const [offset, setOffset] = useState(0)
 
-
   // Sonos-Konfiguration
   // Sonos-Konfiguration
   const [sonosBaseUrl, setSonosBaseUrl] = useState('')
-  const [sonosRooms, setSonosRooms] = useState<string[]>([])          // alle
-  const [enabledRooms, setEnabledRooms] = useState<string[]>([])      // rechts
+  const [sonosRooms, setSonosRooms] = useState<string[]>([]) // alle
+  const [enabledRooms, setEnabledRooms] = useState<string[]>([]) // rechts
   const [sonosLoading, setSonosLoading] = useState(false)
   const [sonosError, setSonosError] = useState<string | null>(null)
   const [showShuffleRepeatSetting, setShowShuffleRepeatSetting] = useState(true)
@@ -1025,7 +1044,6 @@ function AdminView() {
   const [showTracklistAlbumsSetting, setShowTracklistAlbumsSetting] = useState(true)
   const [showTracklistAudiobooksSetting, setShowTracklistAudiobooksSetting] = useState(true)
   const [maxVolumeAdmin, setMaxVolumeAdmin] = useState<Record<string, number>>({})
-
 
   useEffect(() => {
     const loadSonosConfig = async () => {
@@ -1036,10 +1054,16 @@ function AdminView() {
         setSonosBaseUrl(data.sonosBaseUrl)
         setSonosRooms(data.rooms || [])
         setEnabledRooms(data.enabledRooms || data.rooms || [])
-        setShowShuffleRepeatSetting(data.showShuffleRepeat !== undefined ? data.showShuffleRepeat : true)
+        setShowShuffleRepeatSetting(
+          data.showShuffleRepeat !== undefined ? data.showShuffleRepeat : true,
+        )
         setRoomIconsAdmin(data.roomIcons || {})
-        setShowTracklistAlbumsSetting(data.showTracklistAlbums !== undefined ? data.showTracklistAlbums : true)
-        setShowTracklistAudiobooksSetting(data.showTracklistAudiobooks !== undefined ? data.showTracklistAudiobooks : true)
+        setShowTracklistAlbumsSetting(
+          data.showTracklistAlbums !== undefined ? data.showTracklistAlbums : true,
+        )
+        setShowTracklistAudiobooksSetting(
+          data.showTracklistAudiobooks !== undefined ? data.showTracklistAudiobooks : true,
+        )
         setMaxVolumeAdmin(data.maxVolume || {})
       } catch (err) {
         console.error('Konnte Sonos-Konfiguration nicht laden:', err)
@@ -1060,7 +1084,6 @@ function AdminView() {
     loadSonosConfig()
     loadExistingMedia()
   }, [])
-
 
   const search = async (loadMore = false) => {
     if (!query.trim()) return
@@ -1084,13 +1107,13 @@ function AdminView() {
         throw new Error(body.error || `HTTP ${res.status}`)
       }
       const data = (await res.json()) as AppleSearchResult[]
-      
+
       if (loadMore) {
-        setResults(prev => [...prev, ...data])
+        setResults((prev) => [...prev, ...data])
       } else {
         setResults(data)
       }
-      
+
       // Wenn genau 100 Resultate, gibt es vermutlich mehr
       setHasMore(data.length === 100)
       setOffset(currentOffset + data.length)
@@ -1104,12 +1127,12 @@ function AdminView() {
 
   const isItemExists = (r: AppleSearchResult, entity: 'album' | 'song'): boolean => {
     if (entity === 'album' && r.appleAlbumId) {
-      return existingMedia.some(item => item.id === `album_${r.appleAlbumId}`)
+      return existingMedia.some((item) => item.id === `album_${r.appleAlbumId}`)
     }
     if (entity === 'song' && r.appleSongId) {
       // Prüfe ob Song in irgendeinem Album bereits existiert
-      return existingMedia.some(item => 
-        item.tracks?.some(track => track.appleSongId === r.appleSongId)
+      return existingMedia.some((item) =>
+        item.tracks?.some((track) => track.appleSongId === r.appleSongId),
       )
     }
     return false
@@ -1126,9 +1149,7 @@ function AdminView() {
         .replace(/[^a-z0-9]+/g, '_')
         .replace(/^_+|_+$/g, '')
 
-    const id =
-      (entity === 'album' ? `album_${baseId}` : `song_${baseId}`) ||
-      `item_${Date.now()}`
+    const id = (entity === 'album' ? `album_${baseId}` : `song_${baseId}`) || `item_${Date.now()}`
 
     try {
       let res: Response
@@ -1180,7 +1201,9 @@ function AdminView() {
 
       if (entity === 'album') {
         if (trackCount === 0) {
-          setInfo(`Album "${r.title}" wurde gespeichert ⚠️ Keine Tracks gefunden (Album ist trotzdem abspielbar)`)
+          setInfo(
+            `Album "${r.title}" wurde gespeichert ⚠️ Keine Tracks gefunden (Album ist trotzdem abspielbar)`,
+          )
         } else {
           setInfo(`Album "${r.title}" wurde mit ${trackCount} Songs in media.json gespeichert`)
         }
@@ -1228,16 +1251,14 @@ function AdminView() {
     }
   }
 
-  const availableRooms = sonosRooms.filter(r => !enabledRooms.includes(r))
+  const availableRooms = sonosRooms.filter((r) => !enabledRooms.includes(r))
 
   const moveRoomRight = (room: string) => {
-    setEnabledRooms(prev =>
-      prev.includes(room) ? prev : [...prev, room],
-    )
+    setEnabledRooms((prev) => (prev.includes(room) ? prev : [...prev, room]))
   }
 
   const moveRoomLeft = (room: string) => {
-    setEnabledRooms(prev => prev.filter(r => r !== room))
+    setEnabledRooms((prev) => prev.filter((r) => r !== room))
   }
 
   const moveAllRight = () => {
@@ -1271,8 +1292,6 @@ function AdminView() {
       setSonosError('Aktive Räume konnten nicht gespeichert werden')
     }
   }
-
-  
 
   return (
     <div style={styles.screen}>
@@ -1319,32 +1338,34 @@ function AdminView() {
               <input
                 style={styles.input}
                 value={sonosBaseUrl}
-                onChange={e => setSonosBaseUrl(e.target.value)}
+                onChange={(e) => setSonosBaseUrl(e.target.value)}
                 placeholder="http://192.168.114.21:5005"
               />
-              <button
-                style={styles.button}
-                onClick={discoverSonosRooms}
-                disabled={sonosLoading}
-              >
+              <button style={styles.button} onClick={discoverSonosRooms} disabled={sonosLoading}>
                 {sonosLoading ? 'Lade…' : 'Räume laden & speichern'}
               </button>
             </div>
             {sonosError && (
-              <div style={{ color: 'red', fontSize: '0.8rem', marginBottom: 4 }}>
-                {sonosError}
-              </div>
+              <div style={{ color: 'red', fontSize: '0.8rem', marginBottom: 4 }}>{sonosError}</div>
             )}
 
             {/* Dual-List: Links alle Räume, rechts aktive Räume */}
             <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: '0.8rem', marginBottom: 2 }}>Alle Räume</div>
-                <div style={{ maxHeight: 120, overflowY: 'auto', backgroundColor: '#111', borderRadius: 6, padding: 4 }}>
+                <div
+                  style={{
+                    maxHeight: 120,
+                    overflowY: 'auto',
+                    backgroundColor: '#111',
+                    borderRadius: 6,
+                    padding: 4,
+                  }}
+                >
                   {availableRooms.length === 0 && (
                     <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>Keine weiteren Räume</div>
                   )}
-                  {availableRooms.map(room => (
+                  {availableRooms.map((room) => (
                     <button
                       key={room}
                       style={{
@@ -1364,21 +1385,30 @@ function AdminView() {
                     </button>
                   ))}
                 </div>
-                <button
-                  style={{ ...styles.smallButton, marginTop: 4 }}
-                  onClick={moveAllRight}
-                >
+                <button style={{ ...styles.smallButton, marginTop: 4 }} onClick={moveAllRight}>
                   Alle hinzufügen
                 </button>
               </div>
 
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: '0.8rem', marginBottom: 2 }}>Aktive Räume (für Kids-Frontend)</div>
-                <div style={{ maxHeight: 120, overflowY: 'auto', backgroundColor: '#111', borderRadius: 6, padding: 4 }}>
+                <div style={{ fontSize: '0.8rem', marginBottom: 2 }}>
+                  Aktive Räume (für Kids-Frontend)
+                </div>
+                <div
+                  style={{
+                    maxHeight: 120,
+                    overflowY: 'auto',
+                    backgroundColor: '#111',
+                    borderRadius: 6,
+                    padding: 4,
+                  }}
+                >
                   {enabledRooms.length === 0 && (
-                    <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>Noch keine aktiven Räume</div>
+                    <div style={{ fontSize: '0.75rem', opacity: 0.7 }}>
+                      Noch keine aktiven Räume
+                    </div>
                   )}
-                  {enabledRooms.map(room => (
+                  {enabledRooms.map((room) => (
                     <button
                       key={room}
                       style={{
@@ -1398,19 +1428,13 @@ function AdminView() {
                     </button>
                   ))}
                 </div>
-                <button
-                  style={{ ...styles.smallButton, marginTop: 4 }}
-                  onClick={moveAllLeft}
-                >
+                <button style={{ ...styles.smallButton, marginTop: 4 }} onClick={moveAllLeft}>
                   Alle entfernen
                 </button>
               </div>
             </div>
 
-            <button
-              style={{ ...styles.button, marginTop: 6 }}
-              onClick={saveEnabledRooms}
-            >
+            <button style={{ ...styles.button, marginTop: 6 }} onClick={saveEnabledRooms}>
               Aktive Räume speichern
             </button>
 
@@ -1453,9 +1477,10 @@ function AdminView() {
             <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid #333' }}>
               <div style={{ fontSize: '0.9rem', marginBottom: 8 }}>Trackliste anzeigen</div>
               <div style={{ fontSize: '0.7rem', opacity: 0.6, marginBottom: 12 }}>
-                Für Kinder, die noch nicht lesen können, kann die Trackliste irritieren. Wenn ausgeblendet, verhalten sich Alben wie solche ohne Tracks.
+                Für Kinder, die noch nicht lesen können, kann die Trackliste irritieren. Wenn
+                ausgeblendet, verhalten sich Alben wie solche ohne Tracks.
               </div>
-              
+
               <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                 <input
                   type="checkbox"
@@ -1474,9 +1499,7 @@ function AdminView() {
                     }
                   }}
                 />
-                <span style={{ fontSize: '0.85rem' }}>
-                  Trackliste bei Alben anzeigen
-                </span>
+                <span style={{ fontSize: '0.85rem' }}>Trackliste bei Alben anzeigen</span>
               </label>
 
               <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -1497,20 +1520,23 @@ function AdminView() {
                     }
                   }}
                 />
-                <span style={{ fontSize: '0.85rem' }}>
-                  Trackliste bei Hörbüchern anzeigen
-                </span>
+                <span style={{ fontSize: '0.85rem' }}>Trackliste bei Hörbüchern anzeigen</span>
               </label>
             </div>
 
             {/* Room Icons Configuration */}
             <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid #333' }}>
-              <div style={{ fontSize: '0.9rem', marginBottom: 8 }}>Raumsymbole (Emojis für Kinder)</div>
+              <div style={{ fontSize: '0.9rem', marginBottom: 8 }}>
+                Raumsymbole (Emojis für Kinder)
+              </div>
               <div style={{ fontSize: '0.7rem', opacity: 0.6, marginBottom: 8 }}>
                 Füge jedem Raum ein Emoji/Symbol hinzu, damit Kinder die Räume leichter erkennen.
               </div>
-              {sonosRooms.map(room => (
-                <div key={room} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+              {sonosRooms.map((room) => (
+                <div
+                  key={room}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}
+                >
                   <input
                     type="text"
                     value={roomIconsAdmin[room] || ''}
@@ -1553,12 +1579,18 @@ function AdminView() {
 
             {/* Max Volume Configuration */}
             <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid #333' }}>
-              <div style={{ fontSize: '0.9rem', marginBottom: 8 }}>Maximale Lautstärke pro Raum</div>
-              <div style={{ fontSize: '0.7rem', opacity: 0.6, marginBottom: 8 }}>
-                Schützt Kinderhörgeräte durch Limitierung der maximalen Lautstärke (0-100). Leeres Feld = kein Limit (100).
+              <div style={{ fontSize: '0.9rem', marginBottom: 8 }}>
+                Maximale Lautstärke pro Raum
               </div>
-              {sonosRooms.map(room => (
-                <div key={room} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+              <div style={{ fontSize: '0.7rem', opacity: 0.6, marginBottom: 8 }}>
+                Schützt Kinderhörgeräte durch Limitierung der maximalen Lautstärke (0-100). Leeres
+                Feld = kein Limit (100).
+              </div>
+              {sonosRooms.map((room) => (
+                <div
+                  key={room}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}
+                >
                   <input
                     type="number"
                     min="0"
@@ -1622,14 +1654,14 @@ function AdminView() {
             <input
               style={styles.input}
               value={query}
-              onChange={e => setQuery(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && search()}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && search()}
               placeholder="Titel, Interpret, Album…"
             />
             <select
               style={styles.select}
               value={entity}
-              onChange={e => setEntity(e.target.value as 'album' | 'song')}
+              onChange={(e) => setEntity(e.target.value as 'album' | 'song')}
             >
               <option value="album">Album</option>
               <option value="song">Song</option>
@@ -1637,7 +1669,7 @@ function AdminView() {
             <select
               style={styles.select}
               value={importKind}
-              onChange={e => setImportKind(e.target.value as 'album' | 'audiobook')}
+              onChange={(e) => setImportKind(e.target.value as 'album' | 'audiobook')}
             >
               <option value="album">Als Album</option>
               <option value="audiobook">Als Audiobook</option>
@@ -1649,21 +1681,15 @@ function AdminView() {
 
           {loading && <div>Lade Suchergebnisse…</div>}
           {error && <div style={{ color: 'red', marginBottom: 4 }}>{error}</div>}
-          {info && (
-            <div style={{ color: 'lightgreen', marginBottom: 4 }}>{info}</div>
-          )}
+          {info && <div style={{ color: 'lightgreen', marginBottom: 4 }}>{info}</div>}
 
           <div style={styles.list}>
-            {results.map(r => (
+            {results.map((r) => (
               <div
                 key={`${r.kind}-${r.appleAlbumId}-${r.appleSongId}-${r.title}`}
                 style={styles.resultRow}
               >
-                <img
-                  src={r.coverUrl}
-                  alt={r.title}
-                  style={styles.resultCover}
-                />
+                <img src={r.coverUrl} alt={r.title} style={styles.resultCover} />
                 <div style={styles.resultInfo}>
                   <div>{r.title}</div>
                   <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
@@ -1678,10 +1704,7 @@ function AdminView() {
                     Vorhanden
                   </button>
                 ) : (
-                  <button
-                    style={styles.smallButton}
-                    onClick={() => addToMedia(r, entity)}
-                  >
+                  <button style={styles.smallButton} onClick={() => addToMedia(r, entity)}>
                     Hinzufügen
                   </button>
                 )}
@@ -1689,10 +1712,7 @@ function AdminView() {
             ))}
             {hasMore && !loading && (
               <div style={{ padding: '16px', textAlign: 'center' }}>
-                <button
-                  style={styles.button}
-                  onClick={() => search(true)}
-                >
+                <button style={styles.button} onClick={() => search(true)}>
                   Weitere Resultate laden (100+)
                 </button>
               </div>
@@ -1995,7 +2015,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#ffaaaa',
     whiteSpace: 'nowrap',
   },
-  
+
   // Room Panel (schiebt von oben ein, wie Player)
   roomPanel: {
     backgroundColor: '#1a1a1a',

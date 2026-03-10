@@ -20,7 +20,7 @@ router.post('/sonos/control', async (req: Request, res: Response) => {
   const baseUrl = config.sonosBaseUrl || DEFAULT_SONOS_BASE_URL
   const maxVol = config.maxVolume?.[room] ?? 100
 
-  let sonosPath = ''
+  let sonosPath!: string
   switch (action) {
     case 'play':
     case 'pause':
@@ -88,7 +88,9 @@ router.post('/sonos/control', async (req: Request, res: Response) => {
       const response = await fetch(url, { signal: controller.signal })
       if (!response.ok) {
         const text = await response.text().catch(() => '')
-        return res.status(502).json({ error: `Sonos API returned ${response.status}`, details: text })
+        return res
+          .status(502)
+          .json({ error: `Sonos API returned ${response.status}`, details: text })
       }
       return res.json({ status: 'ok', action, room })
     } finally {
@@ -134,14 +136,16 @@ router.get('/sonos/status', async (req: Request, res: Response) => {
       else if (p.includes('pause') || p.includes('paused')) result.state = 'paused'
       else result.state = payload
     } else if (payload && typeof payload === 'object') {
-      const pb = (payload as any).playbackState || (payload as any).state || (payload as any).transportState
+      const pb =
+        (payload as any).playbackState || (payload as any).state || (payload as any).transportState
       if (pb) result.state = typeof pb === 'string' ? pb.toLowerCase() : pb
 
       if ((payload as any).volume !== undefined) result.volume = Number((payload as any).volume)
       if ((payload as any).mute !== undefined) result.muted = Boolean((payload as any).mute)
       if ((payload as any).equalizer) result.equalizer = (payload as any).equalizer
 
-      const ct = (payload as any).currentTrack || (payload as any).current || (payload as any).track || null
+      const ct =
+        (payload as any).currentTrack || (payload as any).current || (payload as any).track || null
       if (ct && typeof ct === 'object') {
         const track: any = {}
         track.title = ct.title || ct.name || ct.track || ct.currentTitle
@@ -167,7 +171,11 @@ router.get('/sonos/status', async (req: Request, res: Response) => {
           title: nt.title || nt.name,
           artist: nt.artist,
           album: nt.album,
-          durationMs: nt.duration ? (Number(nt.duration) > 10000 ? Number(nt.duration) : Number(nt.duration) * 1000) : undefined,
+          durationMs: nt.duration
+            ? Number(nt.duration) > 10000
+              ? Number(nt.duration)
+              : Number(nt.duration) * 1000
+            : undefined,
           uri: nt.uri || nt.trackUri,
           albumArt: nt.absoluteAlbumArtUri || nt.albumArtUri,
         }
@@ -175,17 +183,23 @@ router.get('/sonos/status', async (req: Request, res: Response) => {
 
       if ((payload as any).elapsedTime !== undefined) {
         const e = Number((payload as any).elapsedTime)
-        if (!Number.isNaN(e)) result.track = { ...(result.track || {}), positionMs: e > 10000 ? e : e * 1000 }
+        if (!Number.isNaN(e))
+          result.track = { ...(result.track || {}), positionMs: e > 10000 ? e : e * 1000 }
       } else if ((payload as any).elapsedTimeMs !== undefined) {
-        result.track = { ...(result.track || {}), positionMs: Number((payload as any).elapsedTimeMs) }
+        result.track = {
+          ...(result.track || {}),
+          positionMs: Number((payload as any).elapsedTimeMs),
+        }
       }
 
       if ((payload as any).trackNo !== undefined) result.trackNo = Number((payload as any).trackNo)
 
       if ((payload as any).playMode) {
         result.playMode = (payload as any).playMode
-        if ((payload as any).playMode.repeat !== undefined) result.repeat = (payload as any).playMode.repeat
-        if ((payload as any).playMode.shuffle !== undefined) result.shuffle = Boolean((payload as any).playMode.shuffle)
+        if ((payload as any).playMode.repeat !== undefined)
+          result.repeat = (payload as any).playMode.repeat
+        if ((payload as any).playMode.shuffle !== undefined)
+          result.shuffle = Boolean((payload as any).playMode.shuffle)
       }
     }
   }
@@ -219,12 +233,14 @@ router.get('/sonos/status', async (req: Request, res: Response) => {
       if (!track.durationMs) {
         const dur = p.duration || p.durationMs || p.trackTimeMillis || p.length
         if (typeof dur === 'number') track.durationMs = dur
-        else if (typeof dur === 'string' && !Number.isNaN(Number(dur))) track.durationMs = Number(dur)
+        else if (typeof dur === 'string' && !Number.isNaN(Number(dur)))
+          track.durationMs = Number(dur)
       }
       if (!track.positionMs) {
         const pos = p.position || p.positionMs || p.elapsed
         if (typeof pos === 'number') track.positionMs = pos
-        else if (typeof pos === 'string' && !Number.isNaN(Number(pos))) track.positionMs = Number(pos)
+        else if (typeof pos === 'string' && !Number.isNaN(Number(pos)))
+          track.positionMs = Number(pos)
       }
     }
 
@@ -261,7 +277,7 @@ router.post('/play', async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Media file could not be loaded' })
   }
 
-  const item = media.find(m => m.id === id)
+  const item = media.find((m) => m.id === id)
   if (!item) {
     return res.status(404).json({ error: `Kein Medium mit id ${id} gefunden` })
   }
@@ -274,7 +290,7 @@ router.post('/play', async (req: Request, res: Response) => {
       })
     }
 
-    track = item.tracks.find(t => t.appleSongId === trackAppleSongId)
+    track = item.tracks.find((t) => t.appleSongId === trackAppleSongId)
 
     if (!track) {
       return res.status(404).json({
@@ -315,7 +331,9 @@ router.post('/play', async (req: Request, res: Response) => {
           const fallbackResponse = await fetch(fallbackUrl)
 
           if (!fallbackResponse.ok) {
-            throw new Error(`Sonos API returned ${fallbackResponse.status} (auch mit Track-Fallback)`)
+            throw new Error(
+              `Sonos API returned ${fallbackResponse.status} (auch mit Track-Fallback)`,
+            )
           }
 
           return res.json({

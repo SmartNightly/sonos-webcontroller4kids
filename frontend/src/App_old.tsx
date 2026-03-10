@@ -76,17 +76,9 @@ function KidsView() {
       {nowPlaying && <div style={styles.nowPlaying}>▶ {nowPlaying}</div>}
       {busy && <div style={styles.busy}>Bitte warten…</div>}
       <div style={styles.grid}>
-        {media.map(item => (
-          <button
-            key={item.id}
-            style={styles.card}
-            onClick={() => playItem(item)}
-          >
-            <img
-              src={item.coverUrl}
-              alt={item.title}
-              style={styles.cover}
-            />
+        {media.map((item) => (
+          <button key={item.id} style={styles.card} onClick={() => playItem(item)}>
+            <img src={item.coverUrl} alt={item.title} style={styles.cover} />
             <div style={styles.cardTitle}>{item.title}</div>
           </button>
         ))}
@@ -129,70 +121,69 @@ function AdminView() {
     }
   }
 
-const addToMedia = async (r: AppleSearchResult, entity: 'album' | 'song') => {
-  setError(null)
-  setInfo(null)
+  const addToMedia = async (r: AppleSearchResult, entity: 'album' | 'song') => {
+    setError(null)
+    setInfo(null)
 
-  // Basis-ID: aus Apple-IDs oder aus Titel generiert
-  const baseId =
-    (entity === 'album' ? r.appleAlbumId : r.appleSongId) ||
-    r.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '_')
-      .replace(/^_+|_+$/g, '')
+    // Basis-ID: aus Apple-IDs oder aus Titel generiert
+    const baseId =
+      (entity === 'album' ? r.appleAlbumId : r.appleSongId) ||
+      r.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '')
 
-  const id =
-    (entity === 'album' ? `album_${baseId}` : `song_${baseId}`) || `item_${Date.now()}`
+    const id = (entity === 'album' ? `album_${baseId}` : `song_${baseId}`) || `item_${Date.now()}`
 
-  try {
-    let res: Response
+    try {
+      let res: Response
 
-    if (entity === 'album') {
-      // ➜ komplettes Album inkl. aller Tracks speichern
-      res = await fetch('http://localhost:3001/media/apple/album', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id,
-          appleAlbumId: r.appleAlbumId,
-          title: r.album || r.title,
-          artist: r.artist,
-          album: r.album || r.title,
-          coverUrl: r.coverUrl,
-        }),
-      })
-    } else {
-      // ➜ nur Song hinzufügen: Album wird gesucht oder angelegt, Song als Child-Track angehängt
-      res = await fetch('http://localhost:3001/media/apple/song', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id,
-          appleSongId: r.appleSongId,
-          appleAlbumId: r.appleAlbumId,
-          albumTitle: r.album || r.title,
-          artist: r.artist,
-          coverUrl: r.coverUrl,
-          trackTitle: r.title,
-        }),
-      })
+      if (entity === 'album') {
+        // ➜ komplettes Album inkl. aller Tracks speichern
+        res = await fetch('http://localhost:3001/media/apple/album', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id,
+            appleAlbumId: r.appleAlbumId,
+            title: r.album || r.title,
+            artist: r.artist,
+            album: r.album || r.title,
+            coverUrl: r.coverUrl,
+          }),
+        })
+      } else {
+        // ➜ nur Song hinzufügen: Album wird gesucht oder angelegt, Song als Child-Track angehängt
+        res = await fetch('http://localhost:3001/media/apple/song', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id,
+            appleSongId: r.appleSongId,
+            appleAlbumId: r.appleAlbumId,
+            albumTitle: r.album || r.title,
+            artist: r.artist,
+            coverUrl: r.coverUrl,
+            trackTitle: r.title,
+          }),
+        })
+      }
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw new Error(body.error || `HTTP ${res.status}`)
+      }
+
+      setInfo(
+        entity === 'album'
+          ? `Album "${r.title}" wurde mit Songs in media.json gespeichert`
+          : `Song "${r.title}" wurde zum Album in media.json hinzugefügt`,
+      )
+    } catch (err) {
+      console.error(err)
+      setError('Konnte Eintrag nicht speichern')
     }
-
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}))
-      throw new Error(body.error || `HTTP ${res.status}`)
-    }
-
-    setInfo(
-      entity === 'album'
-        ? `Album "${r.title}" wurde mit Songs in media.json gespeichert`
-        : `Song "${r.title}" wurde zum Album in media.json hinzugefügt`,
-    )
-  } catch (err) {
-    console.error(err)
-    setError('Konnte Eintrag nicht speichern')
   }
-}
 
   return (
     <div style={styles.screen}>
@@ -202,13 +193,13 @@ const addToMedia = async (r: AppleSearchResult, entity: 'album' | 'song') => {
         <input
           style={styles.input}
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="Titel, Interpret, Album…"
         />
         <select
           style={styles.select}
           value={entity}
-          onChange={e => setEntity(e.target.value as 'album' | 'song')}
+          onChange={(e) => setEntity(e.target.value as 'album' | 'song')}
         >
           <option value="album">Album</option>
           <option value="song">Song</option>
@@ -223,26 +214,26 @@ const addToMedia = async (r: AppleSearchResult, entity: 'album' | 'song') => {
       {info && <div style={{ color: 'lightgreen', marginBottom: 4 }}>{info}</div>}
 
       <div style={styles.list}>
-{results.map(r => (
-  <div key={`${r.kind}-${r.appleAlbumId}-${r.appleSongId}-${r.title}`} style={styles.resultRow}>
-    <img src={r.coverUrl} alt={r.title} style={styles.resultCover} />
-    <div style={styles.resultInfo}>
-      <div>{r.title}</div>
-      <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
-        {r.artist} {r.album ? `– ${r.album}` : ''}
-      </div>
-    </div>
-    <button
-      style={styles.smallButton}
-      onClick={() => addToMedia(r, entity)} // entity = 'album' | 'song' aus deinem Dropdown
-    >
-      Hinzufügen
-    </button>
-  </div>
-))}
-
-
-
+        {results.map((r) => (
+          <div
+            key={`${r.kind}-${r.appleAlbumId}-${r.appleSongId}-${r.title}`}
+            style={styles.resultRow}
+          >
+            <img src={r.coverUrl} alt={r.title} style={styles.resultCover} />
+            <div style={styles.resultInfo}>
+              <div>{r.title}</div>
+              <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
+                {r.artist} {r.album ? `– ${r.album}` : ''}
+              </div>
+            </div>
+            <button
+              style={styles.smallButton}
+              onClick={() => addToMedia(r, entity)} // entity = 'album' | 'song' aus deinem Dropdown
+            >
+              Hinzufügen
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   )

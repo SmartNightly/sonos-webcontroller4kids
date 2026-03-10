@@ -65,11 +65,7 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
       <div style={styles.modalContent}>
         <div style={styles.modalHeader}>
           <h2 style={styles.modalTitle}>Bearbeiten</h2>
-          <button
-            style={styles.modalClose}
-            onClick={onClose}
-            disabled={saving}
-          >
+          <button style={styles.modalClose} onClick={onClose} disabled={saving}>
             ✕
           </button>
         </div>
@@ -82,7 +78,7 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
                 <input
                   style={styles.formInput}
                   value={title}
-                  onChange={e => setTitle(e.target.value)}
+                  onChange={(e) => setTitle(e.target.value)}
                   placeholder="Track-Titel"
                 />
               </div>
@@ -94,7 +90,7 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
                 <input
                   style={styles.formInput}
                   value={title}
-                  onChange={e => setTitle(e.target.value)}
+                  onChange={(e) => setTitle(e.target.value)}
                   placeholder="Titel"
                 />
               </div>
@@ -103,7 +99,7 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
                 <input
                   style={styles.formInput}
                   value={artist}
-                  onChange={e => setArtist(e.target.value)}
+                  onChange={(e) => setArtist(e.target.value)}
                   placeholder="Artist"
                 />
               </div>
@@ -112,7 +108,7 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
                 <input
                   style={styles.formInput}
                   value={album}
-                  onChange={e => setAlbum(e.target.value)}
+                  onChange={(e) => setAlbum(e.target.value)}
                   placeholder="Album"
                 />
               </div>
@@ -121,7 +117,7 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
                 <input
                   style={styles.formInput}
                   value={coverUrl}
-                  onChange={e => setCoverUrl(e.target.value)}
+                  onChange={(e) => setCoverUrl(e.target.value)}
                   placeholder="https://..."
                 />
               </div>
@@ -130,7 +126,7 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
                 <select
                   style={styles.formSelect}
                   value={kind}
-                  onChange={e => setKind(e.target.value)}
+                  onChange={(e) => setKind(e.target.value)}
                 >
                   <option value="album">Album</option>
                   <option value="audiobook">Audiobook</option>
@@ -144,18 +140,10 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
         </div>
 
         <div style={styles.modalFooter}>
-          <button
-            style={styles.cancelButton}
-            onClick={onClose}
-            disabled={saving}
-          >
+          <button style={styles.cancelButton} onClick={onClose} disabled={saving}>
             Abbrechen
           </button>
-          <button
-            style={styles.saveButton}
-            onClick={handleSave}
-            disabled={saving}
-          >
+          <button style={styles.saveButton} onClick={handleSave} disabled={saving}>
             {saving ? 'Speichern…' : 'Speichern'}
           </button>
         </div>
@@ -195,11 +183,7 @@ function DeleteConfirm({ message, isOpen, onCancel, onConfirm }: DeleteConfirmPr
       <div style={styles.modalContent}>
         <div style={styles.modalHeader}>
           <h2 style={styles.modalTitle}>Bestätigung</h2>
-          <button
-            style={styles.modalClose}
-            onClick={onCancel}
-            disabled={deleting}
-          >
+          <button style={styles.modalClose} onClick={onCancel} disabled={deleting}>
             ✕
           </button>
         </div>
@@ -210,18 +194,10 @@ function DeleteConfirm({ message, isOpen, onCancel, onConfirm }: DeleteConfirmPr
         </div>
 
         <div style={styles.modalFooter}>
-          <button
-            style={styles.cancelButton}
-            onClick={onCancel}
-            disabled={deleting}
-          >
+          <button style={styles.cancelButton} onClick={onCancel} disabled={deleting}>
             Abbrechen
           </button>
-          <button
-            style={styles.deleteButton}
-            onClick={handleConfirm}
-            disabled={deleting}
-          >
+          <button style={styles.deleteButton} onClick={handleConfirm} disabled={deleting}>
             {deleting ? 'Lösche…' : 'Löschen'}
           </button>
         </div>
@@ -240,7 +216,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
   const [error, setError] = useState<string | null>(null)
   const [info, setInfo] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
-  
+
   // Multi-Select State
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [bulkEditArtist, setBulkEditArtist] = useState('')
@@ -325,14 +301,12 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
       }
 
       // Update lokales state
-      setMedia(prev =>
-        prev.map(m =>
+      setMedia((prev) =>
+        prev.map((m) =>
           m.id === item.id
             ? {
                 ...m,
-                tracks: m.tracks?.map(t =>
-                  t.id === track.id ? { ...t, ...updates } : t,
-                ),
+                tracks: m.tracks?.map((t) => (t.id === track.id ? { ...t, ...updates } : t)),
               }
             : m,
         ),
@@ -363,9 +337,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
       }
 
       // Update lokales state
-      setMedia(prev =>
-        prev.map(m => (m.id === item.id ? { ...m, ...updates } : m)),
-      )
+      setMedia((prev) => prev.map((m) => (m.id === item.id ? { ...m, ...updates } : m)))
       setInfo('Eintrag wurde aktualisiert')
     }
 
@@ -402,7 +374,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
         throw new Error(body.error || 'Fehler beim Löschen')
       }
 
-      setMedia(prev => prev.filter(m => m.id !== itemId))
+      setMedia((prev) => prev.filter((m) => m.id !== itemId))
       if (expandedAlbumId === itemId) setExpandedAlbumId(null)
       setInfo('Eintrag wurde gelöscht')
     } else if (type === 'track' && trackId) {
@@ -415,11 +387,9 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
         throw new Error(body.error || 'Fehler beim Löschen')
       }
 
-      setMedia(prev =>
-        prev.map(m =>
-          m.id === itemId
-            ? { ...m, tracks: m.tracks?.filter(t => t.id !== trackId) }
-            : m,
+      setMedia((prev) =>
+        prev.map((m) =>
+          m.id === itemId ? { ...m, tracks: m.tracks?.filter((t) => t.id !== trackId) } : m,
         ),
       )
       setInfo('Track wurde gelöscht')
@@ -432,7 +402,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
     if (selectedIds.size === 0) return
 
     try {
-      const updates: Record<string, any> = {}
+      const updates: Record<string, unknown> = {}
       if (bulkEditArtist.trim()) {
         updates.artist = bulkEditArtist.trim()
       }
@@ -453,13 +423,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
       }
 
       // Aktualisiere lokale Daten
-      setMedia(prev =>
-        prev.map(m =>
-          selectedIds.has(m.id)
-            ? { ...m, ...updates }
-            : m,
-        ),
-      )
+      setMedia((prev) => prev.map((m) => (selectedIds.has(m.id) ? { ...m, ...updates } : m)))
 
       setInfo(`${selectedIds.size} Elemente erfolgreich aktualisiert`)
       setTimeout(() => setInfo(null), 3000)
@@ -468,14 +432,14 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
       setSelectedIds(new Set())
       setBulkEditArtist('')
       setBulkEditKind('album')
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unbekannter Fehler')
       setTimeout(() => setError(null), 3000)
     }
   }
 
   const toggleSelection = (id: string) => {
-    setSelectedIds(prev => {
+    setSelectedIds((prev) => {
       const newSet = new Set(prev)
       if (newSet.has(id)) {
         newSet.delete(id)
@@ -532,7 +496,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
         <button
           style={styles.selectButton}
           onClick={() => {
-            const filtered = media.filter(item => {
+            const filtered = media.filter((item) => {
               if (!searchQuery.trim()) return true
               const query = searchQuery.toLowerCase()
               return (
@@ -541,15 +505,12 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
                 (item.album && item.album.toLowerCase().includes(query))
               )
             })
-            setSelectedIds(new Set(filtered.map(item => item.id)))
+            setSelectedIds(new Set(filtered.map((item) => item.id)))
           }}
         >
           Alle auswählen
         </button>
-        <button
-          style={styles.selectButton}
-          onClick={() => setSelectedIds(new Set())}
-        >
+        <button style={styles.selectButton} onClick={() => setSelectedIds(new Set())}>
           Auswahl aufheben
         </button>
         <span style={styles.selectionCount}>
@@ -560,9 +521,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
       {/* Bulk Edit Panel */}
       {selectedIds.size > 0 && (
         <div style={styles.bulkEditPanel}>
-          <h3 style={styles.bulkEditTitle}>
-            Massenbearbeitung ({selectedIds.size} Elemente)
-          </h3>
+          <h3 style={styles.bulkEditTitle}>Massenbearbeitung ({selectedIds.size} Elemente)</h3>
           <div style={styles.bulkEditRow}>
             <label style={styles.bulkEditLabel}>Artist:</label>
             <input
@@ -577,7 +536,9 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
             <label style={styles.bulkEditLabel}>Art:</label>
             <select
               value={bulkEditKind}
-              onChange={(e) => setBulkEditKind(e.target.value as 'album' | 'audiobook' | 'playlist')}
+              onChange={(e) =>
+                setBulkEditKind(e.target.value as 'album' | 'audiobook' | 'playlist')
+              }
               style={styles.bulkEditSelect}
             >
               <option value="album">Album</option>
@@ -585,10 +546,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
               <option value="playlist">Playlist</option>
             </select>
           </div>
-          <button
-            style={styles.bulkEditApplyButton}
-            onClick={handleBulkUpdate}
-          >
+          <button style={styles.bulkEditApplyButton} onClick={handleBulkUpdate}>
             Änderungen auf {selectedIds.size} Elemente anwenden
           </button>
         </div>
@@ -599,7 +557,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
           <div style={styles.emptyText}>Keine Einträge vorhanden</div>
         ) : (
           [...media]
-            .filter(item => {
+            .filter((item) => {
               if (!searchQuery.trim()) return true
               const query = searchQuery.toLowerCase()
               return (
@@ -613,120 +571,114 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
               const artistB = (b.artist || '').toLowerCase()
               return artistA.localeCompare(artistB)
             })
-            .map(item => {
-            const isExpanded = expandedAlbumId === item.id && item.tracks && item.tracks.length > 0
-            const hasNoTracks = !item.tracks || item.tracks.length === 0
-            return (
-            <div
-              key={item.id}
-              style={{
-                ...styles.itemContainer,
-                ...(isExpanded
-                  ? {
-                      position: 'relative',
-                      zIndex: 1000,
-                      boxShadow: '0 8px 20px rgba(0,0,0,0.6)',
-                    }
-                  : {}),
-              }}
-            >
-              <div style={styles.itemHeader}>
-                {/* Checkbox für Multi-Select */}
-                <input
-                  type="checkbox"
-                  checked={selectedIds.has(item.id)}
-                  onChange={() => toggleSelection(item.id)}
-                  onClick={(e) => e.stopPropagation()}
-                  style={styles.checkbox}
-                />
-                
-                <img
-                  src={item.coverUrl}
-                  alt={item.title}
-                  style={styles.itemCover}
-                  onClick={() =>
-                    setExpandedAlbumId(
-                      expandedAlbumId === item.id ? null : item.id,
-                    )
-                  }
-                />
+            .map((item) => {
+              const isExpanded =
+                expandedAlbumId === item.id && item.tracks && item.tracks.length > 0
+              const hasNoTracks = !item.tracks || item.tracks.length === 0
+              return (
                 <div
-                  style={styles.itemInfo}
-                  onClick={() =>
-                    setExpandedAlbumId(
-                      expandedAlbumId === item.id ? null : item.id,
-                    )
-                  }
+                  key={item.id}
+                  style={{
+                    ...styles.itemContainer,
+                    ...(isExpanded
+                      ? {
+                          position: 'relative',
+                          zIndex: 1000,
+                          boxShadow: '0 8px 20px rgba(0,0,0,0.6)',
+                        }
+                      : {}),
+                  }}
                 >
-                  <div style={styles.itemTitle}>{item.title}</div>
-                  {item.artist && (
-                    <div style={styles.itemArtist}>{item.artist}</div>
-                  )}
-                  <div style={styles.itemMeta}>
-                    {item.kind} • {item.service}
-                    {item.tracks && item.tracks.length > 0
-                      ? ` • ${item.tracks.length} Tracks`
-                      : ''}
-                  </div>
-                  {hasNoTracks && (
-                    <div style={styles.warningText}>
-                      ⚠️ Keine Tracks vorhanden (Album ist trotzdem abspielbar)
-                    </div>
-                  )}
-                </div>
-                <div style={styles.itemActions}>
-                  <button
-                    style={styles.actionButton}
-                    onClick={e => {
-                      e.stopPropagation()
-                      handleEditItem(item)
-                    }}
-                  >
-                    ✎ Bearbeiten
-                  </button>
-                  <button
-                    style={styles.deleteActionButton}
-                    onClick={e => {
-                      e.stopPropagation()
-                      handleDeleteItem(item.id)
-                    }}
-                  >
-                    🗑 Löschen
-                  </button>
-                </div>
-              </div>
+                  <div style={styles.itemHeader}>
+                    {/* Checkbox für Multi-Select */}
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.has(item.id)}
+                      onChange={() => toggleSelection(item.id)}
+                      onClick={(e) => e.stopPropagation()}
+                      style={styles.checkbox}
+                    />
 
-              {/* Tracks expandieren */}
-              {isExpanded && (
-                <div style={{ ...styles.tracksList, position: 'relative', zIndex: 2000 }}>
-                  {(item.tracks ?? []).map(track => (
-                    <div key={track.id} style={styles.trackItem}>
-                      <div style={styles.trackInfo}>
-                        <div style={styles.trackNumber}>
-                          {track.trackNumber || '•'}
+                    <img
+                      src={item.coverUrl}
+                      alt={item.title}
+                      style={styles.itemCover}
+                      onClick={() =>
+                        setExpandedAlbumId(expandedAlbumId === item.id ? null : item.id)
+                      }
+                    />
+                    <div
+                      style={styles.itemInfo}
+                      onClick={() =>
+                        setExpandedAlbumId(expandedAlbumId === item.id ? null : item.id)
+                      }
+                    >
+                      <div style={styles.itemTitle}>{item.title}</div>
+                      {item.artist && <div style={styles.itemArtist}>{item.artist}</div>}
+                      <div style={styles.itemMeta}>
+                        {item.kind} • {item.service}
+                        {item.tracks && item.tracks.length > 0
+                          ? ` • ${item.tracks.length} Tracks`
+                          : ''}
+                      </div>
+                      {hasNoTracks && (
+                        <div style={styles.warningText}>
+                          ⚠️ Keine Tracks vorhanden (Album ist trotzdem abspielbar)
                         </div>
-                        <div style={styles.trackTitle}>{track.title}</div>
-                      </div>
-                      <div style={styles.trackActions}>
-                        <button
-                          style={styles.actionButton}
-                          onClick={() => handleEditTrack(item, track)}
-                        >
-                          ✎
-                        </button>
-                        <button
-                          style={styles.deleteActionButton}
-                          onClick={() => handleDeleteTrack(item.id, track.id)}
-                        >
-                          🗑
-                        </button>
-                      </div>
+                      )}
                     </div>
-                  ))}
+                    <div style={styles.itemActions}>
+                      <button
+                        style={styles.actionButton}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleEditItem(item)
+                        }}
+                      >
+                        ✎ Bearbeiten
+                      </button>
+                      <button
+                        style={styles.deleteActionButton}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleDeleteItem(item.id)
+                        }}
+                      >
+                        🗑 Löschen
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Tracks expandieren */}
+                  {isExpanded && (
+                    <div style={{ ...styles.tracksList, position: 'relative', zIndex: 2000 }}>
+                      {(item.tracks ?? []).map((track) => (
+                        <div key={track.id} style={styles.trackItem}>
+                          <div style={styles.trackInfo}>
+                            <div style={styles.trackNumber}>{track.trackNumber || '•'}</div>
+                            <div style={styles.trackTitle}>{track.title}</div>
+                          </div>
+                          <div style={styles.trackActions}>
+                            <button
+                              style={styles.actionButton}
+                              onClick={() => handleEditTrack(item, track)}
+                            >
+                              ✎
+                            </button>
+                            <button
+                              style={styles.deleteActionButton}
+                              onClick={() => handleDeleteTrack(item.id, track.id)}
+                            >
+                              🗑
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          )})
+              )
+            })
         )}
       </div>
 
