@@ -8,20 +8,32 @@ Kinderfreundliche Weboberfläche zum Steuern von Sonos-Lautsprechern, optimiert 
 
 ```
 sonos-webcontroller4kids/
-├── backend/          # Express + Node.js + TypeScript (Port 3344)
-│   └── src/index.ts  # Haupt-Server (~1000 Zeilen)
-├── frontend/         # React 19 + TypeScript + Vite (Dev: Port 5173)
+├── backend/                    # Express + Node.js + TypeScript (Port 3344)
 │   └── src/
-│       ├── App.tsx           # Template-Router
-│       ├── types.ts          # Gemeinsame TypeScript-Typen
-│       ├── MediaEditor.tsx   # Geteilte Komponente
-│       └── templates/        # Pluggable UI-Templates
-│           ├── default/      # Standard-Template mit Admin
-│           └── colorful/     # Buntes Kinder-Template
-├── media-data/       # Persistente Daten (Docker Volume)
-│   ├── config.json   # App-Konfiguration
-│   └── media.json    # Medienbibliothek (Alben, Hörbücher)
-├── Dockerfile        # Multi-Stage Build
+│       ├── index.ts            # App-Setup, Middleware, Router-Registrierung, Server-Start
+│       ├── types.ts            # AppConfig, MediaItem, MediaTrack
+│       ├── services/
+│       │   ├── config.ts       # loadConfig(), saveConfig() — In-Memory-Cache
+│       │   ├── media.ts        # loadMedia(), saveMedia() — In-Memory-Cache
+│       │   ├── sonos.ts        # buildSonosUrl(), fetchWithTimeout()
+│       │   └── apple-music.ts  # searchApple(), fetchAlbumTracks()
+│       └── routes/
+│           ├── health.ts       # GET /health
+│           ├── media.ts        # alle /media/* Routen
+│           ├── admin.ts        # alle /admin/* Routen
+│           └── sonos.ts        # /sonos/control, /sonos/status, /play, /search/apple
+├── frontend/                   # React 19 + TypeScript + Vite (Dev: Port 5173)
+│   └── src/
+│       ├── App.tsx             # Template-Router
+│       ├── types.ts            # Gemeinsame TypeScript-Typen
+│       ├── MediaEditor.tsx     # Geteilte Komponente
+│       └── templates/          # Pluggable UI-Templates
+│           ├── default/        # Standard-Template mit Admin
+│           └── colorful/       # Buntes Kinder-Template
+├── media-data/                 # Persistente Daten (Docker Volume)
+│   ├── config.json             # App-Konfiguration
+│   └── media.json              # Medienbibliothek (Alben, Hörbücher)
+├── Dockerfile                  # Multi-Stage Build
 └── docker-compose.yml
 ```
 
@@ -39,6 +51,26 @@ npm run dev   # ts-node, Port 3344
 cd frontend
 npm install
 npm run dev   # Vite, Port 5173 (proxied zu Backend)
+```
+
+### Linting & Formatierung
+```bash
+# Backend
+cd backend
+npm run lint      # ESLint (typescript-eslint + eslint-config-prettier)
+npm run format    # Prettier
+
+# Frontend
+cd frontend
+npm run lint      # ESLint (typescript-eslint + react-hooks + prettier)
+npm run format    # Prettier
+```
+
+### Tests
+```bash
+cd backend
+npm test           # Vitest (einmalig, 51 Tests in 7 Dateien)
+npm run test:watch # Vitest im Watch-Modus
 ```
 
 ### Build für Produktion
@@ -67,6 +99,7 @@ docker run -p 3344:3344 -v ./media-data:/app/media-data sonos-webcontroller4kids
 | `backend/src/routes/media.ts` | Alle `/media/*` Routen |
 | `backend/src/routes/admin.ts` | Alle `/admin/*` Routen |
 | `backend/src/routes/sonos.ts` | `/sonos/control`, `/sonos/status`, `/play`, `/search/apple` |
+| `backend/tests/` | Vitest-Tests für alle Services und Routen |
 | `frontend/src/App.tsx` | Template-Loader via `React.lazy()`, Admin-Routing |
 | `frontend/src/types.ts` | `MediaItem`, `MediaTrack`, `SonosConfig`, `AppleSearchResult` |
 | `frontend/src/templates/default/App.tsx` | Vollständige UI inkl. Admin-Interface |
@@ -102,16 +135,22 @@ docker run -p 3344:3344 -v ./media-data:/app/media-data sonos-webcontroller4kids
 | `/media` | GET, POST | Medienbibliothek |
 | `/media/:id` | PUT, DELETE | Einzelnes Medium |
 | `/media/:id/tracks/:trackId` | PUT, DELETE | Track-Verwaltung |
-| `/media/bulk` | PUT | Bulk-Updates |
+| `/media/bulk` | PATCH | Bulk-Updates |
+| `/media/apple/album` | POST | Apple-Music-Album importieren |
+| `/media/apple/song` | POST | Apple-Music-Song importieren |
 | `/admin/sonos` | GET | Sonos-Konfiguration abrufen |
 | `/admin/sonos/test` | POST | Sonos-API-Konnektivität testen |
 | `/admin/sonos/discover` | GET | Sonos-Räume entdecken |
+| `/sonos/control` | POST | Sonos-Gerät steuern (play, pause, volume, clearqueue, …) |
+| `/sonos/status` | GET | Aktuellen Wiedergabestatus abrufen |
+| `/play` | POST | Album oder Track per ID abspielen |
+| `/search/apple` | GET | Apple Music / iTunes Suche |
 
 Keine Authentifizierung – setzt lokales Netzwerk voraus.
 
 ## Externe APIs
 
-- **Sonos HTTP API**: Raumsteuerung, Wiedergabe, Lautstärke
+- **Sonos HTTP API**: Raumsteuerung, Wiedergabe, Lautstärke. Alle Aufrufe werden über das Backend proxied, um CORS-Fehler im Browser zu vermeiden.
 - **Apple Music / iTunes Search API**: Albumsuche, Metadaten, Cover-URLs
 
 ## Datenpersistenz
@@ -140,5 +179,6 @@ JSON-basiert, kein Datenbank-Setup nötig:
 - Sonos-Polling im Frontend alle 2 Sekunden für Statusabgleich
 - Admin-Interface via Query-Parameter `?admin=1` aufgerufen
 - Volume-Limits pro Raum konfigurierbar in `config.json` → `maxVolume`
-- Das Projekt enthält Legacy-Dateien (`App_old.tsx`, `App copy.tsx`) – nicht anfassen
+- Alle Sonos-API-Aufrufe werden über das Backend proxied (kein direkter Browser-Zugriff)
+- Config und Media-Daten werden In-Memory gecacht – kein Disk-Read bei jedem Request
 - Backend läuft ohne Auth → nur im lokalen Heimnetz einsetzen
