@@ -3,8 +3,9 @@ import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { MediaEditor } from '../MediaEditor'
 import type { MediaItem } from '../types'
+import { createMockFetch } from './helpers/fixtures'
 
-const mockMedia: MediaItem[] = [
+const editorMedia: MediaItem[] = [
   {
     id: 'album-1',
     title: 'Abbey Road',
@@ -26,22 +27,8 @@ const mockMedia: MediaItem[] = [
   },
 ]
 
-function mockFetch(url: RequestInfo | URL): Promise<Response> {
-  const urlStr = String(url)
-  if (urlStr.includes('/media') && !urlStr.includes('/media/')) {
-    return Promise.resolve({
-      ok: true,
-      json: () => Promise.resolve(mockMedia),
-    } as Response)
-  }
-  return Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve({}),
-  } as Response)
-}
-
 beforeEach(() => {
-  vi.stubGlobal('fetch', vi.fn().mockImplementation(mockFetch))
+  vi.stubGlobal('fetch', vi.fn().mockImplementation(createMockFetch({ media: editorMedia })))
   vi.stubGlobal('confirm', vi.fn().mockReturnValue(false))
 })
 
@@ -52,7 +39,6 @@ afterEach(() => {
 describe('MediaEditor', () => {
   it('renders without crashing', () => {
     render(<MediaEditor />)
-    // Component mounts and starts loading
     expect(document.body).toBeTruthy()
   })
 
@@ -76,7 +62,6 @@ describe('MediaEditor', () => {
     await waitFor(() => {
       expect(screen.getByText('Abbey Road')).toBeInTheDocument()
     })
-    // Search input should be present
     const searchInput = screen.getByPlaceholderText(/suche|search/i)
     expect(searchInput).toBeInTheDocument()
   })
@@ -99,7 +84,6 @@ describe('MediaEditor', () => {
     vi.mocked(fetch).mockRejectedValueOnce(new Error('Network error'))
     render(<MediaEditor />)
     await waitFor(() => {
-      // Either an error message or the component should not crash
       expect(document.body).toBeTruthy()
     })
   })
@@ -107,8 +91,6 @@ describe('MediaEditor', () => {
   it('calls onClose callback when provided', async () => {
     const onClose = vi.fn()
     render(<MediaEditor onClose={onClose} />)
-    // MediaEditor with onClose — the callback is passed to child components
-    // Just verify it renders
     expect(document.body).toBeTruthy()
   })
 })

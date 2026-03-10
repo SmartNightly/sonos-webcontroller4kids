@@ -1,56 +1,17 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import App from '../../../templates/default/App'
-import type { MediaItem } from '../../../types'
+import { createMockFetch, mockConfig } from '../../helpers/fixtures'
 
-const mockMedia: MediaItem[] = [
-  {
-    id: 'album-1',
-    title: 'Abbey Road',
-    kind: 'album',
-    service: 'appleMusic',
-    artist: 'The Beatles',
-    coverUrl: 'https://example.com/abbey-road.jpg',
-  },
-  {
-    id: 'album-2',
-    title: 'Thriller',
-    kind: 'album',
-    service: 'appleMusic',
-    artist: 'Michael Jackson',
-    coverUrl: 'https://example.com/thriller.jpg',
-    artistImageUrl: 'https://example.com/mj-artist.jpg',
-  },
-]
-
-const mockConfig = {
-  rooms: ['Kinderzimmer'],
-  enabledRooms: ['Kinderzimmer'],
-  roomIcons: { Kinderzimmer: '🎸' },
+const defaultConfig = {
+  ...mockConfig,
   showShuffleRepeat: true,
   showTracklistAlbums: true,
   showTracklistAudiobooks: true,
 }
 
-function mockFetch(url: RequestInfo | URL): Promise<Response> {
-  const urlStr = String(url)
-  if (urlStr.includes('/media') && !urlStr.includes('/media/')) {
-    return Promise.resolve({ ok: true, json: () => Promise.resolve(mockMedia) } as Response)
-  }
-  if (urlStr.includes('/admin/sonos')) {
-    return Promise.resolve({ ok: true, json: () => Promise.resolve(mockConfig) } as Response)
-  }
-  if (urlStr.includes('/sonos/status')) {
-    return Promise.resolve({
-      ok: true,
-      json: () => Promise.resolve({ state: 'stopped', volume: 50 }),
-    } as Response)
-  }
-  return Promise.resolve({ ok: true, json: () => Promise.resolve({}) } as Response)
-}
-
 beforeEach(() => {
-  vi.stubGlobal('fetch', vi.fn().mockImplementation(mockFetch))
+  vi.stubGlobal('fetch', vi.fn().mockImplementation(createMockFetch({ config: defaultConfig })))
   vi.stubGlobal('confirm', vi.fn().mockReturnValue(false))
   // MediaEditor uses localStorage — provide a mock
   const localStorageMock = (() => {

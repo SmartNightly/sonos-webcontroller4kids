@@ -166,7 +166,7 @@ function KidsView() {
     const fetchFromBackend = async () => {
       try {
         // Nur Loader anzeigen, wenn wir keinen gültigen Cache hatten
-        setLoading((prev) => prev && true)
+        // Loader only shows if no cached data was loaded yet (loading is still true)
 
         const res = await fetch(`${API_BASE_URL}/media`)
         if (!res.ok) {
@@ -344,7 +344,11 @@ function KidsView() {
       // Kein Track-Modus -> normales Sonos Next
       const room = ensureRoomSelected()
       if (!room) return
-      await fetch(`http://192.168.114.21:5005/${encodeURIComponent(room)}/next`)
+      await fetch(`${API_BASE_URL}/sonos/control`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ room, action: 'next' }),
+      })
       return
     }
 
@@ -363,7 +367,11 @@ function KidsView() {
       // Kein Track-Modus -> normales Sonos Previous
       const room = ensureRoomSelected()
       if (!room) return
-      await fetch(`http://192.168.114.21:5005/${encodeURIComponent(room)}/previous`)
+      await fetch(`${API_BASE_URL}/sonos/control`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ room, action: 'previous' }),
+      })
       return
     }
 

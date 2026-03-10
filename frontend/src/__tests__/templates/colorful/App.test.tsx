@@ -1,54 +1,11 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import App from '../../../templates/colorful/App'
-import type { MediaItem } from '../../../types'
-
-const mockMedia: MediaItem[] = [
-  {
-    id: 'album-1',
-    title: 'Abbey Road',
-    kind: 'album',
-    service: 'appleMusic',
-    artist: 'The Beatles',
-    coverUrl: 'https://example.com/abbey-road.jpg',
-    // No artistImageUrl — should use square album cover
-  },
-  {
-    id: 'album-2',
-    title: 'Thriller',
-    kind: 'album',
-    service: 'appleMusic',
-    artist: 'Michael Jackson',
-    coverUrl: 'https://example.com/thriller.jpg',
-    artistImageUrl: 'https://example.com/mj-artist.jpg', // circular artist photo
-  },
-]
-
-const mockConfig = {
-  rooms: ['Kinderzimmer'],
-  enabledRooms: ['Kinderzimmer'],
-  roomIcons: { Kinderzimmer: '🎸' },
-}
-
-const mockStatus = { state: 'stopped', volume: 50 }
-
-function mockFetch(url: RequestInfo | URL): Promise<Response> {
-  const urlStr = String(url)
-  if (urlStr.includes('/media')) {
-    return Promise.resolve({ ok: true, json: () => Promise.resolve(mockMedia) } as Response)
-  }
-  if (urlStr.includes('/admin/sonos')) {
-    return Promise.resolve({ ok: true, json: () => Promise.resolve(mockConfig) } as Response)
-  }
-  if (urlStr.includes('/sonos/status')) {
-    return Promise.resolve({ ok: true, json: () => Promise.resolve(mockStatus) } as Response)
-  }
-  return Promise.resolve({ ok: true, json: () => Promise.resolve({}) } as Response)
-}
+import { mockMediaDefault, createMockFetch } from '../../helpers/fixtures'
 
 beforeEach(() => {
-  vi.stubGlobal('fetch', vi.fn().mockImplementation(mockFetch))
+  vi.stubGlobal('fetch', vi.fn().mockImplementation(createMockFetch()))
 })
 
 afterEach(() => {
@@ -98,7 +55,7 @@ describe('Colorful Template - App', () => {
 
     // Beatles has no artistImageUrl — should use album cover (square)
     const beatlesImg = screen.getByAltText('The Beatles')
-    expect(beatlesImg).toHaveAttribute('src', 'https://example.com/abbey-road.jpg')
+    expect(beatlesImg).toHaveAttribute('src', mockMediaDefault[0].coverUrl)
     // cover style has borderRadius: '16px'
     expect(beatlesImg).toHaveStyle({ borderRadius: '16px' })
   })
@@ -139,12 +96,13 @@ describe('Colorful Template - App', () => {
   })
 
   it('shows albums for the selected artist', async () => {
+    const user = userEvent.setup()
     render(<App isAdmin={false} />)
     await waitFor(() => {
       expect(screen.getByText('The Beatles')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('The Beatles'))
+    await user.click(screen.getByText('The Beatles'))
     await waitFor(() => {
       // Artist name appears in the header
       expect(screen.getAllByText('The Beatles').length).toBeGreaterThan(0)

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { MediaItem } from '../../types'
 import './App.css'
 
@@ -106,6 +106,24 @@ function KidsView() {
     const timer = setInterval(poll, 2000)
     return () => clearInterval(timer)
   }, [selectedRoom])
+
+  // Artist list — memoized to avoid recomputation on every poll tick
+  const artists = useMemo(() => {
+    const map = new Map<string, MediaItem[]>()
+    media.forEach((album) => {
+      const name = album.artist || 'Unbekannt'
+      if (!map.has(name)) map.set(name, [])
+      map.get(name)!.push(album)
+    })
+
+    return Array.from(map.entries())
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([name, albums]) => ({
+        name,
+        cover: albums[0].coverUrl,
+        artistImageUrl: albums.find((a) => a.artistImageUrl)?.artistImageUrl,
+      }))
+  }, [media])
 
   const playAlbum = async (item: MediaItem) => {
     if (!selectedRoom) return
@@ -218,23 +236,6 @@ function KidsView() {
       </div>
     )
   }
-
-  // Artist-Liste (Hauptansicht)
-  const artistMap = new Map<string, MediaItem[]>()
-  media.forEach((album) => {
-    const name = album.artist || 'Unbekannt'
-    if (!artistMap.has(name)) artistMap.set(name, [])
-    artistMap.get(name)!.push(album)
-  })
-
-  const artists = Array.from(artistMap.entries())
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([name, albums]) => ({
-      name,
-      cover: albums[0].coverUrl,
-      // Use artistImageUrl from any album in this artist group if available
-      artistImageUrl: albums.find((a) => a.artistImageUrl)?.artistImageUrl,
-    }))
 
   return (
     <div style={styles.screen}>
