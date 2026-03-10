@@ -269,7 +269,11 @@ async function resolveArtistImage(artist: string, items: MediaItem[]): Promise<s
 
   try {
     const results = await searchArtist(artist)
-    return results[0]?.artistImageUrl
+    // Only auto-apply when there is exactly one unambiguous match.
+    // When multiple candidates exist the caller returns nothing and
+    // the frontend shows a selection dialog instead.
+    if (results.length === 1) return results[0].artistImageUrl
+    return undefined
   } catch {
     return undefined
   }

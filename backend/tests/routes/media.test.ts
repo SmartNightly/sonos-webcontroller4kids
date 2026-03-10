@@ -243,4 +243,22 @@ describe('POST /media/apple/album', () => {
     expect(res.status).toBe(201)
     expect(res.body.artistImageUrl).toBeUndefined()
   })
+
+  it('leaves artistImageUrl empty when searchArtist returns multiple results (frontend picks)', async () => {
+    vi.mocked(loadMedia).mockReturnValue([])
+    vi.mocked(saveMedia).mockReturnValue(undefined)
+    vi.mocked(fetchAlbumTracks).mockResolvedValue([])
+    vi.mocked(searchArtist).mockResolvedValueOnce([
+      { artistId: '1', artistName: 'Globi', artistImageUrl: 'https://example.com/a.jpg' },
+      { artistId: '2', artistName: 'Globi', artistImageUrl: 'https://example.com/b.jpg' },
+    ])
+    const res = await request(app).post('/media/apple/album').send({
+      id: 'multi-album',
+      appleAlbumId: '333',
+      title: 'Multi Album',
+      artist: 'Globi',
+    })
+    expect(res.status).toBe(201)
+    expect(res.body.artistImageUrl).toBeUndefined()
+  })
 })

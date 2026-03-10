@@ -1095,6 +1095,111 @@ interface SonosConfig {
   maxVolume?: Record<string, number>
 }
 
+interface ArtistResult {
+  artistId: string
+  artistName: string
+  artistImageUrl: string
+}
+
+interface ArtistImagePickerProps {
+  isOpen: boolean
+  artistName: string
+  results: ArtistResult[]
+  onSelect: (artistImageUrl: string) => void
+  onSkip: () => void
+}
+
+function ArtistImagePickerModal({
+  isOpen,
+  artistName,
+  results,
+  onSelect,
+  onSkip,
+}: ArtistImagePickerProps) {
+  if (!isOpen) return null
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: 'rgba(0,0,0,0.7)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 3000,
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: '#222',
+          borderRadius: 12,
+          padding: 20,
+          width: '90vw',
+          maxWidth: 360,
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 12,
+          }}
+        >
+          <div style={{ fontSize: '1rem', fontWeight: 'bold', color: '#fff' }}>
+            Künstlerbild für „{artistName}" auswählen
+          </div>
+          <button
+            onClick={onSkip}
+            style={{ background: 'none', border: 'none', color: '#aaa', fontSize: '1.2rem', cursor: 'pointer' }}
+          >
+            ✕
+          </button>
+        </div>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 16 }}>
+          {results.map((r) => (
+            <button
+              key={r.artistId}
+              type="button"
+              title={r.artistName}
+              onClick={() => onSelect(r.artistImageUrl)}
+              style={{
+                background: 'none',
+                border: '2px solid #555',
+                borderRadius: '50%',
+                padding: 0,
+                cursor: 'pointer',
+              }}
+            >
+              <img
+                src={r.artistImageUrl}
+                alt={r.artistName}
+                style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover', display: 'block' }}
+              />
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={onSkip}
+          style={{
+            width: '100%',
+            padding: '8px 0',
+            borderRadius: 6,
+            border: 'none',
+            backgroundColor: '#444',
+            color: '#fff',
+            cursor: 'pointer',
+            fontSize: '0.9rem',
+          }}
+        >
+          Überspringen
+        </button>
+      </div>
+    </div>
+  )
+}
+
 function AdminView() {
   const [tab, setTab] = useState<'search' | 'editor' | 'settings'>('search')
   const [query, setQuery] = useState('')
@@ -1105,6 +1210,13 @@ function AdminView() {
   const [error, setError] = useState<string | null>(null)
   const [info, setInfo] = useState<string | null>(null)
   const [existingMedia, setExistingMedia] = useState<MediaItem[]>([])
+
+  const [artistImagePicker, setArtistImagePicker] = useState<{
+    isOpen: boolean
+    itemId: string
+    artistName: string
+    pickerResults: ArtistResult[]
+  }>({ isOpen: false, itemId: '', artistName: '', pickerResults: [] })
   const [hasMore, setHasMore] = useState(false)
   const [offset, setOffset] = useState(0)
 
@@ -1286,9 +1398,81 @@ function AdminView() {
       } else {
         setInfo(`Song "${r.title}" wurde zum Album in media.json hinzugefügt`)
       }
+
+      // If the backend did not auto-fill an artist image, search and show a picker
+      if (entity === 'album' && r.artist && !responseData?.artistImageUrl) {
+        try {
+          const artistRes = await fetch(
+            `${API_BASE_URL}/search/apple/artist?query=${encodeURIComponent(r.artist)}`,
+          )
+          if (artistRes.ok) {
+            const artistData = (await artistRes.json()) as ArtistResult[]
+            if (artistData.length === 1) {
+              // Single unambiguous result — auto-apply without dialog
+              await fetch(`${API_BASE_URL}/media/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ artistImageUrl: artistData[0]!.artistImageUrl }),
+              })
+            } else if (artistData.length > 1) {
+              // Multiple candidates — let the user pick
+              setArtistImagePicker({
+                isOpen: true,
+                itemId: id,
+                artistName: r.artist,
+                pickerResults: artistData,
+              })
+            }
+          }
+        } catch {
+          // Artist image search failure is non-critical — ignore
+        }
+      }
     } catch (err) {
       console.error(err)
       setError('Konnte Eintrag nicht speichern')
+    }
+  }
+
+  const handleArtistImageSelect = async (artistImageUrl: string) => {
+    const { itemId, artistName } = artistImagePicker
+    setArtistImagePicker({ isOpen: false, itemId: '', artistName: '', pickerResults: [] })
+
+    await fetch(`${API_BASE_URL}/media/${itemId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ artistImageUrl }),
+    })
+
+    // Offer to bulk-apply to other albums by the same artist
+    const others = existingMedia.filter(
+      (m) =>
+        m.id !== itemId &&
+        m.artist?.toLowerCase() === artistName.toLowerCase() &&
+        m.artistImageUrl !== artistImageUrl,
+    )
+    if (others.length > 0) {
+      const plural = others.length === 1 ? 'Album' : 'Alben'
+      const confirmed = window.confirm(
+        `Dieses Künstlerbild auch für alle anderen Alben von „${artistName}" übernehmen? (${others.length} ${plural})`,
+      )
+      if (confirmed) {
+        await fetch(`${API_BASE_URL}/media/bulk`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ids: others.map((m) => m.id),
+            updates: { artistImageUrl },
+          }),
+        })
+      }
+    }
+
+    // Refresh local media list
+    const mediaRes = await fetch(`${API_BASE_URL}/media`)
+    if (mediaRes.ok) {
+      const data = (await mediaRes.json()) as MediaItem[]
+      setExistingMedia(data)
     }
   }
 
@@ -1802,6 +1986,16 @@ function AdminView() {
 
       {/* Editor-Tab */}
       {tab === 'editor' && <MediaEditor />}
+
+      <ArtistImagePickerModal
+        isOpen={artistImagePicker.isOpen}
+        artistName={artistImagePicker.artistName}
+        results={artistImagePicker.pickerResults}
+        onSelect={handleArtistImageSelect}
+        onSkip={() =>
+          setArtistImagePicker({ isOpen: false, itemId: '', artistName: '', pickerResults: [] })
+        }
+      />
     </div>
   )
 }
