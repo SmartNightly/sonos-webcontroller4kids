@@ -125,6 +125,35 @@ describe('PUT /media/:id', () => {
     expect(res.body.title).toBe('New Title')
   })
 
+  it('persists artistImageUrl when set', async () => {
+    vi.mocked(loadMedia).mockReturnValue([
+      { id: 'upd2', title: 'Album', kind: 'album', service: 'appleMusic', coverUrl: '' },
+    ])
+    vi.mocked(saveMedia).mockReturnValue(undefined)
+    const res = await request(app)
+      .put('/media/upd2')
+      .send({ artistImageUrl: 'https://example.com/artist.jpg' })
+    expect(res.status).toBe(200)
+    expect(res.body.artistImageUrl).toBe('https://example.com/artist.jpg')
+  })
+
+  it('clears artistImageUrl when set to empty string', async () => {
+    vi.mocked(loadMedia).mockReturnValue([
+      {
+        id: 'upd3',
+        title: 'Album',
+        kind: 'album',
+        service: 'appleMusic',
+        coverUrl: '',
+        artistImageUrl: 'https://example.com/old.jpg',
+      },
+    ])
+    vi.mocked(saveMedia).mockReturnValue(undefined)
+    const res = await request(app).put('/media/upd3').send({ artistImageUrl: '' })
+    expect(res.status).toBe(200)
+    expect(res.body.artistImageUrl).toBeUndefined()
+  })
+
   it('returns 404 for unknown id', async () => {
     vi.mocked(loadMedia).mockReturnValue([])
     const res = await request(app).put('/media/unknown').send({ title: 'X' })

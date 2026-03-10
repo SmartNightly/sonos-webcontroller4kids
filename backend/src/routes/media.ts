@@ -87,6 +87,7 @@ router.put('/:id', (req: Request, res: Response) => {
   if (updates.album !== undefined) item.album = updates.album
   if (updates.coverUrl !== undefined) item.coverUrl = updates.coverUrl
   if (updates.kind !== undefined) item.kind = updates.kind as MediaItem['kind']
+  if (updates.artistImageUrl !== undefined) item.artistImageUrl = updates.artistImageUrl || undefined
 
   try {
     saveMedia(items)
