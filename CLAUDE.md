@@ -8,7 +8,7 @@ Kid-friendly web UI for controlling Sonos speakers, optimized for touchscreens (
 
 ```
 sonos-webcontroller4kids/
-├── package.json                # Root package — single source of truth for version (e.g. "1.0.0")
+├── package.json                # Root package — single source of truth for version (e.g. "1.1.0")
 ├── backend/                    # Express 5 + Node.js + TypeScript (Port 3344)
 │   └── src/
 │       ├── index.ts            # App setup, middleware, router registration, server start
@@ -31,6 +31,9 @@ sonos-webcontroller4kids/
 │       ├── types.ts            # Shared TypeScript types
 │       ├── vite-env.d.ts       # Declares __APP_VERSION__ build-time constant
 │       ├── MediaEditor.tsx     # Shared editor component
+│       ├── __tests__/          # Frontend tests (Vitest + React Testing Library)
+│       │   ├── helpers/fixtures.ts  # Shared test fixtures (createMockFetch, mock data)
+│       │   └── templates/      # Template-specific tests
 │       └── templates/          # Pluggable UI templates
 │           ├── default/        # Default template with admin interface
 │           └── colorful/       # Colorful kids template
@@ -38,8 +41,9 @@ sonos-webcontroller4kids/
 │   ├── config.json             # App configuration
 │   └── media.json              # Media library (albums, audiobooks)
 ├── .github/
-│   ├── workflows/ci.yml        # CI: lint + test (parallel) → build
-│   └── workflows/docker-publish.yml  # CD: build + push to Docker Hub
+│   ├── workflows/ci.yml        # CI: lint + test (backend + frontend, parallel) → build
+│   └── workflows/docker-publish.yml  # CD: build + push to Docker Hub + sync README
+├── DOCKER_HUB_README.md        # Docker Hub page (auto-synced by CI)
 └── Dockerfile                  # Multi-stage build
 ```
 
@@ -74,8 +78,14 @@ npm run format    # Prettier
 
 ### Tests
 ```bash
+# Backend
 cd backend
 npm test           # Vitest, one-shot — 67 tests in 8 files
+npm run test:watch # Vitest watch mode
+
+# Frontend
+cd frontend
+npm test           # Vitest, one-shot — 22 tests in 4 files
 npm run test:watch # Vitest watch mode
 ```
 
@@ -108,7 +118,10 @@ docker run -p 3344:3344 -v ./media-data:/app/media-data sonos-webcontroller4kids
 | `backend/src/routes/media.ts` | All `/media/*` routes |
 | `backend/src/routes/admin.ts` | All `/admin/*` routes |
 | `backend/src/routes/sonos.ts` | `/sonos/control`, `/sonos/status`, `/play`, `/search/apple` |
-| `backend/tests/` | Vitest tests for all services and routes |
+| `backend/tests/` | Vitest tests for all services and routes (67 tests) |
+| `frontend/src/__tests__/` | Vitest + React Testing Library tests (22 tests) |
+| `frontend/src/__tests__/helpers/fixtures.ts` | Shared test fixtures (`createMockFetch`, mock data) |
+| `frontend/vitest.config.ts` | Vitest config for frontend (jsdom, `__APP_VERSION__`) |
 | `frontend/src/App.tsx` | Template loader via `React.lazy()`, admin routing |
 | `frontend/src/vite-env.d.ts` | TypeScript declaration for `__APP_VERSION__` |
 | `frontend/src/types.ts` | `MediaItem`, `MediaTrack`, `SonosConfig`, `AppleSearchResult` |
@@ -230,7 +243,7 @@ Two GitHub Actions workflows:
 
 **`.github/workflows/ci.yml`** — runs on every push/PR to `main`:
 1. `lint` job: ESLint for backend + frontend (parallel)
-2. `test` job: Vitest for backend (parallel with lint)
+2. `test` job: Vitest for backend + frontend (parallel with lint)
 3. `build` job: `tsc` + `vite build` — only runs after lint + test both pass
 
 **`.github/workflows/ci.yml`** — `test` job runs both backend (`cd backend && npm test`) and frontend (`cd frontend && npm test`).
