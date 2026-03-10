@@ -1,59 +1,65 @@
 # CLAUDE.md – Sonos Web Controller 4 Kids
 
-## Projektübersicht
+## Project Overview
 
-Kinderfreundliche Weboberfläche zum Steuern von Sonos-Lautsprechern, optimiert für Touchscreens (800×480px). Kinder können Alben und Hörbücher aus Apple Music hinzufügen und abspielen. Admins konfigurieren Räume, Lautstärkelimits und Templates über ein integriertes Admin-Panel.
+Kid-friendly web UI for controlling Sonos speakers, optimized for touchscreens (800×480 px). Children can browse and play albums and audiobooks from Apple Music. Admins configure rooms, volume limits, and UI templates via a built-in admin panel.
 
-## Architektur
+## Architecture
 
 ```
 sonos-webcontroller4kids/
-├── backend/                    # Express + Node.js + TypeScript (Port 3344)
+├── package.json                # Root package — single source of truth for version (e.g. "1.0.0")
+├── backend/                    # Express 5 + Node.js + TypeScript (Port 3344)
 │   └── src/
-│       ├── index.ts            # App-Setup, Middleware, Router-Registrierung, Server-Start
+│       ├── index.ts            # App setup, middleware, router registration, server start
+│       ├── version.ts          # Reads APP_VERSION from backend/package.json at load time
 │       ├── types.ts            # AppConfig, MediaItem, MediaTrack
 │       ├── services/
-│       │   ├── config.ts       # loadConfig(), saveConfig() — In-Memory-Cache
-│       │   ├── media.ts        # loadMedia(), saveMedia() — In-Memory-Cache
+│       │   ├── config.ts       # loadConfig(), saveConfig() — in-memory cache
+│       │   ├── media.ts        # loadMedia(), saveMedia() — in-memory cache
 │       │   ├── sonos.ts        # buildSonosUrl(), fetchWithTimeout()
 │       │   └── apple-music.ts  # searchApple(), fetchAlbumTracks()
 │       └── routes/
-│           ├── health.ts       # GET /health
-│           ├── media.ts        # alle /media/* Routen
-│           ├── admin.ts        # alle /admin/* Routen
+│           ├── health.ts       # GET /health → { status, version }
+│           ├── version.ts      # GET /version → { version, gitCommit, gitCommitShort, buildDate }
+│           ├── media.ts        # All /media/* routes
+│           ├── admin.ts        # All /admin/* routes
 │           └── sonos.ts        # /sonos/control, /sonos/status, /play, /search/apple
 ├── frontend/                   # React 19 + TypeScript + Vite (Dev: Port 5173)
 │   └── src/
-│       ├── App.tsx             # Template-Router
-│       ├── types.ts            # Gemeinsame TypeScript-Typen
-│       ├── MediaEditor.tsx     # Geteilte Komponente
-│       └── templates/          # Pluggable UI-Templates
-│           ├── default/        # Standard-Template mit Admin
-│           └── colorful/       # Buntes Kinder-Template
-├── media-data/                 # Persistente Daten (Docker Volume)
-│   ├── config.json             # App-Konfiguration
-│   └── media.json              # Medienbibliothek (Alben, Hörbücher)
-├── Dockerfile                  # Multi-Stage Build
-└── docker-compose.yml
+│       ├── App.tsx             # Template router (React.lazy)
+│       ├── types.ts            # Shared TypeScript types
+│       ├── vite-env.d.ts       # Declares __APP_VERSION__ build-time constant
+│       ├── MediaEditor.tsx     # Shared editor component
+│       └── templates/          # Pluggable UI templates
+│           ├── default/        # Default template with admin interface
+│           └── colorful/       # Colorful kids template
+├── media-data/                 # Persistent data (Docker volume)
+│   ├── config.json             # App configuration
+│   └── media.json              # Media library (albums, audiobooks)
+├── .github/
+│   ├── workflows/ci.yml        # CI: lint + test (parallel) → build
+│   └── workflows/docker-publish.yml  # CD: build + push to Docker Hub
+└── Dockerfile                  # Multi-stage build
 ```
 
-## Entwicklung
+## Development
 
-### Backend starten
+### Start backend
 ```bash
 cd backend
 npm install
 npm run dev   # ts-node, Port 3344
 ```
 
-### Frontend starten
+### Start frontend
 ```bash
 cd frontend
 npm install
-npm run dev   # Vite, Port 5173 (proxied zu Backend)
+npm run dev   # Vite, Port 5173 (proxied to backend)
 ```
 
-### Linting & Formatierung
+### Linting & Formatting
 ```bash
 # Backend
 cd backend
@@ -69,11 +75,11 @@ npm run format    # Prettier
 ### Tests
 ```bash
 cd backend
-npm test           # Vitest (einmalig, 51 Tests in 7 Dateien)
-npm run test:watch # Vitest im Watch-Modus
+npm test           # Vitest, one-shot — 54 tests in 8 files
+npm run test:watch # Vitest watch mode
 ```
 
-### Build für Produktion
+### Production build
 ```bash
 cd frontend && npm run build   # Output: frontend/dist/
 cd backend && npm run build    # Output: backend/dist/
@@ -85,100 +91,133 @@ docker build -t sonos-webcontroller4kids:latest .
 docker run -p 3344:3344 -v ./media-data:/app/media-data sonos-webcontroller4kids:latest
 ```
 
-## Key-Dateien
+## Key Files
 
-| Datei | Zweck |
-|-------|-------|
-| `backend/src/index.ts` | App-Setup, Middleware, Router-Registrierung, Server-Start |
-| `backend/src/types.ts` | `AppConfig`, `MediaItem`, `MediaTrack` (geteilt im Backend) |
-| `backend/src/services/config.ts` | `loadConfig()`, `saveConfig()` — mit In-Memory-Cache |
-| `backend/src/services/media.ts` | `loadMedia()`, `saveMedia()` — mit In-Memory-Cache |
+| File | Purpose |
+|------|---------|
+| `package.json` | Root — `"version"` field is the single source of truth for app version |
+| `backend/src/index.ts` | App setup, middleware, all router registrations, SPA fallback |
+| `backend/src/version.ts` | Reads `APP_VERSION` from `backend/package.json` at module load time |
+| `backend/src/types.ts` | `AppConfig`, `MediaItem`, `MediaTrack` (backend-internal) |
+| `backend/src/services/config.ts` | `loadConfig()`, `saveConfig()` with in-memory cache |
+| `backend/src/services/media.ts` | `loadMedia()`, `saveMedia()` with in-memory cache |
 | `backend/src/services/sonos.ts` | `buildSonosUrl()`, `fetchWithTimeout()` |
 | `backend/src/services/apple-music.ts` | `searchApple()`, `fetchAlbumTracks()` |
-| `backend/src/routes/health.ts` | `GET /health` |
-| `backend/src/routes/media.ts` | Alle `/media/*` Routen |
-| `backend/src/routes/admin.ts` | Alle `/admin/*` Routen |
+| `backend/src/routes/health.ts` | `GET /health` → `{ status: "ok", version }` |
+| `backend/src/routes/version.ts` | `GET /version` → `{ version, gitCommit, gitCommitShort, buildDate }` |
+| `backend/src/routes/media.ts` | All `/media/*` routes |
+| `backend/src/routes/admin.ts` | All `/admin/*` routes |
 | `backend/src/routes/sonos.ts` | `/sonos/control`, `/sonos/status`, `/play`, `/search/apple` |
-| `backend/tests/` | Vitest-Tests für alle Services und Routen |
-| `frontend/src/App.tsx` | Template-Loader via `React.lazy()`, Admin-Routing |
+| `backend/tests/` | Vitest tests for all services and routes |
+| `frontend/src/App.tsx` | Template loader via `React.lazy()`, admin routing |
+| `frontend/src/vite-env.d.ts` | TypeScript declaration for `__APP_VERSION__` |
 | `frontend/src/types.ts` | `MediaItem`, `MediaTrack`, `SonosConfig`, `AppleSearchResult` |
-| `frontend/src/templates/default/App.tsx` | Vollständige UI inkl. Admin-Interface |
-| `frontend/src/templates/colorful/App.tsx` | Vereinfachte Kinder-UI |
-| `media-data/config.json` | Laufzeit-Konfiguration (Sonos-URL, Räume, Templates) |
-| `media-data/media.json` | Medienbibliothek |
+| `frontend/src/templates/default/App.tsx` | Full UI including admin interface |
+| `frontend/src/templates/colorful/App.tsx` | Simplified kids UI |
+| `frontend/vite.config.ts` | Vite config — injects `__APP_VERSION__` from root `package.json` |
+| `media-data/config.json` | Runtime config (Sonos URL, rooms, templates) |
+| `media-data/media.json` | Media library |
 
-## Template-System
+## Version System
 
-- Templates liegen in `frontend/src/templates/[name]/`
-- Jedes Template braucht: `App.tsx`, `App.css`, `template.config.json`
-- `App.tsx` muss `isAdmin: boolean` als Prop akzeptieren
-- Aktives Template wird in `config.json` → `activeTemplate` gespeichert
-- Der Template-Loader in `frontend/src/App.tsx` lädt Templates dynamisch per `import()`
-- Bei Admin-Zugang ohne eigenes Admin-Interface: zum Default-Template weiterleiten
+App version flows from a single source:
+
+```
+root/package.json "version"
+  ├── → backend/src/version.ts reads it at startup → GET /health, GET /version
+  └── → frontend/vite.config.ts reads it at build time → __APP_VERSION__ constant
+```
+
+Build metadata (git commit, build date) is injected as Docker `ARG`s by CI:
+- `GIT_COMMIT` → `process.env.GIT_COMMIT` → `GET /version` response
+- `BUILD_DATE` → `process.env.BUILD_DATE` → `GET /version` response
+
+In local dev both fields return `"unknown"`.
+
+Frontend usage:
+- `__APP_VERSION__` — build-time constant, always available (no API call needed)
+- `GET /version` — fetched by `VersionInfo` component in admin panel; falls back to `__APP_VERSION__` if the API is unavailable
+
+## Template System
+
+- Templates live in `frontend/src/templates/[name]/`
+- Each template needs: `App.tsx`, `App.css`, `template.config.json`
+- `App.tsx` must accept `isAdmin: boolean` as a prop
+- Active template stored in `config.json` → `activeTemplate`
+- Template loader in `frontend/src/App.tsx` loads templates dynamically via `import()`
+- Templates without their own admin interface redirect to the default template
 
 ## Services / Caching
 
-`services/config.ts` und `services/media.ts` nutzen einen In-Memory-Cache:
-- Erster Aufruf liest von Disk, alle weiteren geben den Cache zurück
-- `saveConfig()` / `saveMedia()` schreiben auf Disk **und** aktualisieren den Cache
-- **Wichtig:** Nach einem manuellen Bearbeiten von `config.json` oder `media.json`
-  muss der Backend-Prozess neu gestartet werden, damit die Änderungen übernommen werden
+`services/config.ts` and `services/media.ts` use an in-memory cache:
+- First call reads from disk; subsequent calls return the cache
+- `saveConfig()` / `saveMedia()` write to disk **and** update the cache
+- **Important:** After manually editing `config.json` or `media.json`, restart the backend process for changes to take effect
 
-`routes/sonos.ts` wird am Root gemountet (`app.use(sonosRouter)`), da `/play` und
-`/search/apple` kein gemeinsames Präfix mit `/sonos/*` haben.
+`routes/sonos.ts` is mounted at root (`app.use(sonosRouter)`) because `/play` and `/search/apple` share no common prefix with `/sonos/*`.
 
-## REST-API (Backend Port 3344)
+## REST API (Backend Port 3344)
 
-| Endpoint | Methode | Beschreibung |
-|----------|---------|--------------|
-| `/health` | GET | Health-Check |
-| `/media` | GET, POST | Medienbibliothek |
-| `/media/:id` | PUT, DELETE | Einzelnes Medium |
-| `/media/:id/tracks/:trackId` | PUT, DELETE | Track-Verwaltung |
-| `/media/bulk` | PATCH | Bulk-Updates |
-| `/media/apple/album` | POST | Apple-Music-Album importieren |
-| `/media/apple/song` | POST | Apple-Music-Song importieren |
-| `/admin/sonos` | GET | Sonos-Konfiguration abrufen |
-| `/admin/sonos/test` | POST | Sonos-API-Konnektivität testen |
-| `/admin/sonos/discover` | GET | Sonos-Räume entdecken |
-| `/sonos/control` | POST | Sonos-Gerät steuern (play, pause, volume, clearqueue, …) |
-| `/sonos/status` | GET | Aktuellen Wiedergabestatus abrufen |
-| `/play` | POST | Album oder Track per ID abspielen |
-| `/search/apple` | GET | Apple Music / iTunes Suche |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Health check → `{ status: "ok", version }` |
+| `/version` | GET | Build info → `{ version, gitCommit, gitCommitShort, buildDate }` |
+| `/media` | GET, POST | Media library |
+| `/media/:id` | PUT, DELETE | Single media item |
+| `/media/:id/tracks/:trackId` | PUT, DELETE | Track management |
+| `/media/bulk` | PATCH | Bulk updates |
+| `/media/apple/album` | POST | Import Apple Music album |
+| `/media/apple/song` | POST | Import Apple Music song |
+| `/admin/sonos` | GET | Get Sonos configuration |
+| `/admin/sonos/test` | POST | Test Sonos API connectivity |
+| `/admin/sonos/discover` | GET | Discover Sonos rooms |
+| `/sonos/control` | POST | Control Sonos device (play, pause, volume, clearqueue, …) |
+| `/sonos/status` | GET | Get current playback status |
+| `/play` | POST | Play album or track by ID |
+| `/search/apple` | GET | Apple Music / iTunes search |
 
-Keine Authentifizierung – setzt lokales Netzwerk voraus.
+No authentication — assumes local network deployment.
 
-## Externe APIs
+## External APIs
 
-- **Sonos HTTP API**: Raumsteuerung, Wiedergabe, Lautstärke. Alle Aufrufe werden über das Backend proxied, um CORS-Fehler im Browser zu vermeiden.
-- **Apple Music / iTunes Search API**: Albumsuche, Metadaten, Cover-URLs
+- **Sonos HTTP API**: Room control, playback, volume. All calls proxied through the backend to avoid browser CORS errors.
+- **Apple Music / iTunes Search API**: Album search, metadata, cover URLs
 
-## Datenpersistenz
+## Data Persistence
 
-JSON-basiert, kein Datenbank-Setup nötig:
-- `media-data/config.json`: Sonos-URL, Räume, Icons, Lautstärkelimits, aktives Template
-- `media-data/media.json`: Liste von `MediaItem` mit verschachtelten `MediaTrack[]`
+JSON-based, no database setup required:
+- `media-data/config.json`: Sonos URL, rooms, icons, volume limits, active template
+- `media-data/media.json`: List of `MediaItem` objects with nested `MediaTrack[]`
 
-## TypeScript-Konventionen
+## TypeScript Conventions
 
-- Strikter Modus in beiden Projekten (`"strict": true`)
-- Backend: CommonJS-Module, ES2019-Target
-- Frontend: ESM, React JSX Transform (`"jsx": "react-jsx"`)
-- Typen in `frontend/src/types.ts` zentralisiert
+- Strict mode in both projects (`"strict": true`)
+- Backend: CommonJS modules (`"module": "commonjs"`), ES2019 target
+- Backend `tsconfig.json` excludes `tests/`, `dist/`, `vitest.config.ts` from compilation
+- Frontend: ESM, React JSX transform (`"jsx": "react-jsx"`)
+- Types centralized in `frontend/src/types.ts`
 
 ## CI/CD
 
-- GitHub Actions: `.github/workflows/docker-publish.yml`
-- Push auf `main` → Docker-Image wird gebaut und auf Docker Hub gepusht
-- Multi-Arch: `linux/amd64` + `linux/arm64`
-- Docker Hub: `smartnightly/sonos-webcontroller4kids:latest`
-- Deployment-Ziel: Synology NAS via Portainer
+Two GitHub Actions workflows:
 
-## Wichtige Hinweise
+**`.github/workflows/ci.yml`** — runs on every push/PR to `main`:
+1. `lint` job: ESLint for backend + frontend (parallel)
+2. `test` job: Vitest for backend (parallel with lint)
+3. `build` job: `tsc` + `vite build` — only runs after lint + test both pass
 
-- Sonos-Polling im Frontend alle 2 Sekunden für Statusabgleich
-- Admin-Interface via Query-Parameter `?admin=1` aufgerufen
-- Volume-Limits pro Raum konfigurierbar in `config.json` → `maxVolume`
-- Alle Sonos-API-Aufrufe werden über das Backend proxied (kein direkter Browser-Zugriff)
-- Config und Media-Daten werden In-Memory gecacht – kein Disk-Read bei jedem Request
-- Backend läuft ohne Auth → nur im lokalen Heimnetz einsetzen
+**`.github/workflows/docker-publish.yml`** — runs on push to `main` and version tags:
+- Builds multi-arch Docker image (`linux/amd64` + `linux/arm64`)
+- Pushes to Docker Hub: `smartnightly/sonos-webcontroller4kids:latest`
+- Injects `GIT_COMMIT` and `BUILD_DATE` as build args
+- Deployment target: Synology NAS via Portainer
+
+## Important Notes
+
+- Sonos polling in frontend every 2 seconds for status sync
+- Admin interface accessed via query parameter `?admin=1`
+- Volume limits configurable per room in `config.json` → `maxVolume`
+- All Sonos API calls proxied through the backend (no direct browser access)
+- Config and media data are cached in memory — no disk read on every request
+- Backend runs without auth → local home network use only
+- `backend/dist/` and `backend/node_modules/` are gitignored — run `npm install` + `npm run build` after cloning
