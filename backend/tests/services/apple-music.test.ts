@@ -83,43 +83,74 @@ describe('searchArtist', () => {
     await expect(searchArtist('Globi')).rejects.toThrow('iTunes API returned 500')
   })
 
-  it('returns mapped artist results with upscaled image URL', async () => {
-    mockFetch.mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        results: [
-          {
-            artistId: 123456,
-            artistName: 'Globi',
-            artworkUrl100: 'https://example.com/100x100bb.jpg',
-          },
-        ],
-      }),
-    })
+  it('returns mapped artist results with profile image from Apple Music page', async () => {
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          results: [
+            {
+              artistId: 123456,
+              artistName: 'Globi',
+              artistLinkUrl: 'https://music.apple.com/ch/artist/globi/123456?uo=4',
+            },
+          ],
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        text: async () =>
+          '<meta property="og:image" content="https://is1-ssl.mzstatic.com/image/thumb/path/1200x630cw.png">',
+      })
     const results = await searchArtist('Globi')
     expect(results).toHaveLength(1)
     expect(results[0]?.artistId).toBe('123456')
     expect(results[0]?.artistName).toBe('Globi')
-    expect(results[0]?.artistImageUrl).toBe('https://example.com/600x600bb.jpg')
+    expect(results[0]?.artistImageUrl).toBe('https://is1-ssl.mzstatic.com/image/thumb/path/600x600cc.png')
   })
 
-  it('filters out results without artworkUrl100', async () => {
-    mockFetch.mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        results: [
-          {
-            artistId: 1,
-            artistName: 'Artist With Image',
-            artworkUrl100: 'https://example.com/100x100bb.jpg',
-          },
-          { artistId: 2, artistName: 'Artist Without Image' },
-        ],
-      }),
-    })
+  it('filters out results where Apple Music page has no og:image', async () => {
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          results: [
+            {
+              artistId: 1,
+              artistName: 'Artist With Image',
+              artistLinkUrl: 'https://music.apple.com/ch/artist/a/1',
+            },
+            {
+              artistId: 2,
+              artistName: 'Artist Without Image',
+              artistLinkUrl: 'https://music.apple.com/ch/artist/b/2',
+            },
+          ],
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        text: async () =>
+          '<meta property="og:image" content="https://example.com/image/1200x630cw.png">',
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        text: async () => '<html>no image here</html>',
+      })
     const results = await searchArtist('test')
     expect(results).toHaveLength(1)
     expect(results[0]?.artistName).toBe('Artist With Image')
+  })
+
+  it('filters out results without artistLinkUrl', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        results: [{ artistId: 1, artistName: 'No Link Artist' }],
+      }),
+    })
+    const results = await searchArtist('test')
+    expect(results).toEqual([])
   })
 
   it('returns empty array when results is empty', async () => {
@@ -132,32 +163,30 @@ describe('searchArtist', () => {
   })
 
   it('deduplicates results by artistId', async () => {
-    mockFetch.mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        results: [
-          {
-            artistId: 1,
-            artistName: 'Globi',
-            artworkUrl100: 'https://example.com/a/100x100bb.jpg',
-          },
-          {
-            artistId: 1,
-            artistName: 'Globi',
-            artworkUrl100: 'https://example.com/b/100x100bb.jpg',
-          },
-          {
-            artistId: 2,
-            artistName: 'Pingu',
-            artworkUrl100: 'https://example.com/c/100x100bb.jpg',
-          },
-        ],
-      }),
-    })
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          results: [
+            { artistId: 1, artistName: 'Globi', artistLinkUrl: 'https://music.apple.com/ch/artist/globi/1' },
+            { artistId: 1, artistName: 'Globi', artistLinkUrl: 'https://music.apple.com/ch/artist/globi/1' },
+            { artistId: 2, artistName: 'Pingu', artistLinkUrl: 'https://music.apple.com/ch/artist/pingu/2' },
+          ],
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        text: async () =>
+          '<meta property="og:image" content="https://example.com/a/1200x630cw.png">',
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        text: async () =>
+          '<meta property="og:image" content="https://example.com/c/1200x630cw.png">',
+      })
     const results = await searchArtist('test')
     expect(results).toHaveLength(2)
-    // First Globi album wins
-    expect(results[0]?.artistImageUrl).toBe('https://example.com/a/600x600bb.jpg')
+    expect(results[0]?.artistImageUrl).toBe('https://example.com/a/600x600cc.png')
     expect(results[1]?.artistName).toBe('Pingu')
   })
 })

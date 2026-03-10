@@ -86,15 +86,13 @@ export async function fetchAlbumTracks(
 }
 
 export async function searchArtist(query: string): Promise<ArtistSearchResult[]> {
-  // The iTunes musicArtist entity does not include artwork URLs.
-  // Searching for albums instead gives us artworkUrl100 (album covers) which we can
-  // use as representative artist images. Results are deduplicated by artistId so each
-  // matching artist appears only once.
+  // iTunes musicArtist entity returns artistLinkUrl (Apple Music page) but no artwork.
+  // We fetch each artist's Apple Music page to extract the og:image profile photo.
   const params = new URLSearchParams({
     term: query,
     media: 'music',
-    entity: 'album',
-    limit: '25',
+    entity: 'musicArtist',
+    limit: '5',
     country: 'ch',
   })
 
@@ -107,20 +105,42 @@ export async function searchArtist(query: string): Promise<ArtistSearchResult[]>
 
   const data = await response.json()
 
-  // Deduplicate by artistId — keep the first (highest-relevance) artwork per artist
+  // Deduplicate by artistId
   const seen = new Set<string>()
-  return (data.results || [])
-    .filter((item: any) => item.artworkUrl100 && item.artistId)
-    .reduce((acc: ArtistSearchResult[], item: any) => {
-      const id = String(item.artistId)
-      if (!seen.has(id)) {
-        seen.add(id)
-        acc.push({
-          artistId: id,
-          artistName: item.artistName,
-          artistImageUrl: item.artworkUrl100.replace('100x100bb', '600x600bb'),
-        })
+  const uniqueArtists = (data.results || []).filter((item: any) => {
+    if (!item.artistId || !item.artistLinkUrl) return false
+    const id = String(item.artistId)
+    if (seen.has(id)) return false
+    seen.add(id)
+    return true
+  })
+
+  // Fetch artist profile images in parallel from Apple Music pages
+  const results = await Promise.all(
+    uniqueArtists.map(async (item: any): Promise<ArtistSearchResult | null> => {
+      const artistImageUrl = await fetchArtistPageImage(item.artistLinkUrl)
+      if (!artistImageUrl) return null
+      return {
+        artistId: String(item.artistId),
+        artistName: item.artistName,
+        artistImageUrl,
       }
-      return acc
-    }, [])
+    }),
+  )
+
+  return results.filter((r): r is ArtistSearchResult => r !== null)
+}
+
+async function fetchArtistPageImage(artistPageUrl: string): Promise<string | null> {
+  try {
+    const response = await fetch(artistPageUrl)
+    if (!response.ok) return null
+    const html = await response.text()
+    const match = html.match(/og:image" content="([^"]+)"/)
+    if (!match?.[1]) return null
+    // Replace the size suffix (e.g. 1200x630cw) with 600x600cc for a square center-crop
+    return match[1].replace(/\/\d+x\d+\w+\.(png|jpg)$/, '/600x600cc.png')
+  } catch {
+    return null
+  }
 }
