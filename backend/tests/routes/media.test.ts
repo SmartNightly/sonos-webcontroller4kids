@@ -9,10 +9,11 @@ vi.mock('../../src/services/media', () => ({
 
 vi.mock('../../src/services/apple-music', () => ({
   fetchAlbumTracks: vi.fn(),
+  searchArtist: vi.fn().mockResolvedValue([]),
 }))
 
 import { loadMedia, saveMedia } from '../../src/services/media'
-import { fetchAlbumTracks } from '../../src/services/apple-music'
+import { fetchAlbumTracks, searchArtist } from '../../src/services/apple-music'
 import mediaRouter from '../../src/routes/media'
 
 const app = express()
@@ -162,6 +163,10 @@ describe('PUT /media/:id', () => {
 })
 
 describe('POST /media/apple/album', () => {
+  beforeEach(() => {
+    vi.mocked(searchArtist).mockResolvedValue([])
+  })
+
   it('returns 400 when required fields missing', async () => {
     const res = await request(app).post('/media/apple/album').send({ id: 'x' })
     expect(res.status).toBe(400)
@@ -180,5 +185,62 @@ describe('POST /media/apple/album', () => {
     })
     expect(res.status).toBe(201)
     expect(res.body.trackCount).toBe(1)
+  })
+
+  it('reuses artistImageUrl from existing item with same artist', async () => {
+    vi.mocked(loadMedia).mockReturnValue([
+      {
+        id: 'existing',
+        title: 'Other Album',
+        kind: 'album',
+        service: 'appleMusic',
+        coverUrl: '',
+        artist: 'Globi',
+        artistImageUrl: 'https://example.com/globi.jpg',
+      },
+    ])
+    vi.mocked(saveMedia).mockReturnValue(undefined)
+    vi.mocked(fetchAlbumTracks).mockResolvedValue([])
+    const res = await request(app).post('/media/apple/album').send({
+      id: 'new-album',
+      appleAlbumId: '999',
+      title: 'New Globi Album',
+      artist: 'Globi',
+    })
+    expect(res.status).toBe(201)
+    expect(res.body.artistImageUrl).toBe('https://example.com/globi.jpg')
+    expect(searchArtist).not.toHaveBeenCalled()
+  })
+
+  it('fetches artistImageUrl via searchArtist when no existing image', async () => {
+    vi.mocked(loadMedia).mockReturnValue([])
+    vi.mocked(saveMedia).mockReturnValue(undefined)
+    vi.mocked(fetchAlbumTracks).mockResolvedValue([])
+    vi.mocked(searchArtist).mockResolvedValueOnce([
+      { artistId: '1', artistName: 'Pingu', artistImageUrl: 'https://example.com/pingu.jpg' },
+    ])
+    const res = await request(app).post('/media/apple/album').send({
+      id: 'pingu-album',
+      appleAlbumId: '111',
+      title: 'Pingu Album',
+      artist: 'Pingu',
+    })
+    expect(res.status).toBe(201)
+    expect(res.body.artistImageUrl).toBe('https://example.com/pingu.jpg')
+  })
+
+  it('creates album without artistImageUrl when searchArtist returns empty', async () => {
+    vi.mocked(loadMedia).mockReturnValue([])
+    vi.mocked(saveMedia).mockReturnValue(undefined)
+    vi.mocked(fetchAlbumTracks).mockResolvedValue([])
+    // searchArtist defaults to mockResolvedValue([]) from mock setup
+    const res = await request(app).post('/media/apple/album').send({
+      id: 'unknown-album',
+      appleAlbumId: '222',
+      title: 'Unknown Artist Album',
+      artist: 'Unknown Artist',
+    })
+    expect(res.status).toBe(201)
+    expect(res.body.artistImageUrl).toBeUndefined()
   })
 })

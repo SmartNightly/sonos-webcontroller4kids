@@ -446,6 +446,44 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
       // Update lokales state
       setMedia((prev) => prev.map((m) => (m.id === item.id ? { ...m, ...updates } : m)))
       setInfo('Eintrag wurde aktualisiert')
+
+      // Offer to bulk-apply the new artistImageUrl to all other albums by the same artist
+      const mediaUpdates = updates as Partial<MediaItem>
+      const newArtistImageUrl = mediaUpdates.artistImageUrl
+      const artistName = mediaUpdates.artist || item.artist
+      if (newArtistImageUrl && artistName) {
+        const sameArtist = media.filter(
+          (m) =>
+            m.id !== item.id &&
+            m.artist?.toLowerCase() === artistName.toLowerCase() &&
+            m.artistImageUrl !== newArtistImageUrl,
+        )
+        if (sameArtist.length > 0) {
+          const plural = sameArtist.length === 1 ? 'Album' : 'Alben'
+          const confirmed = window.confirm(
+            `Dieses Künstlerbild auch für alle anderen Alben von „${artistName}" übernehmen? (${sameArtist.length} ${plural})`,
+          )
+          if (confirmed) {
+            const bulkRes = await fetch(`${API_BASE_URL}/media/bulk`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                ids: sameArtist.map((m) => m.id),
+                updates: { artistImageUrl: newArtistImageUrl },
+              }),
+            })
+            if (bulkRes.ok) {
+              const ids = new Set(sameArtist.map((m) => m.id))
+              setMedia((prev) =>
+                prev.map((m) => (ids.has(m.id) ? { ...m, artistImageUrl: newArtistImageUrl } : m)),
+              )
+              setInfo(
+                `Künstlerbild für ${sameArtist.length + 1} Alben von „${artistName}" übernommen`,
+              )
+            }
+          }
+        }
+      }
     }
 
     setTimeout(() => setInfo(null), 2000)

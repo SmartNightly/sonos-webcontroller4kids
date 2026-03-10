@@ -2,7 +2,7 @@ import { Router } from 'express'
 import type { Request, Response } from 'express'
 import type { MediaItem, MediaTrack } from '../types'
 import { loadMedia, saveMedia } from '../services/media'
-import { fetchAlbumTracks } from '../services/apple-music'
+import { fetchAlbumTracks, searchArtist } from '../services/apple-music'
 
 const router = Router()
 
@@ -259,6 +259,22 @@ router.put('/:albumId/tracks/:trackId', (req: Request, res: Response) => {
   res.json(track)
 })
 
+// Returns the artistImageUrl for the given artist: reuses an existing image from the
+// media library if one exists, otherwise queries Apple Music for a profile photo.
+async function resolveArtistImage(artist: string, items: MediaItem[]): Promise<string | undefined> {
+  const existing = items.find(
+    (i) => i.artist?.toLowerCase() === artist.toLowerCase() && i.artistImageUrl,
+  )
+  if (existing?.artistImageUrl) return existing.artistImageUrl
+
+  try {
+    const results = await searchArtist(artist)
+    return results[0]?.artistImageUrl
+  } catch {
+    return undefined
+  }
+}
+
 // POST /media/apple/album
 router.post('/apple/album', async (req: Request, res: Response) => {
   const { id, appleAlbumId, title, artist, album, coverUrl, kind } = req.body as {
@@ -312,6 +328,10 @@ router.post('/apple/album', async (req: Request, res: Response) => {
       if (kind) existingAlbum.kind = kind
       existingAlbum.appleId = appleAlbumId
 
+      if (artist && !existingAlbum.artistImageUrl) {
+        existingAlbum.artistImageUrl = await resolveArtistImage(artist, items)
+      }
+
       saveMedia(items)
       return res.status(200).json({ ...existingAlbum, trackCount: tracks.length })
     }
@@ -326,6 +346,10 @@ router.post('/apple/album', async (req: Request, res: Response) => {
       coverUrl: coverUrl || '',
       appleId: appleAlbumId,
       tracks,
+    }
+
+    if (artist) {
+      newAlbum.artistImageUrl = await resolveArtistImage(artist, items)
     }
 
     items.push(newAlbum)
