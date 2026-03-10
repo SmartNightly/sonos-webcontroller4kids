@@ -108,7 +108,7 @@ export async function searchArtist(query: string): Promise<ArtistSearchResult[]>
   // Deduplicate by artistId
   const seen = new Set<string>()
   const uniqueArtists = (data.results || []).filter((item: any) => {
-    if (!item.artistId || !item.artistLinkUrl) return false
+    if (!item.artistId) return false
     const id = String(item.artistId)
     if (seen.has(id)) return false
     seen.add(id)
@@ -118,7 +118,7 @@ export async function searchArtist(query: string): Promise<ArtistSearchResult[]>
   // Fetch artist profile images in parallel from Apple Music pages
   const results = await Promise.all(
     uniqueArtists.map(async (item: any): Promise<ArtistSearchResult | null> => {
-      const artistImageUrl = await fetchArtistPageImage(item.artistLinkUrl)
+      const artistImageUrl = await fetchArtistImage(item.artistId)
       if (!artistImageUrl) return null
       return {
         artistId: String(item.artistId),
@@ -131,15 +131,24 @@ export async function searchArtist(query: string): Promise<ArtistSearchResult[]>
   return results.filter((r): r is ArtistSearchResult => r !== null)
 }
 
-async function fetchArtistPageImage(artistPageUrl: string): Promise<string | null> {
+async function fetchArtistImage(artistId: number, countryCode = 'ch'): Promise<string | null> {
   try {
-    const response = await fetch(artistPageUrl)
-    if (!response.ok) return null
+    const url = `https://music.apple.com/${countryCode}/artist/${artistId}`
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 3000)
+    const response = await fetch(url, { signal: controller.signal })
+    clearTimeout(timeout)
     const html = await response.text()
-    const match = html.match(/og:image" content="([^"]+)"/)
+
+    // Apple Music pages use either attribute order for og:image
+    const match =
+      html.match(/<meta property="og:image"\s+content="([^"]+)"/) ||
+      html.match(/<meta content="([^"]+)"\s+property="og:image"/)
+
     if (!match?.[1]) return null
-    // Replace the size suffix (e.g. 1200x630cw) with 600x600cc for a square center-crop
-    return match[1].replace(/\/\d+x\d+\w+\.(png|jpg)$/, '/600x600cc.png')
+
+    // Resize to 600x600 center-cropped square
+    return match[1].replace(/\/\d+x\d+[a-z]*\.\w+$/, '/600x600cc.png')
   } catch {
     return null
   }

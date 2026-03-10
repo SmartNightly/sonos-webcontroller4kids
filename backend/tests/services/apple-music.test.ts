@@ -88,13 +88,7 @@ describe('searchArtist', () => {
       .mockResolvedValueOnce({
         ok: true,
         json: async () => ({
-          results: [
-            {
-              artistId: 123456,
-              artistName: 'Globi',
-              artistLinkUrl: 'https://music.apple.com/ch/artist/globi/123456?uo=4',
-            },
-          ],
+          results: [{ artistId: 123456, artistName: 'Globi' }],
         }),
       })
       .mockResolvedValueOnce({
@@ -109,22 +103,31 @@ describe('searchArtist', () => {
     expect(results[0]?.artistImageUrl).toBe('https://is1-ssl.mzstatic.com/image/thumb/path/600x600cc.png')
   })
 
+  it('handles reversed og:image attribute order', async () => {
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          results: [{ artistId: 1, artistName: 'Artist' }],
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        text: async () =>
+          '<meta content="https://example.com/image/1200x630cw.png" property="og:image">',
+      })
+    const results = await searchArtist('Artist')
+    expect(results[0]?.artistImageUrl).toBe('https://example.com/image/600x600cc.png')
+  })
+
   it('filters out results where Apple Music page has no og:image', async () => {
     mockFetch
       .mockResolvedValueOnce({
         ok: true,
         json: async () => ({
           results: [
-            {
-              artistId: 1,
-              artistName: 'Artist With Image',
-              artistLinkUrl: 'https://music.apple.com/ch/artist/a/1',
-            },
-            {
-              artistId: 2,
-              artistName: 'Artist Without Image',
-              artistLinkUrl: 'https://music.apple.com/ch/artist/b/2',
-            },
+            { artistId: 1, artistName: 'Artist With Image' },
+            { artistId: 2, artistName: 'Artist Without Image' },
           ],
         }),
       })
@@ -142,11 +145,11 @@ describe('searchArtist', () => {
     expect(results[0]?.artistName).toBe('Artist With Image')
   })
 
-  it('filters out results without artistLinkUrl', async () => {
+  it('filters out results without artistId', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
-        results: [{ artistId: 1, artistName: 'No Link Artist' }],
+        results: [{ artistName: 'No ID Artist' }],
       }),
     })
     const results = await searchArtist('test')
@@ -168,9 +171,9 @@ describe('searchArtist', () => {
         ok: true,
         json: async () => ({
           results: [
-            { artistId: 1, artistName: 'Globi', artistLinkUrl: 'https://music.apple.com/ch/artist/globi/1' },
-            { artistId: 1, artistName: 'Globi', artistLinkUrl: 'https://music.apple.com/ch/artist/globi/1' },
-            { artistId: 2, artistName: 'Pingu', artistLinkUrl: 'https://music.apple.com/ch/artist/pingu/2' },
+            { artistId: 1, artistName: 'Globi' },
+            { artistId: 1, artistName: 'Globi' },
+            { artistId: 2, artistName: 'Pingu' },
           ],
         }),
       })
