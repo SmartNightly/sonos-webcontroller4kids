@@ -42,7 +42,7 @@ sonos-webcontroller4kids/
 │   └── media.json              # Media library (albums, audiobooks)
 ├── .github/
 │   ├── workflows/ci.yml        # CI: lint + test (backend + frontend, parallel) → build
-│   └── workflows/docker-publish.yml  # CD: build + push to Docker Hub + sync README
+│   └── workflows/docker-publish.yml  # CD: build + push to Docker Hub
 ├── DOCKER_HUB_README.md        # Docker Hub page (auto-synced by CI)
 └── Dockerfile                  # Multi-stage build
 ```
@@ -252,14 +252,13 @@ Two GitHub Actions workflows:
 - Builds multi-arch Docker image (`linux/amd64` + `linux/arm64`)
 - Pushes to Docker Hub: `smartnightly/sonos-webcontroller4kids:latest`
 - Injects `GIT_COMMIT` and `BUILD_DATE` as build args
-- **Syncs `DOCKER_HUB_README.md`** to Docker Hub via `peter-evans/dockerhub-description@v4`
 - Deployment target: Synology NAS via Portainer
 
 ## Important Notes
 
 - **Backend auto-restarts on file changes** via `tsx watch`. After editing backend source files, the server reloads automatically. If it doesn't (e.g. after installing packages), kill it manually and run `npm run dev` again.
 - **Player auto-shows on playback**: both templates call `setPlayerOpen(true)` in `playAlbum()`/`playTrack()` after a successful play request. The colorful template uses CSS transitions (`max-height`/`opacity`/`padding`) rather than conditional render so the slide-in animates smoothly.
-- **Docker Hub README**: `DOCKER_HUB_README.md` in repo root is the source of truth for the Docker Hub page. It is auto-synced on every push to `main` via the `docker-publish.yml` workflow — edit it here, not directly on Docker Hub.
+- **Docker Hub README**: `DOCKER_HUB_README.md` in repo root is the source of truth for the Docker Hub page. Copy it manually to Docker Hub when updated.
 - The in-memory caches in `services/config.ts` and `services/media.ts` are re-initialized on each restart — so a restart also clears any stale cached state.
 - Sonos polling in frontend every 2 seconds for status sync
 - Admin interface accessed via query parameter `?admin=1`
