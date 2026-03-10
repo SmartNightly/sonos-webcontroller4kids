@@ -69,6 +69,9 @@ router.post('/sonos/control', async (req, res) => {
         case 'repeatAll':
             sonosPath = 'repeat/all';
             break;
+        case 'clearqueue':
+            sonosPath = 'clearqueue';
+            break;
         default:
             return res.status(400).json({ error: `Unbekannte action ${action}` });
     }
@@ -327,7 +330,10 @@ router.post('/play', async (req, res) => {
         });
     }
     catch (err) {
-        console.error('Fehler beim Aufruf der Sonos-HTTP-API:', err);
+        console.error('Fehler beim Aufruf der Sonos-HTTP-API:', url);
+        console.error('  message:', err === null || err === void 0 ? void 0 : err.message);
+        console.error('  cause:  ', err === null || err === void 0 ? void 0 : err.cause);
+        console.error('  stack:  ', err === null || err === void 0 ? void 0 : err.stack);
         res.status(502).json({ error: 'Sonos-Backend nicht erreichbar oder Fehler beim Abspielen' });
     }
 });
