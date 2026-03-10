@@ -57,7 +57,16 @@ docker run -p 3344:3344 -v ./media-data:/app/media-data sonos-webcontroller4kids
 
 | Datei | Zweck |
 |-------|-------|
-| `backend/src/index.ts` | Express-Server, REST-API, Sonos-Integration, Config-Management |
+| `backend/src/index.ts` | App-Setup, Middleware, Router-Registrierung, Server-Start |
+| `backend/src/types.ts` | `AppConfig`, `MediaItem`, `MediaTrack` (geteilt im Backend) |
+| `backend/src/services/config.ts` | `loadConfig()`, `saveConfig()` — mit In-Memory-Cache |
+| `backend/src/services/media.ts` | `loadMedia()`, `saveMedia()` — mit In-Memory-Cache |
+| `backend/src/services/sonos.ts` | `buildSonosUrl()`, `fetchWithTimeout()` |
+| `backend/src/services/apple-music.ts` | `searchApple()`, `fetchAlbumTracks()` |
+| `backend/src/routes/health.ts` | `GET /health` |
+| `backend/src/routes/media.ts` | Alle `/media/*` Routen |
+| `backend/src/routes/admin.ts` | Alle `/admin/*` Routen |
+| `backend/src/routes/sonos.ts` | `/sonos/control`, `/sonos/status`, `/play`, `/search/apple` |
 | `frontend/src/App.tsx` | Template-Loader via `React.lazy()`, Admin-Routing |
 | `frontend/src/types.ts` | `MediaItem`, `MediaTrack`, `SonosConfig`, `AppleSearchResult` |
 | `frontend/src/templates/default/App.tsx` | Vollständige UI inkl. Admin-Interface |
@@ -73,6 +82,17 @@ docker run -p 3344:3344 -v ./media-data:/app/media-data sonos-webcontroller4kids
 - Aktives Template wird in `config.json` → `activeTemplate` gespeichert
 - Der Template-Loader in `frontend/src/App.tsx` lädt Templates dynamisch per `import()`
 - Bei Admin-Zugang ohne eigenes Admin-Interface: zum Default-Template weiterleiten
+
+## Services / Caching
+
+`services/config.ts` und `services/media.ts` nutzen einen In-Memory-Cache:
+- Erster Aufruf liest von Disk, alle weiteren geben den Cache zurück
+- `saveConfig()` / `saveMedia()` schreiben auf Disk **und** aktualisieren den Cache
+- **Wichtig:** Nach einem manuellen Bearbeiten von `config.json` oder `media.json`
+  muss der Backend-Prozess neu gestartet werden, damit die Änderungen übernommen werden
+
+`routes/sonos.ts` wird am Root gemountet (`app.use(sonosRouter)`), da `/play` und
+`/search/apple` kein gemeinsames Präfix mit `/sonos/*` haben.
 
 ## REST-API (Backend Port 3344)
 
