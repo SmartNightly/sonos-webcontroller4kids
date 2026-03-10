@@ -49,7 +49,7 @@ sonos-webcontroller4kids/
 ```bash
 cd backend
 npm install
-npm run dev   # ts-node, Port 3344
+npm run dev   # tsx watch — auto-restarts on file changes, Port 3344
 ```
 
 ### Start frontend
@@ -75,7 +75,7 @@ npm run format    # Prettier
 ### Tests
 ```bash
 cd backend
-npm test           # Vitest, one-shot — 58 tests in 8 files
+npm test           # Vitest, one-shot — 61 tests in 8 files
 npm run test:watch # Vitest watch mode
 ```
 
@@ -236,6 +236,8 @@ Two GitHub Actions workflows:
 
 ## Important Notes
 
+- **Backend auto-restarts on file changes** via `tsx watch`. After editing backend source files, the server reloads automatically. If it doesn't (e.g. after installing packages), kill it manually and run `npm run dev` again.
+- The in-memory caches in `services/config.ts` and `services/media.ts` are re-initialized on each restart — so a restart also clears any stale cached state.
 - Sonos polling in frontend every 2 seconds for status sync
 - Admin interface accessed via query parameter `?admin=1`
 - Volume limits configurable per room in `config.json` → `maxVolume`
