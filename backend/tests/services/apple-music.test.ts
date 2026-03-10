@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 
-import { searchApple, fetchAlbumTracks } from '../../src/services/apple-music'
+import { searchApple, fetchAlbumTracks, searchArtist } from '../../src/services/apple-music'
 
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
@@ -69,6 +69,65 @@ describe('searchApple', () => {
       json: async () => ({ results: [] }),
     })
     const results = await searchApple('nothing', 'album', 0)
+    expect(results).toEqual([])
+  })
+})
+
+describe('searchArtist', () => {
+  beforeEach(() => {
+    mockFetch.mockReset()
+  })
+
+  it('throws when iTunes API returns non-ok status', async () => {
+    mockFetch.mockResolvedValue({ ok: false, status: 500 })
+    await expect(searchArtist('Globi')).rejects.toThrow('iTunes API returned 500')
+  })
+
+  it('returns mapped artist results with upscaled image URL', async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        results: [
+          {
+            artistId: 123456,
+            artistName: 'Globi',
+            artworkUrl100: 'https://example.com/100x100bb.jpg',
+          },
+        ],
+      }),
+    })
+    const results = await searchArtist('Globi')
+    expect(results).toHaveLength(1)
+    expect(results[0]?.artistId).toBe('123456')
+    expect(results[0]?.artistName).toBe('Globi')
+    expect(results[0]?.artistImageUrl).toBe('https://example.com/600x600bb.jpg')
+  })
+
+  it('filters out results without artworkUrl100', async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        results: [
+          {
+            artistId: 1,
+            artistName: 'Artist With Image',
+            artworkUrl100: 'https://example.com/100x100bb.jpg',
+          },
+          { artistId: 2, artistName: 'Artist Without Image' },
+        ],
+      }),
+    })
+    const results = await searchArtist('test')
+    expect(results).toHaveLength(1)
+    expect(results[0]?.artistName).toBe('Artist With Image')
+  })
+
+  it('returns empty array when results is empty', async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({ results: [] }),
+    })
+    const results = await searchArtist('unknown')
     expect(results).toEqual([])
   })
 })

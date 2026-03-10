@@ -227,7 +227,12 @@ function KidsView() {
 
   const artists = Array.from(artistMap.entries())
     .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([name, albums]) => ({ name, cover: albums[0].coverUrl }))
+    .map(([name, albums]) => ({
+      name,
+      cover: albums[0].coverUrl,
+      // Use artistImageUrl from any album in this artist group if available
+      artistImageUrl: albums.find((a) => a.artistImageUrl)?.artistImageUrl,
+    }))
 
   return (
     <div style={styles.screen}>
@@ -270,7 +275,11 @@ function KidsView() {
             style={{ ...styles.card, background: colors[idx % colors.length] }}
             onClick={() => setSelectedArtist(artist.name)}
           >
-            <img src={artist.cover} alt={artist.name} style={styles.cover} />
+            <img
+              src={artist.artistImageUrl ?? artist.cover}
+              alt={artist.name}
+              style={artist.artistImageUrl ? styles.coverCircle : styles.cover}
+            />
             <div style={styles.cardTitle}>{artist.name}</div>
           </button>
         ))}
@@ -404,6 +413,14 @@ const styles: Record<string, React.CSSProperties> = {
     width: '100%',
     aspectRatio: '1',
     borderRadius: '16px',
+    objectFit: 'cover',
+    border: '4px solid white',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+  },
+  coverCircle: {
+    width: '100%',
+    aspectRatio: '1',
+    borderRadius: '50%',
     objectFit: 'cover',
     border: '4px solid white',
     boxShadow: '0 4px 12px rgba(0,0,0,0.15)',

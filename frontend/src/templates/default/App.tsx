@@ -882,9 +882,12 @@ function KidsView() {
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([artistName, artistAlbums]) => {
       const firstAlbum = artistAlbums[0]
+      // Use artistImageUrl from any album in this artist group if available
+      const artistImageUrl = artistAlbums.find((a) => a.artistImageUrl)?.artistImageUrl
       return {
         artistName,
         coverUrl: firstAlbum.coverUrl,
+        artistImageUrl,
       }
     })
 
@@ -903,7 +906,11 @@ function KidsView() {
             style={styles.card}
             onClick={() => setSelectedArtist(artist.artistName)}
           >
-            <img src={artist.coverUrl} alt={artist.artistName} style={styles.cover} />
+            <img
+              src={artist.artistImageUrl ?? artist.coverUrl}
+              alt={artist.artistName}
+              style={artist.artistImageUrl ? styles.coverCircle : styles.cover}
+            />
             <div style={styles.cardTitle}>{artist.artistName}</div>
           </button>
         ))}
@@ -1043,7 +1050,12 @@ function VersionInfo() {
       .then((d) => setData(d as VersionData))
       .catch(() => {
         // Fallback to build-time constant when the API is unavailable (e.g. during local dev)
-        setData({ version: __APP_VERSION__, gitCommit: 'dev', gitCommitShort: 'dev', buildDate: 'dev' })
+        setData({
+          version: __APP_VERSION__,
+          gitCommit: 'dev',
+          gitCommitShort: 'dev',
+          buildDate: 'dev',
+        })
       })
   }, [])
 
@@ -1862,6 +1874,13 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '8px',
     objectFit: 'cover',
     // Ensure covers keep a 1:1 aspect ratio so single items don't become non-square
+    aspectRatio: '1 / 1',
+    height: 'auto',
+  },
+  coverCircle: {
+    width: '100%',
+    borderRadius: '50%',
+    objectFit: 'cover',
     aspectRatio: '1 / 1',
     height: 'auto',
   },

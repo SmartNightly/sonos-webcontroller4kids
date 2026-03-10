@@ -12,14 +12,24 @@ interface EditModalProps {
   onSave: (updates: Partial<MediaItem> | Partial<MediaTrack>) => Promise<void>
 }
 
+interface ArtistResult {
+  artistId: string
+  artistName: string
+  artistImageUrl: string
+}
+
 function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
   const [title, setTitle] = useState('')
   const [artist, setArtist] = useState('')
   const [album, setAlbum] = useState('')
   const [coverUrl, setCoverUrl] = useState('')
+  const [artistImageUrl, setArtistImageUrl] = useState('')
   const [kind, setKind] = useState('album')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const [artistSearchResults, setArtistSearchResults] = useState<ArtistResult[]>([])
+  const [artistSearching, setArtistSearching] = useState(false)
 
   useEffect(() => {
     if (!isOpen) return
@@ -29,16 +39,37 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
       setArtist('')
       setAlbum('')
       setCoverUrl('')
+      setArtistImageUrl('')
       setKind('album')
     } else if (item) {
       setTitle(item.title || '')
       setArtist(item.artist || '')
       setAlbum(item.album || '')
       setCoverUrl(item.coverUrl || '')
+      setArtistImageUrl(item.artistImageUrl || '')
       setKind(item.kind || 'album')
     }
     setError(null)
+    setArtistSearchResults([])
   }, [isOpen, item, track])
+
+  const handleSearchArtist = async () => {
+    if (!artist.trim()) return
+    setArtistSearching(true)
+    setArtistSearchResults([])
+    try {
+      const res = await fetch(
+        `${API_BASE_URL}/search/apple/artist?query=${encodeURIComponent(artist.trim())}`,
+      )
+      if (!res.ok) throw new Error('Search failed')
+      const data = (await res.json()) as ArtistResult[]
+      setArtistSearchResults(data.slice(0, 5))
+    } catch {
+      // ignore search errors — user can still enter URL manually
+    } finally {
+      setArtistSearching(false)
+    }
+  }
 
   const handleSave = async () => {
     setSaving(true)
@@ -48,7 +79,14 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
       if (track) {
         await onSave({ title })
       } else if (item) {
-        await onSave({ title, artist, album, coverUrl, kind })
+        await onSave({
+          title,
+          artist,
+          album,
+          coverUrl,
+          artistImageUrl: artistImageUrl || undefined,
+          kind,
+        })
       }
       onClose()
     } catch (err) {
@@ -120,6 +158,75 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
                   onChange={(e) => setCoverUrl(e.target.value)}
                   placeholder="https://..."
                 />
+              </div>
+              <div style={styles.formGroup}>
+                <label style={styles.label}>Artist Image</label>
+                <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                  <input
+                    style={{ ...styles.formInput, flex: 1 }}
+                    value={artistImageUrl}
+                    onChange={(e) => setArtistImageUrl(e.target.value)}
+                    placeholder="https://... (leave empty for no artist image)"
+                  />
+                  {artistImageUrl && (
+                    <img
+                      src={artistImageUrl}
+                      alt="Artist"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: '50%',
+                        objectFit: 'cover',
+                        flexShrink: 0,
+                      }}
+                    />
+                  )}
+                </div>
+                <button
+                  style={{ ...styles.actionButton, marginTop: 6, fontSize: '0.8rem' }}
+                  onClick={handleSearchArtist}
+                  disabled={artistSearching || !artist.trim()}
+                  type="button"
+                >
+                  {artistSearching ? 'Searching…' : `Search artist image for "${artist || '…'}"`}
+                </button>
+                {artistSearchResults.length > 0 && (
+                  <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
+                    {artistSearchResults.map((r) => (
+                      <button
+                        key={r.artistId}
+                        type="button"
+                        title={r.artistName}
+                        onClick={() => {
+                          setArtistImageUrl(r.artistImageUrl)
+                          setArtistSearchResults([])
+                        }}
+                        style={{
+                          background: 'none',
+                          border:
+                            artistImageUrl === r.artistImageUrl
+                              ? '2px solid #0a0'
+                              : '2px solid #555',
+                          borderRadius: '50%',
+                          padding: 0,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <img
+                          src={r.artistImageUrl}
+                          alt={r.artistName}
+                          style={{
+                            width: 52,
+                            height: 52,
+                            borderRadius: '50%',
+                            objectFit: 'cover',
+                            display: 'block',
+                          }}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
               <div style={styles.formGroup}>
                 <label style={styles.label}>Art</label>

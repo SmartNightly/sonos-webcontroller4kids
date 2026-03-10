@@ -14,6 +14,7 @@ export interface MediaItem {
   artist?: string
   album?: string
   coverUrl: string
+  artistImageUrl?: string
   sonosUri?: string
   appleId?: string
   tracks?: MediaTrack[]

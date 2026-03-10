@@ -1,5 +1,11 @@
 import type { MediaTrack } from '../types'
 
+export type ArtistSearchResult = {
+  artistId: string
+  artistName: string
+  artistImageUrl: string
+}
+
 export type AppleSearchResult = {
   service: 'appleMusic'
   kind: 'song' | 'album'
@@ -77,4 +83,33 @@ export async function fetchAlbumTracks(
     }))
 
   return tracks
+}
+
+export async function searchArtist(query: string): Promise<ArtistSearchResult[]> {
+  const params = new URLSearchParams({
+    term: query,
+    media: 'music',
+    entity: 'musicArtist',
+    limit: '10',
+    country: 'ch',
+  })
+
+  const url = `https://itunes.apple.com/search?${params.toString()}`
+  const response = await fetch(url)
+
+  if (!response.ok) {
+    throw new Error(`iTunes API returned ${response.status}`)
+  }
+
+  const data = await response.json()
+
+  return (data.results || [])
+    .filter((item: any) => item.artworkUrl100)
+    .map(
+      (item: any): ArtistSearchResult => ({
+        artistId: String(item.artistId),
+        artistName: item.artistName,
+        artistImageUrl: item.artworkUrl100.replace('100x100bb', '600x600bb'),
+      }),
+    )
 }

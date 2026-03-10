@@ -4,7 +4,7 @@ import type { MediaItem } from '../types'
 import { loadConfig, DEFAULT_SONOS_BASE_URL } from '../services/config'
 import { loadMedia } from '../services/media'
 import { buildSonosUrl, fetchWithTimeout } from '../services/sonos'
-import { searchApple } from '../services/apple-music'
+import { searchApple, searchArtist } from '../services/apple-music'
 
 const router = Router()
 
@@ -363,6 +363,23 @@ router.post('/play', async (req: Request, res: Response) => {
     console.error('  cause:  ', err?.cause)
     console.error('  stack:  ', err?.stack)
     res.status(502).json({ error: 'Sonos-Backend nicht erreichbar oder Fehler beim Abspielen' })
+  }
+})
+
+// GET /search/apple/artist
+router.get('/search/apple/artist', async (req: Request, res: Response) => {
+  const query = (req.query.query as string) || ''
+
+  if (!query.trim()) {
+    return res.status(400).json({ error: 'Parameter query is required' })
+  }
+
+  try {
+    const results = await searchArtist(query)
+    res.json(results)
+  } catch (err) {
+    console.error('Error searching for artist:', err)
+    res.status(502).json({ error: 'Error searching Apple Music for artist' })
   }
 })
 
