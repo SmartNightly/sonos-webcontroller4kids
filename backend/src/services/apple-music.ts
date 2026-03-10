@@ -86,11 +86,15 @@ export async function fetchAlbumTracks(
 }
 
 export async function searchArtist(query: string): Promise<ArtistSearchResult[]> {
+  // The iTunes musicArtist entity does not include artwork URLs.
+  // Searching for albums instead gives us artworkUrl100 (album covers) which we can
+  // use as representative artist images. Results are deduplicated by artistId so each
+  // matching artist appears only once.
   const params = new URLSearchParams({
     term: query,
     media: 'music',
-    entity: 'musicArtist',
-    limit: '10',
+    entity: 'album',
+    limit: '25',
     country: 'ch',
   })
 
@@ -103,13 +107,20 @@ export async function searchArtist(query: string): Promise<ArtistSearchResult[]>
 
   const data = await response.json()
 
+  // Deduplicate by artistId — keep the first (highest-relevance) artwork per artist
+  const seen = new Set<string>()
   return (data.results || [])
-    .filter((item: any) => item.artworkUrl100)
-    .map(
-      (item: any): ArtistSearchResult => ({
-        artistId: String(item.artistId),
-        artistName: item.artistName,
-        artistImageUrl: item.artworkUrl100.replace('100x100bb', '600x600bb'),
-      }),
-    )
+    .filter((item: any) => item.artworkUrl100 && item.artistId)
+    .reduce((acc: ArtistSearchResult[], item: any) => {
+      const id = String(item.artistId)
+      if (!seen.has(id)) {
+        seen.add(id)
+        acc.push({
+          artistId: id,
+          artistName: item.artistName,
+          artistImageUrl: item.artworkUrl100.replace('100x100bb', '600x600bb'),
+        })
+      }
+      return acc
+    }, [])
 }

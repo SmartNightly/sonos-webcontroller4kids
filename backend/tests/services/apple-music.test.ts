@@ -130,6 +130,36 @@ describe('searchArtist', () => {
     const results = await searchArtist('unknown')
     expect(results).toEqual([])
   })
+
+  it('deduplicates results by artistId', async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        results: [
+          {
+            artistId: 1,
+            artistName: 'Globi',
+            artworkUrl100: 'https://example.com/a/100x100bb.jpg',
+          },
+          {
+            artistId: 1,
+            artistName: 'Globi',
+            artworkUrl100: 'https://example.com/b/100x100bb.jpg',
+          },
+          {
+            artistId: 2,
+            artistName: 'Pingu',
+            artworkUrl100: 'https://example.com/c/100x100bb.jpg',
+          },
+        ],
+      }),
+    })
+    const results = await searchArtist('test')
+    expect(results).toHaveLength(2)
+    // First Globi album wins
+    expect(results[0]?.artistImageUrl).toBe('https://example.com/a/600x600bb.jpg')
+    expect(results[1]?.artistName).toBe('Pingu')
+  })
 })
 
 describe('fetchAlbumTracks', () => {
