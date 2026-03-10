@@ -18,13 +18,13 @@ sonos-webcontroller4kids/
 │       │   ├── config.ts       # loadConfig(), saveConfig() — in-memory cache
 │       │   ├── media.ts        # loadMedia(), saveMedia() — in-memory cache
 │       │   ├── sonos.ts        # buildSonosUrl(), fetchWithTimeout()
-│       │   └── apple-music.ts  # searchApple(), fetchAlbumTracks()
+│       │   └── apple-music.ts  # searchApple(), fetchAlbumTracks(), searchArtist()
 │       └── routes/
 │           ├── health.ts       # GET /health → { status, version }
 │           ├── version.ts      # GET /version → { version, gitCommit, gitCommitShort, buildDate }
 │           ├── media.ts        # All /media/* routes
 │           ├── admin.ts        # All /admin/* routes
-│           └── sonos.ts        # /sonos/control, /sonos/status, /play, /search/apple
+│           └── sonos.ts        # /sonos/control, /sonos/status, /play, /search/apple, /search/apple/artist
 ├── frontend/                   # React 19 + TypeScript + Vite (Dev: Port 5173)
 │   └── src/
 │       ├── App.tsx             # Template router (React.lazy)
@@ -75,7 +75,7 @@ npm run format    # Prettier
 ### Tests
 ```bash
 cd backend
-npm test           # Vitest, one-shot — 54 tests in 8 files
+npm test           # Vitest, one-shot — 58 tests in 8 files
 npm run test:watch # Vitest watch mode
 ```
 
@@ -102,7 +102,7 @@ docker run -p 3344:3344 -v ./media-data:/app/media-data sonos-webcontroller4kids
 | `backend/src/services/config.ts` | `loadConfig()`, `saveConfig()` with in-memory cache |
 | `backend/src/services/media.ts` | `loadMedia()`, `saveMedia()` with in-memory cache |
 | `backend/src/services/sonos.ts` | `buildSonosUrl()`, `fetchWithTimeout()` |
-| `backend/src/services/apple-music.ts` | `searchApple()`, `fetchAlbumTracks()` |
+| `backend/src/services/apple-music.ts` | `searchApple()`, `fetchAlbumTracks()`, `searchArtist()` |
 | `backend/src/routes/health.ts` | `GET /health` → `{ status: "ok", version }` |
 | `backend/src/routes/version.ts` | `GET /version` → `{ version, gitCommit, gitCommitShort, buildDate }` |
 | `backend/src/routes/media.ts` | All `/media/*` routes |
@@ -174,9 +174,31 @@ Frontend usage:
 | `/sonos/control` | POST | Control Sonos device (play, pause, volume, clearqueue, …) |
 | `/sonos/status` | GET | Get current playback status |
 | `/play` | POST | Play album or track by ID |
-| `/search/apple` | GET | Apple Music / iTunes search |
+| `/search/apple` | GET | Apple Music / iTunes album/song search |
+| `/search/apple/artist` | GET | Artist image search → `[{ artistId, artistName, artistImageUrl }]` |
 
 No authentication — assumes local network deployment.
+
+## Data Model
+
+### MediaItem
+```typescript
+{
+  id: string
+  title: string
+  kind: 'album' | 'audiobook' | 'playlist' | 'favorite' | 'other'
+  service: 'appleMusic' | 'spotify'
+  artist?: string
+  album?: string
+  coverUrl: string          // album artwork (square)
+  artistImageUrl?: string   // optional artist photo (circle in main grid)
+  sonosUri?: string
+  appleId?: string
+  tracks?: MediaTrack[]
+}
+```
+
+`artistImageUrl` is set per media item via the admin edit modal. In the main overview, all albums by the same artist share the image — the first album in the group that has `artistImageUrl` set wins.
 
 ## External APIs
 
