@@ -185,7 +185,7 @@ When playback starts, the player panel now automatically slides into view in bot
 
 ### 14. Docker Hub README
 
-`DOCKER_HUB_README.md` (repo root) — synced automatically to Docker Hub on every push to `main` via `peter-evans/dockerhub-description@v4` in `.github/workflows/docker-publish.yml`.
+`DOCKER_HUB_README.md` in repo root — intended for Docker Hub page.
 
 Content: features overview, `docker run` quick start, Docker Compose snippet, configuration reference (config.json, media.json), requirements (node-sonos-http-api, Apple Music), architecture summary.
 
@@ -213,6 +213,30 @@ Run: `cd frontend && npm test`
   - Direct assignment of `resolveArtistImage()` result → `const resolved = await …; if (resolved) item.field = resolved`
 - **Backend dev script**: Changed from `ts-node src/index.ts` to `tsx watch src/index.ts` for auto-restart on file changes. Added `tsx` to devDependencies.
 
+### 17. Code Review and Simplification
+
+Ran a three-way code review (reuse, quality, efficiency) on all recent changes. Fixes applied:
+
+- **Bug fix: Hardcoded Sonos IP** — `playNextTrack()` and `playPreviousTrack()` in `default/App.tsx` were calling `http://192.168.114.21:5005/…/next` directly from the browser, bypassing the backend proxy. Fixed to use `POST /sonos/control` with `action: 'next'`/`'previous'`.
+- **Dead code removed** — `setLoading((prev) => prev && true)` was a no-op (always returns the current value). Replaced with a comment.
+- **Test fixture extraction** — Shared `createMockFetch()`, `mockMediaDefault`, `mockConfig`, `mockStatus` extracted to `frontend/src/__tests__/helpers/fixtures.ts`. All 3 template test files now import from there instead of duplicating fixtures.
+- **`useMemo` for artist list** — Colorful template's artist grouping/sorting was recomputing on every render (including 2-second poll ticks). Wrapped in `useMemo([media])`. Moved before early returns to satisfy React's rules of hooks.
+- **Consistent `userEvent`** — Replaced `fireEvent.click` with `userEvent.click` in the colorful template test for consistency.
+
+### 18. GitHub Actions Version Updates
+
+Updated Docker workflow actions to latest major versions (Node.js 22+ support):
+- `docker/setup-buildx-action` v3 → v4
+- `docker/login-action` v3 → v4
+- `docker/metadata-action` v5 → v6
+- `docker/build-push-action` v5 → v6
+
+CI workflow (`actions/checkout@v4`, `actions/setup-node@v4`) was already current.
+
+### 19. Docker Hub Description Sync Removed
+
+The `peter-evans/dockerhub-description@v4` step in `docker-publish.yml` failed with "Forbidden" — the Docker Hub API token doesn't have the required permission. Step removed from the workflow. `DOCKER_HUB_README.md` is kept in the repo for manual copy to Docker Hub.
+
 ---
 
 ## Current State
@@ -222,7 +246,7 @@ Run: `cd frontend && npm test`
 - **22 frontend tests pass**: `cd frontend && npm test`
 - **Lint clean**: `npm run lint` in both `backend/` and `frontend/`
 - **CI active** on GitHub Actions (Node.js 22)
-- **Docker auto-publishes** on push to `main` or version tags (`v*`) — also syncs Docker Hub README
+- **Docker auto-publishes** on push to `main` or version tags (`v*`)
 - **Backend dev**: `tsx watch` — auto-restarts on file changes
 
 ### Running locally

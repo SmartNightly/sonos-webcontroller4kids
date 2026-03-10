@@ -43,7 +43,7 @@ sonos-webcontroller4kids/
 ├── .github/
 │   ├── workflows/ci.yml        # CI: lint + test (backend + frontend, parallel) → build
 │   └── workflows/docker-publish.yml  # CD: build + push to Docker Hub
-├── DOCKER_HUB_README.md        # Docker Hub page (auto-synced by CI)
+├── DOCKER_HUB_README.md        # Docker Hub page (copy manually when updated)
 └── Dockerfile                  # Multi-stage build
 ```
 
@@ -245,8 +245,6 @@ Two GitHub Actions workflows:
 1. `lint` job: ESLint for backend + frontend (parallel)
 2. `test` job: Vitest for backend + frontend (parallel with lint)
 3. `build` job: `tsc` + `vite build` — only runs after lint + test both pass
-
-**`.github/workflows/ci.yml`** — `test` job runs both backend (`cd backend && npm test`) and frontend (`cd frontend && npm test`).
 
 **`.github/workflows/docker-publish.yml`** — runs on push to `main` and version tags:
 - Builds multi-arch Docker image (`linux/amd64` + `linux/arm64`)
