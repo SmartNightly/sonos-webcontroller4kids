@@ -4,6 +4,7 @@ import { usePlayer } from '../hooks/useKidsPlayer'
 import './KidsView.css'
 import { ThemeCycleButton } from './ThemeCycleButton'
 import { AlbumTileTitle } from './AlbumTileTitle'
+import { HomeButton } from './HomeButton'
 
 type IconName =
   | 'play'
@@ -17,7 +18,6 @@ type IconName =
   | 'all'
   | 'minus'
   | 'plus'
-  | 'cloud'
 function Icon({ name }: { name: IconName }) {
   const paths: Record<IconName, string> = {
     play: 'M8 5l11 7-11 7Z',
@@ -31,8 +31,6 @@ function Icon({ name }: { name: IconName }) {
     all: 'M3 3h7v7H3ZM14 3h7v7h-7ZM3 14h7v7H3ZM14 14h7v7h-7Z',
     minus: 'M5 12h14',
     plus: 'M5 12h14M12 5v14',
-    cloud:
-      'M7 18H6a4 4 0 0 1-1-7.9A6 6 0 0 1 16.4 7a4.5 4.5 0 0 1 4.1 6.4M15 13v7c0 2-4 2-4 0s4-2 4 0M15 13l4 1',
   }
   return (
     <svg
@@ -76,6 +74,13 @@ export default function KidsView({
   const heading = useRef<HTMLHeadingElement>(null)
   const content = useRef<HTMLElement>(null)
   const first = useRef(true)
+  const goHome = () => {
+    setArtist(null)
+    setAlbum(null)
+    setFilter('all')
+    heading.current?.focus()
+    if (content.current) content.current.scrollTop = 0
+  }
   useLayoutEffect(() => {
     if (first.current) {
       first.current = false
@@ -112,9 +117,7 @@ export default function KidsView({
       </a>
       <header className="hi-header">
         <div className="hi-brand">
-          <span className="hi-brand-icon">
-            <Icon name={theme === 'wolkenklang' ? 'cloud' : 'sound'} />
-          </span>
+          <HomeButton className="hi-brand-icon" onHome={goHome} />
           <ThemeCycleButton theme={theme} />
           {demo && <span className="hi-demo">Demo</span>}
         </div>

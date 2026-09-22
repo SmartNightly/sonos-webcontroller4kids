@@ -1,10 +1,11 @@
 // Original Default kids UI from commit 73af340, preserved as Classic.
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { MediaItem, MediaTrack } from '../../types'
 import { useSonosPolling } from '../../hooks/useSonosPolling'
 import { API_BASE_URL } from '../../api'
 import { ThemeCycleButton } from '../../components/ThemeCycleButton'
 import { AlbumTileTitle } from '../../components/AlbumTileTitle'
+import { HomeButton } from '../../components/HomeButton'
 
 const Admin = lazy(() => import('../default/App'))
 
@@ -86,6 +87,7 @@ function KidsView() {
   const [selectedAlbum, setSelectedAlbum] = useState<MediaItem | null>(null)
   const [selectedArtist, setSelectedArtist] = useState<string | null>(null)
   const [kindFilter, setKindFilter] = useState<'all' | 'album' | 'audiobook'>('all')
+  const grid = useRef<HTMLDivElement>(null)
 
   // Detailansicht mit Play-Button (kinderfreundlich)
   const [albumDetailView, setAlbumDetailView] = useState<MediaItem | null>(null)
@@ -406,6 +408,17 @@ function KidsView() {
 
     return (
       <div style={styles.topBar}>
+        <HomeButton
+          onHome={() => {
+            setSelectedArtist(null)
+            setSelectedAlbum(null)
+            setAlbumDetailView(null)
+            setKindFilter('all')
+            setRoomPickerOpen(false)
+            setPlayerOpen(false)
+            if (grid.current) grid.current.scrollTop = 0
+          }}
+        />
         <ThemeCycleButton theme="classic" />
         {/* Back Button / Title - left side (optional) */}
         {showBackButton ? (
@@ -864,7 +877,7 @@ function KidsView() {
 
         {busy && <div style={styles.busy}>Bitte warten…</div>}
 
-        <div style={styles.grid}>
+        <div ref={grid} style={styles.grid}>
           {artistAlbums.map((album) => {
             return (
               <button
@@ -919,7 +932,7 @@ function KidsView() {
 
       {busy && <div style={styles.busy}>Bitte warten…</div>}
 
-      <div style={styles.grid}>
+      <div ref={grid} style={styles.grid}>
         {artistCards.map((artist) => (
           <button
             key={artist.artistName}

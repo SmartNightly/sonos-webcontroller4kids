@@ -69,7 +69,7 @@ body:has(.hi-app) {
   gap: 8px;
   transition: background-color 150ms ease;
 }
-.hi-app button:not(:disabled):hover {
+.hi-app button:not(:disabled):not(.kids-home):hover {
   background: color-mix(in srgb, var(--hi-soft), var(--hi-accent) 12%);
 }
 .hi-app button:not(:disabled):active {
@@ -109,11 +109,12 @@ body:has(.hi-app) {
   letter-spacing: -0.6px;
   white-space: nowrap;
 }
-.hi-brand-icon {
+.hi-app .hi-brand-icon {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
   background: var(--hi-accent);
   color: white;
   border-radius: 50% 50% 50% 12%;
@@ -445,7 +446,7 @@ body:has(.hi-app) {
   }
   .hi-app .hi-primary,
   .hi-app .hi-play-toggle,
-  .hi-brand-icon {
+  .hi-app .hi-brand-icon {
     color: #172b46;
   }
 }
@@ -488,10 +489,6 @@ body:has(.hi-app) {
   }
   .hi-brand {
     font-size: 19px;
-  }
-  .hi-brand-icon {
-    width: 32px;
-    height: 32px;
   }
   .hi-room {
     margin-left: auto;
