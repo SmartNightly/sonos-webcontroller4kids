@@ -2,6 +2,8 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import type { MediaItem } from '../types'
 import { usePlayer } from '../hooks/useKidsPlayer'
 import './KidsView.css'
+import { ThemeCycleButton } from './ThemeCycleButton'
+import { AlbumTileTitle } from './AlbumTileTitle'
 
 type IconName =
   | 'play'
@@ -113,14 +115,7 @@ export default function KidsView({
           <span className="hi-brand-icon">
             <Icon name={theme === 'wolkenklang' ? 'cloud' : 'sound'} />
           </span>
-          {
-            {
-              default: 'Musik & Geschichten',
-              colorful: 'Musik entdecken',
-              hoerinsel: 'Hörinsel',
-              wolkenklang: 'Wolkenklang',
-            }[theme]
-          }
+          <ThemeCycleButton theme={theme} />
           {demo && <span className="hi-demo">Demo</span>}
         </div>
         <label className="hi-room">
@@ -264,7 +259,9 @@ export default function KidsView({
                   .map((item) => (
                     <button className="hi-card" key={item.id} onClick={() => setAlbum(item)}>
                       <Artwork src={item.coverUrl} />
-                      <span className="hi-card-title">{item.title}</span>
+                      <span className="hi-card-title">
+                        <AlbumTileTitle title={item.title} />
+                      </span>
                     </button>
                   ))
               : artists.map((name) => {

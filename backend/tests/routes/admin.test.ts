@@ -38,12 +38,10 @@ beforeEach(() => {
   })
   vi.stubGlobal(
     'fetch',
-    vi
-      .fn()
-      .mockResolvedValue({
-        ok: true,
-        json: async () => [{ roomName: 'Kids' }, { roomName: 'New' }],
-      }),
+    vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => [{ roomName: 'Kids' }, { roomName: 'New' }],
+    }),
   )
 })
 afterEach(() => vi.unstubAllGlobals())
@@ -94,14 +92,49 @@ describe('room discovery and settings', () => {
 describe('template management', () => {
   it('lists packaged templates and preserves the configured active template', async () => {
     const res = await request(app).get('/admin/templates')
-    expect(res.body).toEqual({ templates: ['default', 'colorful'], active: 'colorful' })
+    expect(res.body).toEqual({
+      templates: ['default', 'colorful'],
+      active: 'colorful',
+      enabled: ['colorful'],
+    })
   })
 
   it('switches to a packaged template', async () => {
     const res = await request(app).post('/admin/templates/active').send({ template: 'default' })
     expect(res.status).toBe(200)
     expect(config.activeTemplate).toBe('default')
+    expect(config.enabledTemplates).toContain('default')
   })
+
+  it('saves a deduplicated allowlist and preserves other settings', async () => {
+    const original = structuredClone(config)
+    const res = await request(app)
+      .post('/admin/templates/enabled')
+      .send({ enabledTemplates: ['colorful', 'default', 'colorful'] })
+    expect(res.status).toBe(200)
+    expect(config).toEqual({ ...original, enabledTemplates: ['colorful', 'default'] })
+    expect((await request(app).get('/admin/templates')).body.enabled).toEqual([
+      'colorful',
+      'default',
+    ])
+  })
+
+  it('moves the default to the first allowed theme when revoked', async () => {
+    const res = await request(app)
+      .post('/admin/templates/enabled')
+      .send({ enabledTemplates: ['default'] })
+    expect(res.status).toBe(200)
+    expect(config.activeTemplate).toBe('default')
+  })
+
+  it.each([[], ['missing'], ['../'], [123], 'default', null])(
+    'rejects invalid allowlists: %j',
+    async (enabledTemplates) => {
+      const res = await request(app).post('/admin/templates/enabled').send({ enabledTemplates })
+      expect(res.status).toBe(400)
+      expect(saveConfig).not.toHaveBeenCalled()
+    },
+  )
 
   it.each(['missing', '../', '../../backend'])('rejects unknown template %s', async (template) => {
     const res = await request(app).post('/admin/templates/active').send({ template })

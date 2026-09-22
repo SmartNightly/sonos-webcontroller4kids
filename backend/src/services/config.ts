@@ -37,6 +37,9 @@ function parseConfig(raw: string): AppConfig {
       parsed.showTracklistAudiobooks !== undefined ? parsed.showTracklistAudiobooks : true,
     maxVolume: parsed.maxVolume || {},
     activeTemplate: parsed.activeTemplate || 'default',
+    enabledTemplates: Array.isArray(parsed.enabledTemplates)
+      ? parsed.enabledTemplates.filter((name): name is string => typeof name === 'string')
+      : [parsed.activeTemplate || 'default'],
   }
 }
 

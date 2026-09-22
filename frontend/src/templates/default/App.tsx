@@ -17,6 +17,7 @@ function App({ isAdmin }: { isAdmin: boolean }) {
 
 function TemplateSelector() {
   const [templates, setTemplates] = useState<string[]>([])
+  const [enabledTemplates, setEnabledTemplates] = useState<string[]>([])
   const [activeTemplate, setActiveTemplate] = useState<string>('default')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
@@ -29,6 +30,7 @@ function TemplateSelector() {
         const data = await res.json()
         setTemplates(data.templates || [])
         setActiveTemplate(data.active || 'default')
+        setEnabledTemplates(data.enabled ?? [data.active || 'default'])
       } catch (err) {
         console.error('Konnte Templates nicht laden:', err)
       }
@@ -51,18 +53,37 @@ function TemplateSelector() {
       }
 
       setActiveTemplate(template)
+      setEnabledTemplates((current) => [...new Set([...current, template])])
       setMessage({
         type: 'success',
-        text: `Template "${template}" aktiviert - Seite neu laden, um Änderungen zu sehen`,
+        text: `Standard-Template "${template}" aktiviert und für Kinder freigegeben.`,
       })
-
-      // Nach 2 Sekunden automatisch neu laden
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
     } catch (err) {
       console.error(err)
       setMessage({ type: 'error', text: 'Fehler beim Wechseln des Templates' })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const saveEnabledTemplates = async () => {
+    setLoading(true)
+    setMessage(null)
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/templates/enabled`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          enabledTemplates: templates.filter((name) => enabledTemplates.includes(name)),
+        }),
+      })
+      if (!res.ok) throw new Error('Speichern fehlgeschlagen')
+      const data = await res.json()
+      setEnabledTemplates(data.enabled)
+      setActiveTemplate(data.active)
+      setMessage({ type: 'success', text: 'Theme-Freigaben gespeichert.' })
+    } catch {
+      setMessage({ type: 'error', text: 'Theme-Freigaben konnten nicht gespeichert werden.' })
     } finally {
       setLoading(false)
     }
@@ -72,8 +93,8 @@ function TemplateSelector() {
     <div style={{ marginTop: 12, paddingTop: 8, borderTop: '1px solid #333' }}>
       <div style={{ fontSize: '0.9rem', marginBottom: 8 }}>Design der Kinderansicht</div>
       <div className="ui-admin-help" style={{ fontSize: '0.7rem', opacity: 0.6, marginBottom: 12 }}>
-        Wähle ein Design-Template für die Kinder-Ansicht. Nach der Auswahl wird die Seite neu
-        geladen.
+        Standard-Theme für neue Browser. Die Kinder wechseln durch Tippen auf den Theme-Namen durch
+        die unten freigegebenen Designs. Ihre Auswahl bleibt auf diesem Gerät gespeichert.
       </div>
 
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -105,8 +126,59 @@ function TemplateSelector() {
         ))}
       </div>
 
+      <fieldset
+        disabled={loading}
+        style={{ marginTop: 16, border: '1px solid #777', borderRadius: 8 }}
+      >
+        <legend>Für Kinder freigegebene Themes</legend>
+        <p className="ui-admin-help">
+          Mindestens eines auswählen. Wird das Standard-Theme abgewählt, wird das erste freigegebene
+          Theme zum Standard.
+        </p>
+        {templates.map((template) => (
+          <label
+            key={template}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              minHeight: 44,
+              cursor: 'pointer',
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={enabledTemplates.includes(template)}
+              onChange={(event) =>
+                setEnabledTemplates((current) =>
+                  event.target.checked
+                    ? [...current, template]
+                    : current.filter((name) => name !== template),
+                )
+              }
+            />
+            {{
+              default: 'Default',
+              classic: 'Classic (Original)',
+              colorful: 'Colorful Kids',
+              hoerinsel: 'Hörinsel',
+              wolkenklang: 'Wolkenklang (Pink & Lila)',
+            }[template] ?? template}
+          </label>
+        ))}
+        <button
+          type="button"
+          disabled={loading || !enabledTemplates.length}
+          onClick={() => void saveEnabledTemplates()}
+          style={{ minHeight: 44, marginTop: 8 }}
+        >
+          Theme-Freigaben speichern
+        </button>
+      </fieldset>
+
       {message && (
         <div
+          role={message.type === 'error' ? 'alert' : 'status'}
           style={{
             marginTop: 12,
             padding: '8px 12px',

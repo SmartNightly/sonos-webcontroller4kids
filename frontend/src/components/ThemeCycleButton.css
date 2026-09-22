@@ -1,0 +1,25 @@
+.theme-cycle,
+.theme-name {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  flex-shrink: 0;
+}
+.theme-cycle {
+  font: inherit;
+  font-weight: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+.theme-cycle:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+.theme-cycle:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}

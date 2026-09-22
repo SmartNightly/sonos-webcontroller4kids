@@ -82,4 +82,46 @@ describe('Wolkenklang', () => {
       false,
     )
   })
+
+  it('saves multiple enabled themes and prevents an empty selection', async () => {
+    const mock = createMockFetch()
+    vi.mocked(fetch).mockImplementation((url) => {
+      const path = String(url)
+      if (path.endsWith('/admin/templates'))
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            templates: ['default', 'hoerinsel', 'wolkenklang'],
+            active: 'default',
+            enabled: ['default'],
+          }),
+        } as Response)
+      if (path.endsWith('/admin/templates/enabled'))
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            enabled: ['hoerinsel', 'wolkenklang'],
+            active: 'hoerinsel',
+          }),
+        } as Response)
+      return mock(url)
+    })
+    const user = userEvent.setup()
+    render(<App isAdmin />)
+    await user.click(await screen.findByRole('button', { name: 'Einstellungen' }))
+    await user.click(await screen.findByRole('checkbox', { name: 'Default' }))
+    expect(screen.getByRole('button', { name: 'Theme-Freigaben speichern' })).toBeDisabled()
+    await user.click(screen.getByRole('checkbox', { name: 'Hörinsel' }))
+    await user.click(screen.getByRole('checkbox', { name: 'Wolkenklang (Pink & Lila)' }))
+    await user.click(screen.getByRole('button', { name: 'Theme-Freigaben speichern' }))
+    expect(await screen.findByRole('status')).toHaveTextContent('Theme-Freigaben gespeichert.')
+    expect(fetch).toHaveBeenCalledWith(
+      expect.stringMatching(/\/admin\/templates\/enabled$/),
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({ enabledTemplates: ['hoerinsel', 'wolkenklang'] }),
+      }),
+    )
+    expect(screen.getByRole('button', { name: '✓ Hörinsel' })).toBeInTheDocument()
+  })
 })

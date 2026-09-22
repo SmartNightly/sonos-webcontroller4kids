@@ -3,6 +3,8 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import type { MediaItem, MediaTrack } from '../../types'
 import { useSonosPolling } from '../../hooks/useSonosPolling'
 import { API_BASE_URL } from '../../api'
+import { ThemeCycleButton } from '../../components/ThemeCycleButton'
+import { AlbumTileTitle } from '../../components/AlbumTileTitle'
 
 const Admin = lazy(() => import('../default/App'))
 
@@ -404,6 +406,7 @@ function KidsView() {
 
     return (
       <div style={styles.topBar}>
+        <ThemeCycleButton theme="classic" />
         {/* Back Button / Title - left side (optional) */}
         {showBackButton ? (
           <button
@@ -872,8 +875,10 @@ function KidsView() {
                   setAlbumDetailView(album)
                 }}
               >
-                <img src={album.coverUrl} alt={album.title} style={styles.cover} />
-                <div style={styles.cardTitle}>{album.title}</div>
+                <img src={album.coverUrl} alt="" style={styles.cover} />
+                <div style={{ ...styles.cardTitle, alignSelf: 'stretch', minWidth: 0 }}>
+                  <AlbumTileTitle title={album.title} />
+                </div>
               </button>
             )
           })}
@@ -976,6 +981,7 @@ const styles: Record<string, React.CSSProperties> = {
     overflowX: 'hidden',
   },
   card: {
+    minWidth: 0,
     backgroundColor: '#222',
     border: 'none',
     borderRadius: '12px',

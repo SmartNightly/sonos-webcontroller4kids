@@ -258,7 +258,11 @@ router.get('/templates', (req: Request, res: Response) => {
     const templates = listTemplates()
 
     const config = loadConfig()
-    res.json({ templates, active: config.activeTemplate || 'default' })
+    res.json({
+      templates,
+      active: config.activeTemplate || 'default',
+      enabled: config.enabledTemplates ?? [config.activeTemplate || 'default'],
+    })
   } catch (err) {
     console.error('Fehler beim Laden der Templates:', err)
     res.status(500).json({ error: 'Templates konnten nicht geladen werden' })
@@ -279,9 +283,30 @@ router.post('/templates/active', (req: Request, res: Response) => {
 
   const config = loadConfig()
   config.activeTemplate = template
+  config.enabledTemplates = [...new Set([...(config.enabledTemplates ?? []), template])]
   saveConfig(config)
 
   res.json({ success: true, activeTemplate: template })
+})
+
+// Saving the allowlist also keeps the installation's default inside that list.
+router.post('/templates/enabled', (req: Request, res: Response) => {
+  const { enabledTemplates } = req.body ?? {}
+  const installed = listTemplates()
+  if (
+    !Array.isArray(enabledTemplates) ||
+    !enabledTemplates.length ||
+    enabledTemplates.some((name: unknown) => typeof name !== 'string' || !installed.includes(name))
+  ) {
+    return res.status(400).json({ error: 'Mindestens ein installiertes Template auswählen' })
+  }
+  const config = loadConfig()
+  config.enabledTemplates = [...new Set<string>(enabledTemplates)]
+  if (!config.enabledTemplates.includes(config.activeTemplate || 'default')) {
+    config.activeTemplate = config.enabledTemplates[0]!
+  }
+  saveConfig(config)
+  res.json({ success: true, enabled: config.enabledTemplates, active: config.activeTemplate })
 })
 
 export default router

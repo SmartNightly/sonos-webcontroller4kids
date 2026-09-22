@@ -11,6 +11,22 @@ Ein kinderfreundlicher Web-Controller für Sonos-Lautsprecher mit Touchscreen-op
 - 🔀 **Filter** - Nach Musik/Hörbücher filtern
 - 🔄 **Auto-Updates** - Automatisches Docker Image Building via GitHub Actions
 
+## Themes für Kinder freigeben
+
+Im Elternbereich (`?admin=1`) unter **Einstellungen → Design der Kinderansicht**:
+
+- Die oberen Schaltflächen setzen das Standard-Theme für neue Browser und geben es frei.
+- Unter **Für Kinder freigegebene Themes** mehrere Designs ankreuzen und **Theme-Freigaben speichern** wählen.
+- Mindestens ein Theme bleibt freigegeben. Wird das Standard-Theme abgewählt, wird das erste freigegebene Theme zum Standard.
+
+Kinder tippen oben links auf den Theme-Namen: Jeder Klick wechselt zum nächsten
+freigegebenen Design, nach dem letzten wieder zum ersten – ohne Auswahlliste.
+Die Auswahl wird nur in diesem Browser gespeichert und verändert nicht den globalen
+Standard. Bei nur einem freigegebenen Theme ist der Name nicht klickbar.
+Geänderte Freigaben werden spätestens beim nächsten 30-Sekunden-Abgleich oder beim
+Zurückkehren zum Browserfenster übernommen. Bestehende Installationen behalten
+zunächst ausschließlich ihr bisheriges Theme; weitere Designs müssen freigegeben werden.
+
 ## Quick Start mit Docker
 
 ### Voraussetzungen

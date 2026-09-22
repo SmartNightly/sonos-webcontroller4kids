@@ -9,6 +9,7 @@ export type AppConfig = {
   showTracklistAudiobooks?: boolean
   maxVolume?: Record<string, number>
   activeTemplate?: string
+  enabledTemplates?: string[]
 }
 
 export type MediaTrack = {

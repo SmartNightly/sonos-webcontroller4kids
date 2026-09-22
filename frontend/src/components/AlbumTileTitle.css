@@ -1,0 +1,14 @@
+.album-tile-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  line-height: 1.45;
+  /* Reserve two lines even for short titles; scale with the theme's font size. */
+  block-size: 2.9em;
+  block-size: 2lh;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}

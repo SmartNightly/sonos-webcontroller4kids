@@ -1,7 +1,9 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import App from '../App'
 import { createMockFetch } from './helpers/fixtures'
+import { THEME_STORAGE_KEY } from '../themeSettings'
 
 vi.mock('../templates/default/App', () => ({
   default: () => <div>Default template</div>,
@@ -9,6 +11,7 @@ vi.mock('../templates/default/App', () => ({
 
 beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn())
+  localStorage.clear()
 })
 
 afterEach(() => {
@@ -46,12 +49,9 @@ describe('App (template loader)', () => {
   )
 
   it('uses the default template when the configured template is unknown', async () => {
-    vi.mocked(fetch).mockResolvedValue({
-      ok: true,
-      json: async () => ({ activeTemplate: 'missing' }),
-    } as Response)
+    vi.mocked(fetch).mockImplementation(createMockFetch({ config: { activeTemplate: 'missing' } }))
     render(<App />)
-    expect(await screen.findByText('Default template')).toBeInTheDocument()
+    expect(await screen.findByText('Default')).toBeInTheDocument()
   })
 
   it('shows loading state while fetching template config', () => {
@@ -66,7 +66,7 @@ describe('App (template loader)', () => {
     render(<App />)
     // Still shows loading initially
     expect(screen.getByText('Lade Template...')).toBeInTheDocument()
-    expect(await screen.findByText('Default template')).toBeInTheDocument()
+    expect(await screen.findByText('Default')).toBeInTheDocument()
   })
 
   it('reads admin flag from URL query parameter', () => {
@@ -87,5 +87,116 @@ describe('App (template loader)', () => {
       writable: true,
       configurable: true,
     })
+  })
+})
+
+describe('kids theme cycle', () => {
+  const config = {
+    activeTemplate: 'hoerinsel',
+    enabledTemplates: ['hoerinsel', 'wolkenklang', 'colorful'],
+    rooms: ['Kinderzimmer', 'Spielzimmer'],
+    enabledRooms: ['Kinderzimmer', 'Spielzimmer'],
+  }
+
+  it('cycles and wraps with clicks and keyboard, preserving room and album navigation without POSTs', async () => {
+    const user = userEvent.setup()
+    vi.mocked(fetch).mockImplementation(createMockFetch({ config }))
+    render(<App />)
+    await screen.findByRole('button', { name: /Hörinsel: nächstes Theme/ })
+    await screen.findByRole('option', { name: 'Spielzimmer' })
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Raum wählen' }), 'Spielzimmer')
+    await user.click(await screen.findByRole('button', { name: /The Beatles/ }))
+    await user.click(screen.getByRole('button', { name: /Hörinsel: nächstes Theme/ }))
+    expect(screen.getByRole('button', { name: /Wolkenklang: nächstes Theme/ })).toHaveFocus()
+    expect(screen.getByRole('combobox', { name: 'Raum wählen' })).toHaveValue('Spielzimmer')
+    expect(screen.getByRole('heading', { name: 'The Beatles' })).toBeInTheDocument()
+    await user.keyboard('{Enter}')
+    expect(screen.getByRole('button', { name: /Colorful Kids: nächstes Theme/ })).toHaveFocus()
+    await user.keyboard(' ')
+    expect(screen.getByRole('button', { name: /Hörinsel: nächstes Theme/ })).toBeInTheDocument()
+    expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe('hoerinsel')
+    expect(vi.mocked(fetch).mock.calls.some(([, options]) => options?.method === 'POST')).toBe(
+      false,
+    )
+  })
+
+  it('restores a permitted browser preference', async () => {
+    localStorage.setItem(THEME_STORAGE_KEY, 'wolkenklang')
+    vi.mocked(fetch).mockImplementation(createMockFetch({ config }))
+    render(<App />)
+    expect(
+      await screen.findByRole('button', { name: /Wolkenklang: nächstes Theme/ }),
+    ).toBeInTheDocument()
+  })
+
+  it('still switches from a permitted URL when browser storage is unavailable', async () => {
+    const user = userEvent.setup()
+    window.history.replaceState({}, '', '/?template=hoerinsel')
+    const storage = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('Storage blocked')
+    })
+    try {
+      vi.mocked(fetch).mockImplementation(createMockFetch({ config }))
+      render(<App />)
+      await user.click(await screen.findByRole('button', { name: /Hörinsel: nächstes Theme/ }))
+      expect(
+        screen.getByRole('button', { name: /Wolkenklang: nächstes Theme/ }),
+      ).toBeInTheDocument()
+      expect(window.location.search).toBe('')
+    } finally {
+      storage.mockRestore()
+    }
+  })
+
+  it('includes Classic in the cycle and restores keyboard focus across its separate layout', async () => {
+    const user = userEvent.setup()
+    vi.mocked(fetch).mockImplementation(
+      createMockFetch({ config: { ...config, enabledTemplates: ['hoerinsel', 'classic'] } }),
+    )
+    render(<App />)
+    await user.click(await screen.findByRole('button', { name: /Hörinsel: nächstes Theme/ }))
+    expect(await screen.findByRole('button', { name: /Classic: nächstes Theme/ })).toHaveFocus()
+    await user.keyboard('{Enter}')
+    expect(await screen.findByRole('button', { name: /Hörinsel: nächstes Theme/ })).toHaveFocus()
+    expect(vi.mocked(fetch).mock.calls.some(([, options]) => options?.method === 'POST')).toBe(
+      false,
+    )
+  })
+
+  it('rejects disallowed URL and saved selections and disables switching for one allowed theme', async () => {
+    window.history.replaceState({}, '', '/?template=classic')
+    localStorage.setItem(THEME_STORAGE_KEY, 'wolkenklang')
+    vi.mocked(fetch).mockImplementation(
+      createMockFetch({ config: { ...config, enabledTemplates: ['hoerinsel'] } }),
+    )
+    render(<App />)
+    expect(await screen.findByText('Hörinsel')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /nächstes Theme/ })).not.toBeInTheDocument()
+  })
+
+  it('applies revoked permissions when the window regains focus', async () => {
+    vi.mocked(fetch).mockImplementation(createMockFetch({ config }))
+    render(<App />)
+    await screen.findByRole('button', { name: /Hörinsel: nächstes Theme/ })
+    vi.mocked(fetch).mockImplementation(
+      createMockFetch({
+        config: { ...config, activeTemplate: 'colorful', enabledTemplates: ['colorful'] },
+      }),
+    )
+    await act(async () => {
+      window.dispatchEvent(new Event('focus'))
+    })
+    await waitFor(() => expect(screen.getByText('Colorful Kids')).toBeInTheDocument())
+    expect(screen.queryByRole('button', { name: /nächstes Theme/ })).not.toBeInTheDocument()
+  })
+
+  it('cycles demo themes without backend requests or saving a real preference', async () => {
+    const user = userEvent.setup()
+    window.history.replaceState({}, '', '/?template=wolkenklang&demo=1')
+    render(<App />)
+    await user.click(await screen.findByRole('button', { name: /Wolkenklang: nächstes Theme/ }))
+    expect(screen.getByRole('button', { name: /Default: nächstes Theme/ })).toBeInTheDocument()
+    expect(fetch).not.toHaveBeenCalled()
+    expect(localStorage.getItem(THEME_STORAGE_KEY)).toBeNull()
   })
 })

@@ -61,6 +61,22 @@ describe('services/config', () => {
     expect(fsMock.existsSync).toHaveBeenCalledTimes(1)
   })
 
+  it('migrates old installations to their current theme only', async () => {
+    fsMock.existsSync.mockReturnValue(true)
+    fsMock.readFileSync.mockReturnValue(JSON.stringify({ activeTemplate: 'colorful' }))
+    const { loadConfig } = await import('../../src/services/config')
+    expect(loadConfig().enabledTemplates).toEqual(['colorful'])
+  })
+
+  it('loads saved theme permissions after a restart', async () => {
+    fsMock.existsSync.mockReturnValue(true)
+    fsMock.readFileSync.mockReturnValue(
+      JSON.stringify({ activeTemplate: 'default', enabledTemplates: ['default', 'classic'] }),
+    )
+    const { loadConfig } = await import('../../src/services/config')
+    expect(loadConfig().enabledTemplates).toEqual(['default', 'classic'])
+  })
+
   it('returns default config on parse error', async () => {
     fsMock.existsSync.mockReturnValue(true)
     fsMock.readFileSync.mockReturnValue('not valid json {{{')
