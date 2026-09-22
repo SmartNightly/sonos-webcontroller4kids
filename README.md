@@ -68,6 +68,14 @@ docker-compose -f docker-compose.portainer.yml up -d
 
 Das Docker Image wird automatisch bei jedem Push auf `main` gebaut und auf [Docker Hub](https://hub.docker.com/r/smartnightly/sonos-webcontroller4kids) veröffentlicht.
 
+AMD64 und ARM64 werden parallel auf nativen GitHub-Runnern gebaut, ohne QEMU-Emulation.
+Erst wenn beide Builds erfolgreich sind, veröffentlicht der Workflow das gemeinsame
+Multi-Plattform-Image unter den bisherigen Tags (`main`, `latest` bzw. Versionstags).
+Docker wählt beim Pull automatisch die passende Architektur. Pull Requests bauen
+beide Varianten nur zur Prüfung und veröffentlichen nichts. Architekturgetrennte
+Caches, 20-Minuten-Build-Limits und das Ablösen älterer Läufe desselben Branches
+verhindern unnötig lange oder überholte Builds.
+
 **In Portainer:** Einfach "Pull and redeploy" klicken
 
 **Mit Docker Compose:**
