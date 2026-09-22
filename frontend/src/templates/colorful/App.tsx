@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { MediaItem } from '../../types'
+import { API_BASE_URL, requestJson } from '../../api'
+import { useSonosPolling } from '../../hooks/useSonosPolling'
 import './App.css'
-
-const API_BASE_URL = import.meta.env.DEV ? 'http://localhost:3344' : ''
 
 interface TemplateAppProps {
   isAdmin: boolean
@@ -46,6 +46,7 @@ function KidsView() {
   const [media, setMedia] = useState<MediaItem[]>([])
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const [playing, setPlaying] = useState(false)
   const [volume, setVolume] = useState<number | null>(null)
@@ -74,7 +75,7 @@ function KidsView() {
     fetch(`${API_BASE_URL}/admin/sonos`)
       .then((res) => res.json())
       .then((data) => {
-        const enabled = data.enabledRooms?.length > 0 ? data.enabledRooms : data.rooms || []
+        const enabled = data.enabledRooms ?? data.rooms ?? []
         setRoomIcons(data.roomIcons || {})
         if (data.defaultRoom && enabled.includes(data.defaultRoom)) {
           setSelectedRoom(data.defaultRoom)
@@ -82,30 +83,15 @@ function KidsView() {
           setSelectedRoom(enabled[0])
         }
       })
+      .catch(() => setError('Räume konnten nicht geladen werden'))
   }, [])
 
   // Status-Polling
-  useEffect(() => {
-    if (!selectedRoom) return
-
-    const poll = async () => {
-      try {
-        const res = await fetch(
-          `${API_BASE_URL}/sonos/status?room=${encodeURIComponent(selectedRoom)}`,
-        )
-        const data = await res.json()
-        if (data.state) setPlaying(String(data.state).toLowerCase() === 'playing')
-        if (data.volume !== undefined) setVolume(data.volume)
-        if (data.track) setCurrentTrack({ title: data.track.title, artist: data.track.artist })
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    poll()
-    const timer = setInterval(poll, 2000)
-    return () => clearInterval(timer)
-  }, [selectedRoom])
+  useSonosPolling(selectedRoom, (data) => {
+    if (data.state) setPlaying(String(data.state).toLowerCase() === 'playing')
+    if (data.volume !== undefined) setVolume(data.volume)
+    setCurrentTrack(data.track ? { title: data.track.title, artist: data.track.artist } : null)
+  })
 
   // Artist list — memoized to avoid recomputation on every poll tick
   const artists = useMemo(() => {
@@ -126,18 +112,21 @@ function KidsView() {
   }, [media])
 
   const playAlbum = async (item: MediaItem) => {
-    if (!selectedRoom) return
+    if (!selectedRoom) return false
     setBusy(true)
+    setError(null)
     try {
-      await fetch(`${API_BASE_URL}/play`, {
+      await requestJson('/play', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: item.id, room: selectedRoom }),
       })
       // Auto-open player so the user can see playback controls immediately
       setPlayerOpen(true)
+      return true
     } catch (err) {
-      console.error(err)
+      setError(err instanceof Error ? err.message : 'Abspielen fehlgeschlagen')
+      return false
     } finally {
       setBusy(false)
     }
@@ -146,14 +135,14 @@ function KidsView() {
   const togglePlayPause = async () => {
     if (!selectedRoom) return
     try {
-      await fetch(`${API_BASE_URL}/sonos/control`, {
+      await requestJson('/sonos/control', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ room: selectedRoom, action: playing ? 'pause' : 'play' }),
       })
       setPlaying(!playing)
     } catch (err) {
-      console.error(err)
+      setError(err instanceof Error ? err.message : 'Steuerung fehlgeschlagen')
     }
   }
 
@@ -169,7 +158,7 @@ function KidsView() {
   }
 
   // Artist-Detail: Albums anzeigen
-  if (selectedArtist) {
+  if (selectedArtist && !selectedAlbum) {
     const artistAlbums = media.filter((m) => (m.artist || 'Unbekannt') === selectedArtist)
 
     return (
@@ -206,6 +195,8 @@ function KidsView() {
   if (selectedAlbum) {
     return (
       <div style={styles.screen}>
+        {error && <div role="alert">{error}</div>}
+        {!selectedRoom && <div role="status">Kein Raum freigegeben</div>}
         <div style={styles.header}>
           <button style={styles.backButton} onClick={() => setSelectedAlbum(null)}>
             ← Zurück
@@ -223,10 +214,12 @@ function KidsView() {
             <button
               style={styles.playButtonHuge}
               onClick={async () => {
-                await playAlbum(selectedAlbum)
-                setSelectedAlbum(null)
+                if (await playAlbum(selectedAlbum)) {
+                  setSelectedAlbum(null)
+                  setSelectedArtist(null)
+                }
               }}
-              disabled={busy}
+              disabled={busy || !selectedRoom}
             >
               <div style={{ fontSize: '64px' }}>▶</div>
               <div style={{ fontSize: '28px', fontWeight: 700 }}>ABSPIELEN</div>
@@ -239,6 +232,8 @@ function KidsView() {
 
   return (
     <div style={styles.screen}>
+      {error && <div role="alert">{error}</div>}
+      {!selectedRoom && <div role="status">Kein Raum freigegeben</div>}
       {/* Header */}
       <div style={styles.header}>
         <div style={styles.logo}>🎵 Musik</div>

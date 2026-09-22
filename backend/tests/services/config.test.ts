@@ -6,6 +6,8 @@ const fsMock = {
   readFileSync: vi.fn(),
   writeFileSync: vi.fn(),
   mkdirSync: vi.fn(),
+  renameSync: vi.fn(),
+  unlinkSync: vi.fn(),
 }
 
 vi.mock('node:fs', () => ({ default: fsMock, ...fsMock }))

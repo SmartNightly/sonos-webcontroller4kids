@@ -37,9 +37,25 @@ afterEach(() => {
 })
 
 describe('MediaEditor', () => {
-  it('renders without crashing', () => {
+  it('discards cancelled edits when reopening an album and initializes another album', async () => {
+    const user = userEvent.setup()
     render(<MediaEditor />)
-    expect(document.body).toBeTruthy()
+    await screen.findByText('Abbey Road')
+    await user.click(screen.getAllByRole('button', { name: /Bearbeiten/ })[0])
+    expect(screen.getByPlaceholderText('Titel')).toHaveValue('Abbey Road')
+    await user.clear(screen.getByPlaceholderText('Titel'))
+    await user.type(screen.getByPlaceholderText('Titel'), 'Unsaved title')
+    await user.click(screen.getByRole('button', { name: 'Abbrechen' }))
+    await user.click(screen.getAllByRole('button', { name: /Bearbeiten/ })[0])
+    expect(screen.getByPlaceholderText('Titel')).toHaveValue('Abbey Road')
+    await user.click(screen.getByRole('button', { name: 'Abbrechen' }))
+    await user.click(screen.getAllByRole('button', { name: /Bearbeiten/ })[1])
+    expect(screen.getByPlaceholderText('Titel')).toHaveValue('Let It Be')
+  })
+
+  it('renders without crashing', async () => {
+    render(<MediaEditor />)
+    expect(await screen.findByText('Abbey Road')).toBeInTheDocument()
   })
 
   it('displays media items after loading', async () => {
@@ -91,6 +107,6 @@ describe('MediaEditor', () => {
   it('calls onClose callback when provided', async () => {
     const onClose = vi.fn()
     render(<MediaEditor onClose={onClose} />)
-    expect(document.body).toBeTruthy()
+    await screen.findByText('Abbey Road')
   })
 })

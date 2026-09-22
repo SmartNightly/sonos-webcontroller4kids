@@ -80,6 +80,8 @@ docker-compose up -d
 
 ### Lokale Entwicklung
 
+Verwende Node.js 22 (mindestens 22.13). Docker und CI verwenden ebenfalls Node.js 22.
+
 ```bash
 # Backend
 cd backend
@@ -126,6 +128,16 @@ Die Konfiguration erfolgt über das Admin-Interface unter `http://your-ip:3344?a
 - **Raumsymbole:** Emoji-Icons für Räume
 - **Shuffle/Repeat:** Anzeige aktivieren/deaktivieren
 
+Eine leere Liste aktivierter Räume sperrt die Wiedergabe in allen Räumen; das Backend
+prüft diese Freigabe auch bei direkten Steuerungsanfragen. Eine erneute Raumsuche
+erhält bestehende Einstellungen und Freigaben. Nur bei der ersten Einrichtung
+werden alle gefundenen Räume automatisch aktiviert.
+
+Lautstärkeänderungen werden pro Raum nacheinander ausgeführt und auf die konfigurierte
+Grenze beschränkt. Kann die aktuelle Lautstärke nicht ermittelt werden, wird die
+Änderung abgelehnt. Diese Begrenzung betrifft Befehle dieses Controllers; die Sonos-App
+und physische Lautsprechertasten werden dadurch nicht eingeschränkt.
+
 ## Dokumentation
 
 - [Docker Deployment Guide](DEPLOYMENT.md) - Ausführliche Deployment-Anleitung
@@ -142,4 +154,3 @@ Die Konfiguration erfolgt über das Admin-Interface unter `http://your-ip:3344?a
 ## Lizenz
 
 MIT
-

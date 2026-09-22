@@ -1,5 +1,5 @@
 # Multi-stage build für Frontend und Backend
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
 # Build args for version metadata (passed at build time)
 ARG GIT_COMMIT=unknown
@@ -25,7 +25,7 @@ COPY backend/src ./src
 RUN npm run build
 
 # Production image
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 

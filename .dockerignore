@@ -1,10 +1,14 @@
 # Node modules
 node_modules
+**/node_modules
 npm-debug.log
 
 # Build outputs
 dist
+**/dist
 build
+**/build
+**/*.tsbuildinfo
 .next
 
 # Environment files
@@ -19,6 +23,7 @@ build
 
 # OS
 .DS_Store
+**/.DS_Store
 Thumbs.db
 
 # Git

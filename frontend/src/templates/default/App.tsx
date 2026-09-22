@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { MediaItem, MediaTrack, AppleSearchResult } from '../../types'
 import { MediaEditor } from '../../MediaEditor'
-
-// API Base URL - verwendet relative URL in Production, localhost in Development
-const API_BASE_URL = import.meta.env.DEV ? 'http://localhost:3344' : ''
+import { useSonosPolling } from '../../hooks/useSonosPolling'
+import { API_BASE_URL } from '../../api'
 
 interface TemplateAppProps {
   isAdmin: boolean
@@ -77,59 +76,35 @@ function KidsView() {
   const [trackModeAlbum, setTrackModeAlbum] = useState<MediaItem | null>(null)
   const [trackModeCurrentTrack, setTrackModeCurrentTrack] = useState<MediaTrack | null>(null)
 
-  // Status-Polling: synchronisiere Sonos-Status alle 2 Sekunden
-  useEffect(() => {
-    if (!selectedRoom) return
-
-    const pollInterval = 2000 // 2s
-    const fetchStatus = async () => {
-      try {
-        const encoded = encodeURIComponent(selectedRoom)
-        const res = await fetch(`${API_BASE_URL}/sonos/status?room=${encoded}`)
-        if (!res.ok) return
-        const data = await res.json()
-
-        // Sync playback state
-        if (data.state) {
-          const s = String(data.state).toLowerCase()
-          setPlaying(s === 'playing')
-        }
-
-        // Sync volume, mute, shuffle, repeat
-        if (data.volume !== undefined) setVolume(data.volume)
-        if (data.shuffle !== undefined) setShuffle(data.shuffle)
-        if (data.repeat !== undefined) {
-          const r = String(data.repeat).toLowerCase()
-          setRepeatMode(r === 'all' ? 'all' : r === 'one' ? 'one' : 'off')
-        }
-
-        // Sync current track
-        if (data.track) {
-          setCurrentTrack({
-            title: data.track.title,
-            artist: data.track.artist,
-            album: data.track.album,
-            positionMs: data.track.positionMs,
-            durationMs: data.track.durationMs,
-            trackNo: data.trackNo,
-          })
-        } else {
-          setCurrentTrack(null)
-        }
-      } catch (err) {
-        console.error('Status-Polling-Fehler:', err)
-      }
+  useSonosPolling(selectedRoom, (data) => {
+    // Sync playback state
+    if (data.state) {
+      const s = String(data.state).toLowerCase()
+      setPlaying(s === 'playing')
     }
 
-    // Initial fetch
-    fetchStatus()
-    // Poll every 2s
-    const timer = window.setInterval(fetchStatus, pollInterval)
-
-    return () => {
-      clearInterval(timer)
+    // Sync volume, mute, shuffle, repeat
+    if (data.volume !== undefined) setVolume(data.volume)
+    if (data.shuffle !== undefined) setShuffle(data.shuffle)
+    if (data.repeat !== undefined) {
+      const r = String(data.repeat).toLowerCase()
+      setRepeatMode(r === 'all' ? 'all' : r === 'one' ? 'one' : 'off')
     }
-  }, [selectedRoom])
+
+    // Sync current track
+    if (data.track) {
+      setCurrentTrack({
+        title: data.track.title,
+        artist: data.track.artist,
+        album: data.track.album,
+        positionMs: data.track.positionMs,
+        durationMs: data.track.durationMs,
+        trackNo: data.trackNo,
+      })
+    } else {
+      setCurrentTrack(null)
+    }
+  })
 
   // Medien laden
   useEffect(() => {
@@ -202,8 +177,7 @@ function KidsView() {
 
         const data = (await res.json()) as SonosConfig
 
-        const enabled =
-          data.enabledRooms && data.enabledRooms.length > 0 ? data.enabledRooms : data.rooms || []
+        const enabled = data.enabledRooms ?? data.rooms ?? []
 
         setRooms(enabled)
         setShowShuffleRepeat(data.showShuffleRepeat !== undefined ? data.showShuffleRepeat : true)
@@ -951,20 +925,19 @@ function TemplateSelector() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   useEffect(() => {
-    loadTemplates()
-  }, [])
-
-  const loadTemplates = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/admin/templates`)
-      if (!res.ok) return
-      const data = await res.json()
-      setTemplates(data.templates || [])
-      setActiveTemplate(data.active || 'default')
-    } catch (err) {
-      console.error('Konnte Templates nicht laden:', err)
+    const loadTemplates = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/templates`)
+        if (!res.ok) return
+        const data = await res.json()
+        setTemplates(data.templates || [])
+        setActiveTemplate(data.active || 'default')
+      } catch (err) {
+        console.error('Konnte Templates nicht laden:', err)
+      }
     }
-  }
+    void loadTemplates()
+  }, [])
 
   const switchTemplate = async (template: string) => {
     setLoading(true)
@@ -1166,7 +1139,13 @@ function ArtistImagePickerModal({
           </div>
           <button
             onClick={onSkip}
-            style={{ background: 'none', border: 'none', color: '#aaa', fontSize: '1.2rem', cursor: 'pointer' }}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#aaa',
+              fontSize: '1.2rem',
+              cursor: 'pointer',
+            }}
           >
             ✕
           </button>
@@ -1189,7 +1168,13 @@ function ArtistImagePickerModal({
               <img
                 src={r.artistImageUrl}
                 alt={r.artistName}
-                style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover', display: 'block' }}
+                style={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  display: 'block',
+                }}
               />
             </button>
           ))}
@@ -1351,7 +1336,7 @@ function AdminView() {
         .replace(/[^a-z0-9]+/g, '_')
         .replace(/^_+|_+$/g, '')
 
-    const id = (entity === 'album' ? `album_${baseId}` : `song_${baseId}`) || `item_${Date.now()}`
+    const id = entity === 'album' ? `album_${baseId}` : `song_${baseId}`
 
     try {
       let res: Response
@@ -2423,7 +2408,7 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
   },
   tabButtonActive: {
-    borderBottomColor: '#0a0',
+    borderBottom: '2px solid #0a0',
     color: '#fff',
   },
 

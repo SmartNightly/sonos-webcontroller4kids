@@ -15,10 +15,77 @@ vi.mock('../../src/services/apple-music', () => ({
 import { loadMedia, saveMedia } from '../../src/services/media'
 import { fetchAlbumTracks, searchArtist } from '../../src/services/apple-music'
 import mediaRouter from '../../src/routes/media'
+import type { MediaItem, MediaTrack } from '../../src/types'
 
 const app = express()
 app.use(express.json())
 app.use('/media', mediaRouter)
+
+beforeEach(() => vi.clearAllMocks())
+
+describe('concurrent album imports', () => {
+  beforeEach(() => vi.clearAllMocks())
+
+  it('keeps bulk edits saved while the album lookup is pending', async () => {
+    let stored: MediaItem[] = [
+      {
+        id: 'old',
+        title: 'Original',
+        kind: 'album',
+        service: 'appleMusic',
+        appleId: '1',
+        coverUrl: '',
+      },
+    ]
+    vi.mocked(loadMedia).mockImplementation(() => structuredClone(stored))
+    vi.mocked(saveMedia).mockImplementation((items) => {
+      stored = structuredClone(items)
+    })
+    let release!: (tracks: MediaTrack[]) => void
+    let started!: () => void
+    const ready = new Promise<void>((resolve) => {
+      started = resolve
+    })
+    vi.mocked(fetchAlbumTracks).mockImplementation(() => {
+      started()
+      return new Promise((resolve) => {
+        release = resolve
+      })
+    })
+    const importing = request(app)
+      .post('/media/apple/album')
+      .send({ id: 'new', title: 'New', appleAlbumId: '2' })
+      .then((response) => response)
+    await ready
+    await request(app)
+      .patch('/media/bulk')
+      .send({ ids: ['old'], updates: { title: 'Edited' } })
+    release([])
+    expect((await importing).status).toBe(201)
+    expect(stored.find((item) => item.id === 'old')?.title).toBe('Edited')
+    expect(stored.map((item) => item.id)).toEqual(['old', 'new'])
+  })
+
+  it('deduplicates simultaneous imports of the same album', async () => {
+    let stored: MediaItem[] = []
+    vi.mocked(loadMedia).mockImplementation(() => structuredClone(stored))
+    vi.mocked(saveMedia).mockImplementation((items) => {
+      stored = structuredClone(items)
+    })
+    vi.mocked(fetchAlbumTracks).mockImplementation(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 10))
+      return [{ id: 'track', title: 'Song', appleSongId: '42' }]
+    })
+    const results = await Promise.all(
+      ['first', 'second'].map((id) =>
+        request(app).post('/media/apple/album').send({ id, title: 'Album', appleAlbumId: '123' }),
+      ),
+    )
+    expect(results.map((res) => res.status).sort()).toEqual([200, 201])
+    expect(stored).toHaveLength(1)
+    expect(stored[0]?.tracks).toHaveLength(1)
+  })
+})
 
 describe('GET /media', () => {
   it('returns list of media items', async () => {

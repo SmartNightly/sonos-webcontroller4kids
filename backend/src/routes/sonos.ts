@@ -5,6 +5,7 @@ import { loadConfig, DEFAULT_SONOS_BASE_URL } from '../services/config'
 import { loadMedia } from '../services/media'
 import { buildSonosUrl, fetchWithTimeout } from '../services/sonos'
 import { searchApple, searchArtist } from '../services/apple-music'
+import { withRoomQueue } from '../services/room-queue'
 
 const router = Router()
 
@@ -12,98 +13,132 @@ const router = Router()
 router.post('/sonos/control', async (req: Request, res: Response) => {
   const { room, action, value } = req.body as { room?: string; action?: string; value?: number }
 
-  if (!room || !action) {
+  if (typeof room !== 'string' || !room || typeof action !== 'string' || !action) {
     return res.status(400).json({ error: 'room und action erforderlich' })
   }
 
-  const config = loadConfig()
-  const baseUrl = config.sonosBaseUrl || DEFAULT_SONOS_BASE_URL
-  const maxVol = config.maxVolume?.[room] ?? 100
+  return withRoomQueue(room, async () => {
+    const config = loadConfig()
+    if (!config.enabledRooms.includes(room)) {
+      return res.status(403).json({ error: 'Raum ist nicht freigegeben' })
+    }
+    const baseUrl = config.sonosBaseUrl || DEFAULT_SONOS_BASE_URL
+    const configuredMax = config.maxVolume?.[room] ?? 100
+    if (!Number.isInteger(configuredMax) || configuredMax < 0 || configuredMax > 100) {
+      return res.status(500).json({ error: 'Ungültige Lautstärkegrenze' })
+    }
+    const maxVol = configuredMax
+    if (
+      ['volumeUp', 'volumeDown', 'setVolume'].includes(action) &&
+      value !== undefined &&
+      (!Number.isInteger(value) || value < 0 || value > 100)
+    ) {
+      return res.status(400).json({ error: 'value muss eine ganze Zahl von 0 bis 100 sein' })
+    }
 
-  let sonosPath!: string
-  switch (action) {
-    case 'play':
-    case 'pause':
-    case 'next':
-    case 'previous':
-      sonosPath = action === 'previous' ? 'previous' : action
-      break
-    case 'volumeUp':
-      try {
-        const stateRes = await fetch(`${config.sonosBaseUrl}/${encodeURIComponent(room)}/state`)
-        const stateData = await stateRes.json()
-        const currentVol = stateData.volume ?? 0
-        const targetVol = currentVol + (value ?? 5)
-        sonosPath = targetVol > maxVol ? `volume/${maxVol}` : `volume/+${value ?? 5}`
-      } catch {
-        sonosPath = `volume/+${value ?? 5}`
-      }
-      break
-    case 'volumeDown':
-      sonosPath = `volume/-${value ?? 5}`
-      break
-    case 'setVolume':
-      if (typeof value !== 'number') {
-        return res.status(400).json({ error: 'value erforderlich für setVolume' })
-      }
-      sonosPath = `volume/${Math.min(value, maxVol)}`
-      break
-    case 'mute':
-      sonosPath = 'mute'
-      break
-    case 'unmute':
-      sonosPath = 'unmute'
-      break
-    case 'toggleMute':
-      sonosPath = 'toggleMute'
-      break
-    case 'shuffleOn':
-      sonosPath = 'shuffle/on'
-      break
-    case 'shuffleOff':
-      sonosPath = 'shuffle/off'
-      break
-    case 'repeatOff':
-      sonosPath = 'repeat/off'
-      break
-    case 'repeatOne':
-      sonosPath = 'repeat/one'
-      break
-    case 'repeatAll':
-      sonosPath = 'repeat/all'
-      break
-    case 'clearqueue':
-      sonosPath = 'clearqueue'
-      break
-    default:
-      return res.status(400).json({ error: `Unbekannte action ${action}` })
-  }
+    let sonosPath!: string
+    switch (action) {
+      case 'play':
+      case 'pause':
+      case 'next':
+      case 'previous':
+        sonosPath = action === 'previous' ? 'previous' : action
+        break
+      case 'volumeUp':
+      case 'volumeDown':
+        try {
+          const stateRes = await fetch(`${baseUrl}/${encodeURIComponent(room)}/state`, {
+            signal: AbortSignal.timeout(3000),
+          })
+          if (!stateRes.ok) throw new Error('Status nicht erreichbar')
+          const stateData = await stateRes.json()
+          const currentVol = stateData.volume
+          if (
+            typeof currentVol !== 'number' ||
+            !Number.isFinite(currentVol) ||
+            currentVol < 0 ||
+            currentVol > 100
+          ) {
+            throw new Error('Ungültiger Lautstärkestatus')
+          }
+          const delta = (action === 'volumeUp' ? 1 : -1) * (value ?? 5)
+          // Re-read the limit in case settings changed during the status request.
+          const latestConfig = loadConfig()
+          if (!latestConfig.enabledRooms.includes(room)) {
+            return res.status(403).json({ error: 'Raum ist nicht freigegeben' })
+          }
+          const latestMax = latestConfig.maxVolume?.[room] ?? 100
+          if (!Number.isInteger(latestMax) || latestMax < 0 || latestMax > 100) {
+            throw new Error('Ungültige Lautstärkegrenze')
+          }
+          sonosPath = `volume/${Math.max(0, Math.min(Math.round(currentVol + delta), latestMax))}`
+        } catch {
+          return res.status(502).json({ error: 'Lautstärke konnte nicht sicher ermittelt werden' })
+        }
+        break
+      case 'setVolume':
+        if (typeof value !== 'number') {
+          return res.status(400).json({ error: 'value erforderlich für setVolume' })
+        }
+        sonosPath = `volume/${Math.min(value, maxVol)}`
+        break
+      case 'mute':
+        sonosPath = 'mute'
+        break
+      case 'unmute':
+        sonosPath = 'unmute'
+        break
+      case 'toggleMute':
+        sonosPath = 'toggleMute'
+        break
+      case 'shuffleOn':
+        sonosPath = 'shuffle/on'
+        break
+      case 'shuffleOff':
+        sonosPath = 'shuffle/off'
+        break
+      case 'repeatOff':
+        sonosPath = 'repeat/off'
+        break
+      case 'repeatOne':
+        sonosPath = 'repeat/one'
+        break
+      case 'repeatAll':
+        sonosPath = 'repeat/all'
+        break
+      case 'clearqueue':
+        sonosPath = 'clearqueue'
+        break
+      default:
+        return res.status(400).json({ error: `Unbekannte action ${action}` })
+    }
 
-  const url = `${baseUrl}/${encodeURIComponent(room)}/${sonosPath}`
+    const url = `${baseUrl}/${encodeURIComponent(room)}/${sonosPath}`
 
-  try {
-    const controller = new AbortController()
-    const id = setTimeout(() => controller.abort(), 3000)
     try {
-      const response = await fetch(url, { signal: controller.signal })
-      if (!response.ok) {
-        const text = await response.text().catch(() => '')
-        return res
-          .status(502)
-          .json({ error: `Sonos API returned ${response.status}`, details: text })
+      const controller = new AbortController()
+      const id = setTimeout(() => controller.abort(), 3000)
+      try {
+        const response = await fetch(url, { signal: controller.signal })
+        if (!response.ok) {
+          const text = await response.text().catch(() => '')
+          return res
+            .status(502)
+            .json({ error: `Sonos API returned ${response.status}`, details: text })
+        }
+        return res.json({ status: 'ok', action, room })
+      } finally {
+        clearTimeout(id)
       }
-      return res.json({ status: 'ok', action, room })
-    } finally {
-      clearTimeout(id)
+    } catch (err: any) {
+      if (err && err.name === 'AbortError') {
+        console.error('Fehler bei Sonos-Control: request timeout')
+        return res.status(504).json({ error: 'Sonos API request timed out' })
+      }
+      console.error('Fehler bei Sonos-Control:', err)
+      return res.status(502).json({ error: 'Fehler bei Sonos-API' })
     }
-  } catch (err: any) {
-    if (err && err.name === 'AbortError') {
-      console.error('Fehler bei Sonos-Control: request timeout')
-      return res.status(504).json({ error: 'Sonos API request timed out' })
-    }
-    console.error('Fehler bei Sonos-Control:', err)
-    return res.status(502).json({ error: 'Fehler bei Sonos-API' })
-  }
+  })
 })
 
 // GET /sonos/status
@@ -115,11 +150,15 @@ router.get('/sonos/status', async (req: Request, res: Response) => {
   }
 
   const config = loadConfig()
+  if (!config.enabledRooms.includes(room)) {
+    return res.status(403).json({ error: 'Raum ist nicht freigegeben' })
+  }
   const baseUrl = config.sonosBaseUrl || DEFAULT_SONOS_BASE_URL
   const encoded = encodeURIComponent(room)
 
   const tried: any[] = []
   const result: any = { room, available: false }
+  const deadline = Date.now() + 3000
 
   // 1) State (playing/paused)
   const stateUrl = `${baseUrl}/${encoded}/state`
@@ -216,7 +255,12 @@ router.get('/sonos/status', async (req: Request, res: Response) => {
   ]
 
   for (const u of nowCandidates) {
-    const r = await fetchWithTimeout(u)
+    // A complete state needs no probing. Failed state requests must not fan out
+    // into seven more timeouts; all fallbacks share the remaining time budget.
+    if (!result.available || result.track?.title || result.track?.uri) break
+    const remaining = deadline - Date.now()
+    if (remaining <= 0) break
+    const r = await fetchWithTimeout(u, remaining)
     tried.push(r)
     if (!r.ok) continue
     const payload = 'json' in r ? r.json : r.text
@@ -265,8 +309,12 @@ router.post('/play', async (req: Request, res: Response) => {
     trackAppleSongId?: string
   }
 
-  if (!id || !room) {
+  if (typeof id !== 'string' || !id || typeof room !== 'string' || !room) {
     return res.status(400).json({ error: 'id und room sind erforderlich' })
+  }
+
+  if (!loadConfig().enabledRooms.includes(room)) {
+    return res.status(403).json({ error: 'Raum ist nicht freigegeben' })
   }
 
   let media: MediaItem[]
@@ -311,7 +359,7 @@ router.post('/play', async (req: Request, res: Response) => {
 
   try {
     console.log('Rufe Sonos-HTTP-API auf mit:', url)
-    const response = await fetch(url)
+    const response = await fetch(url, { signal: AbortSignal.timeout(5000) })
 
     if (!response.ok) {
       await response.json().catch(() => ({}))
@@ -328,7 +376,7 @@ router.post('/play', async (req: Request, res: Response) => {
         if (firstTrack) {
           const fallbackUrl = buildSonosUrl(item, room, firstTrack)
           console.log('Rufe Sonos-HTTP-API mit erstem Track auf:', fallbackUrl)
-          const fallbackResponse = await fetch(fallbackUrl)
+          const fallbackResponse = await fetch(fallbackUrl, { signal: AbortSignal.timeout(5000) })
 
           if (!fallbackResponse.ok) {
             throw new Error(

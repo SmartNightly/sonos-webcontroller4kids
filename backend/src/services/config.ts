@@ -1,6 +1,7 @@
 import path from 'node:path'
 import fs from 'node:fs'
 import type { AppConfig } from '../types'
+import { writeJsonAtomically } from './json-store'
 
 export const DEFAULT_SONOS_BASE_URL = 'http://192.168.114.21:5005'
 
@@ -56,24 +57,20 @@ function loadFromDisk(): AppConfig {
 let cache: AppConfig | null = null
 
 export function loadConfig(): AppConfig {
-  if (cache) return cache
+  if (cache) return structuredClone(cache)
   try {
     cache = loadFromDisk()
   } catch (err) {
     console.error('Fehler beim Laden von config.json:', err)
-    cache = { ...DEFAULT_CONFIG }
+    cache = structuredClone(DEFAULT_CONFIG)
   }
-  return cache
+  return structuredClone(cache)
 }
 
 export function saveConfig(config: AppConfig): void {
   try {
-    const dir = path.dirname(CONFIG_PATH)
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true })
-    }
-    fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2), 'utf-8')
-    cache = config
+    writeJsonAtomically(CONFIG_PATH, config)
+    cache = structuredClone(config)
     console.log('config.json gespeichert')
   } catch (err) {
     console.error('Fehler beim Speichern von config.json:', err)

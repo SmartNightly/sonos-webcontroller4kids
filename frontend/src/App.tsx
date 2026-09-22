@@ -1,7 +1,21 @@
-import { lazy, Suspense, useEffect, useState, useMemo } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
+import type { ComponentType } from 'react'
 
-// API Base URL - verwendet relative URL in Production, localhost in Development
-const API_BASE_URL = import.meta.env.DEV ? 'http://localhost:3344' : ''
+import { API_BASE_URL } from './api'
+
+// Create each lazy component once, so renders never replace its identity.
+const defaultTemplate = lazy(() => import('./templates/default/App.tsx'))
+const templateLoaders = import.meta.glob<{ default: ComponentType<{ isAdmin: boolean }> }>(
+  './templates/*/App.tsx',
+)
+const templates = Object.fromEntries(
+  Object.entries(templateLoaders).map(([path, load]) => [
+    path.split('/')[2],
+    lazy<ComponentType<{ isAdmin: boolean }>>(() =>
+      load().catch(() => import('./templates/default/App.tsx')),
+    ),
+  ]),
+)
 
 function App() {
   const params = new URLSearchParams(window.location.search)
@@ -24,15 +38,7 @@ function App() {
       })
   }, [])
 
-  // Template-Komponente dynamisch laden (memoized, um bei jedem Render neu zu erstellen)
-  const TemplateApp = useMemo(() => {
-    return lazy(
-      () =>
-        import(`./templates/${activeTemplate}/App.tsx`).catch(
-          () => import('./templates/default/App.tsx'),
-        ), // Fallback
-    )
-  }, [activeTemplate])
+  const TemplateApp = templates[activeTemplate] ?? defaultTemplate
 
   if (loading) {
     return (

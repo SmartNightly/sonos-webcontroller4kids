@@ -2,6 +2,10 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import App from '../App'
 
+vi.mock('../templates/default/App', () => ({
+  default: () => <div>Default template</div>,
+}))
+
 beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn())
 })
@@ -11,6 +15,15 @@ afterEach(() => {
 })
 
 describe('App (template loader)', () => {
+  it('uses the default template when the configured template is unknown', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: true,
+      json: async () => ({ activeTemplate: 'missing' }),
+    } as Response)
+    render(<App />)
+    expect(await screen.findByText('Default template')).toBeInTheDocument()
+  })
+
   it('shows loading state while fetching template config', () => {
     vi.mocked(fetch).mockImplementation(() => new Promise(() => {}))
     render(<App />)
@@ -23,6 +36,7 @@ describe('App (template loader)', () => {
     render(<App />)
     // Still shows loading initially
     expect(screen.getByText('Lade Template...')).toBeInTheDocument()
+    expect(await screen.findByText('Default template')).toBeInTheDocument()
   })
 
   it('reads admin flag from URL query parameter', () => {

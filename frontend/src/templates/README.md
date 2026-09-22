@@ -73,7 +73,15 @@ Bearbeite `media-data/config.json`:
 - **Export**: Template muss `App` als default export haben
 - **Props**: Muss `isAdmin` boolean als Prop akzeptieren
 - **Types**: Verwende `import type { ... } from '../../types'` für gemeinsame Types
-- **API URL**: Verwende `const API_BASE_URL = import.meta.env.DEV ? 'http://localhost:3344' : ''`
+- **Gemeinsame API**: Importiere `API_BASE_URL` und `requestJson` aus `../../api`.
+- **Status-Polling**: Verwende `useSonosPolling` aus `../../hooks/useSonosPolling`, damit
+  Anfragen nicht überlappen und beim Raumwechsel abgebrochen werden.
+
+Beim Frontend-Build wird `dist/templates.json` aus den Template-Ordnern mit einer
+`App.tsx` erzeugt. Das Backend verwendet dieses Manifest zur Auswahl und Validierung
+der Templates im Docker-Image; Frontend-Quelldateien müssen nicht mitgeliefert werden.
+Nach dem Hinzufügen eines Templates einen vorhandenen Produktionsbuild erneuern.
+Ordnernamen dürfen Kleinbuchstaben, Ziffern und Bindestriche enthalten.
 
 ## Verfügbare Templates
 

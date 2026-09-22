@@ -13,6 +13,61 @@ afterEach(() => {
 })
 
 describe('Colorful Template - App', () => {
+  it('opens an album, returns to its artist, and plays it successfully', async () => {
+    const user = userEvent.setup()
+    render(<App isAdmin={false} />)
+    await user.click(await screen.findByText('The Beatles'))
+    await user.click(screen.getByText('Abbey Road'))
+    expect(screen.getByRole('button', { name: /ABSPIELEN/ })).toBeInTheDocument()
+    await user.click(screen.getByText('← Zurück'))
+    expect(screen.queryByRole('button', { name: /ABSPIELEN/ })).not.toBeInTheDocument()
+    expect(screen.getByAltText('Abbey Road')).toBeInTheDocument()
+    await user.click(screen.getByText('Abbey Road'))
+    await user.click(screen.getByRole('button', { name: /ABSPIELEN/ }))
+    expect(fetch).toHaveBeenCalledWith(
+      expect.stringMatching(/\/play$/),
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({ id: 'album-1', room: 'Kinderzimmer' }),
+      }),
+    )
+    expect(screen.getByText('Michael Jackson')).toBeInTheDocument()
+  })
+
+  it('keeps the album open and shows a failed play response', async () => {
+    const mockFetch = createMockFetch()
+    vi.mocked(fetch).mockImplementation((url) =>
+      String(url).endsWith('/play')
+        ? Promise.resolve({
+            ok: false,
+            json: async () => ({ error: 'Sonos nicht erreichbar' }),
+          } as Response)
+        : mockFetch(url),
+    )
+    const user = userEvent.setup()
+    render(<App isAdmin={false} />)
+    await user.click(await screen.findByText('The Beatles'))
+    await user.click(screen.getByText('Abbey Road'))
+    await user.click(screen.getByRole('button', { name: /ABSPIELEN/ }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('Sonos nicht erreichbar')
+    expect(screen.getByRole('button', { name: /ABSPIELEN/ })).toBeInTheDocument()
+  })
+
+  it('does not select or poll rooms when all rooms are disabled', async () => {
+    vi.mocked(fetch).mockImplementation(
+      createMockFetch({ config: { rooms: ['Kinderzimmer'], enabledRooms: [] } }),
+    )
+    const user = userEvent.setup()
+    render(<App isAdmin={false} />)
+    await user.click(await screen.findByText('The Beatles'))
+    await user.click(screen.getByText('Abbey Road'))
+    expect(screen.getByRole('button', { name: /ABSPIELEN/ })).toBeDisabled()
+    expect(screen.getByText('Kein Raum freigegeben')).toBeInTheDocument()
+    expect(vi.mocked(fetch).mock.calls.some(([url]) => String(url).includes('/sonos/status'))).toBe(
+      false,
+    )
+  })
+
   it('shows admin redirect when isAdmin=true', () => {
     render(<App isAdmin={true} />)
     expect(screen.getByText(/Admin-Modus nur im Default-Template/)).toBeInTheDocument()

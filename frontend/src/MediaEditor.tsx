@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { MediaItem, MediaTrack } from './types'
 
-// API Base URL - verwendet relative URL in Production, localhost in Development
-const API_BASE_URL = import.meta.env.DEV ? 'http://localhost:3344' : ''
+import { API_BASE_URL } from './api'
 
 interface EditModalProps {
   item: MediaItem | null
@@ -19,39 +18,17 @@ interface ArtistResult {
 }
 
 function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
-  const [title, setTitle] = useState('')
-  const [artist, setArtist] = useState('')
-  const [album, setAlbum] = useState('')
-  const [coverUrl, setCoverUrl] = useState('')
-  const [artistImageUrl, setArtistImageUrl] = useState('')
-  const [kind, setKind] = useState('album')
+  const [title, setTitle] = useState(track?.title ?? item?.title ?? '')
+  const [artist, setArtist] = useState(track ? '' : (item?.artist ?? ''))
+  const [album, setAlbum] = useState(track ? '' : (item?.album ?? ''))
+  const [coverUrl, setCoverUrl] = useState(track ? '' : (item?.coverUrl ?? ''))
+  const [artistImageUrl, setArtistImageUrl] = useState(track ? '' : (item?.artistImageUrl ?? ''))
+  const [kind, setKind] = useState(track ? 'album' : (item?.kind ?? 'album'))
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const [artistSearchResults, setArtistSearchResults] = useState<ArtistResult[]>([])
   const [artistSearching, setArtistSearching] = useState(false)
-
-  useEffect(() => {
-    if (!isOpen) return
-
-    if (track) {
-      setTitle(track.title || '')
-      setArtist('')
-      setAlbum('')
-      setCoverUrl('')
-      setArtistImageUrl('')
-      setKind('album')
-    } else if (item) {
-      setTitle(item.title || '')
-      setArtist(item.artist || '')
-      setAlbum(item.album || '')
-      setCoverUrl(item.coverUrl || '')
-      setArtistImageUrl(item.artistImageUrl || '')
-      setKind(item.kind || 'album')
-    }
-    setError(null)
-    setArtistSearchResults([])
-  }, [isOpen, item, track])
 
   const handleSearchArtist = async () => {
     if (!artist.trim()) return
@@ -827,13 +804,16 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
         )}
       </div>
 
-      <EditModal
-        item={editModal.item}
-        track={editModal.track}
-        isOpen={editModal.isOpen}
-        onClose={() => setEditModal({ isOpen: false, item: null, track: null })}
-        onSave={handleSaveEdit}
-      />
+      {editModal.isOpen && (
+        <EditModal
+          key={`${editModal.item?.id}:${editModal.track?.id ?? 'album'}`}
+          item={editModal.item}
+          track={editModal.track}
+          isOpen={true}
+          onClose={() => setEditModal({ isOpen: false, item: null, track: null })}
+          onSave={handleSaveEdit}
+        />
+      )}
 
       <DeleteConfirm
         message={

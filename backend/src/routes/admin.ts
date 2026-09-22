@@ -1,9 +1,8 @@
 import { Router } from 'express'
 import type { Request, Response } from 'express'
-import path from 'node:path'
-import fs from 'node:fs'
 import type { AppConfig } from '../types'
 import { loadConfig, saveConfig, DEFAULT_SONOS_BASE_URL } from '../services/config'
+import { listTemplates } from '../services/templates'
 
 const router = Router()
 
@@ -27,7 +26,8 @@ router.get('/sonos/test', async (req: Request, res: Response) => {
 
     console.log('Teste Sonos API Verbindung:', testUrl)
 
-    const response = await fetch(testUrl)
+    const response = await fetch(testUrl, { signal: AbortSignal.timeout(3000) })
+    if (!response.ok) throw new Error(`Sonos API returned ${response.status}`)
     const data = await response.json()
 
     res.json({
@@ -54,16 +54,26 @@ router.get('/sonos/test', async (req: Request, res: Response) => {
 router.post('/sonos/discover', async (req: Request, res: Response) => {
   const { sonosBaseUrl } = req.body as { sonosBaseUrl?: string }
 
+  if (sonosBaseUrl !== undefined && typeof sonosBaseUrl !== 'string') {
+    return res.status(400).json({ error: 'sonosBaseUrl muss eine URL sein' })
+  }
+
   const current = loadConfig()
   const baseUrl =
     (sonosBaseUrl && sonosBaseUrl.trim().replace(/\/+$/, '')) ||
     current.sonosBaseUrl ||
     DEFAULT_SONOS_BASE_URL
 
+  try {
+    if (!['http:', 'https:'].includes(new URL(baseUrl).protocol)) throw new Error('protocol')
+  } catch {
+    return res.status(400).json({ error: 'sonosBaseUrl muss eine HTTP(S)-URL sein' })
+  }
+
   async function tryFetchRoomsEndpoint() {
     const url = `${baseUrl}/rooms`
     console.log('Versuche Sonos /rooms:', url)
-    const response = await fetch(url)
+    const response = await fetch(url, { signal: AbortSignal.timeout(3000) })
     if (!response.ok) {
       throw new Error(`Sonos /rooms returned ${response.status}`)
     }
@@ -77,7 +87,7 @@ router.post('/sonos/discover', async (req: Request, res: Response) => {
   async function tryFetchZonesEndpoint() {
     const url = `${baseUrl}/zones`
     console.log('Versuche Sonos /zones:', url)
-    const response = await fetch(url)
+    const response = await fetch(url, { signal: AbortSignal.timeout(3000) })
     if (!response.ok) {
       throw new Error(`Sonos /zones returned ${response.status}`)
     }
@@ -109,7 +119,9 @@ router.post('/sonos/discover', async (req: Request, res: Response) => {
 
     const enabledRoomsIntersection = oldConfig.enabledRooms?.filter((r) => rooms.includes(r)) || []
 
-    const enabledRooms = enabledRoomsIntersection.length > 0 ? enabledRoomsIntersection : rooms
+    // Only the initial discovery enables all rooms. An existing empty selection
+    // means that the administrator deliberately disabled playback everywhere.
+    const enabledRooms = oldConfig.rooms.length === 0 ? rooms : enabledRoomsIntersection
 
     const defaultRoom =
       oldConfig.defaultRoom && enabledRooms.includes(oldConfig.defaultRoom)
@@ -117,6 +129,7 @@ router.post('/sonos/discover', async (req: Request, res: Response) => {
         : undefined
 
     const newConfig: AppConfig = {
+      ...oldConfig,
       sonosBaseUrl: baseUrl,
       rooms,
       enabledRooms,
@@ -137,14 +150,19 @@ router.post('/sonos/discover', async (req: Request, res: Response) => {
 router.post('/sonos/rooms', (req: Request, res: Response) => {
   const { enabledRooms } = req.body as { enabledRooms?: string[] }
 
-  if (!Array.isArray(enabledRooms)) {
+  if (!Array.isArray(enabledRooms) || !enabledRooms.every((room) => typeof room === 'string')) {
     return res.status(400).json({ error: 'enabledRooms muss ein Array sein' })
   }
 
   const config = loadConfig()
-  const cleaned = enabledRooms.filter((r) => config.rooms.includes(r))
+  const cleaned = [...new Set(enabledRooms.filter((r) => config.rooms.includes(r)))]
 
-  const newConfig: AppConfig = { ...config, enabledRooms: cleaned }
+  const newConfig: AppConfig = {
+    ...config,
+    enabledRooms: cleaned,
+    defaultRoom:
+      config.defaultRoom && cleaned.includes(config.defaultRoom) ? config.defaultRoom : undefined,
+  }
   saveConfig(newConfig)
   res.json(newConfig)
 })
@@ -171,6 +189,23 @@ router.post('/sonos/settings', (req: Request, res: Response) => {
   const { showShuffleRepeat, maxVolume } = req.body as {
     showShuffleRepeat?: boolean
     maxVolume?: Record<string, number>
+  }
+
+  if (showShuffleRepeat !== undefined && typeof showShuffleRepeat !== 'boolean') {
+    return res.status(400).json({ error: 'showShuffleRepeat muss ein Boolean sein' })
+  }
+  if (
+    maxVolume !== undefined &&
+    (!maxVolume ||
+      typeof maxVolume !== 'object' ||
+      Array.isArray(maxVolume) ||
+      !Object.values(maxVolume).every(
+        (value) => Number.isInteger(value) && value >= 0 && value <= 100,
+      ))
+  ) {
+    return res
+      .status(400)
+      .json({ error: 'Lautstärkegrenzen müssen ganze Zahlen von 0 bis 100 sein' })
   }
 
   const config = loadConfig()
@@ -219,17 +254,8 @@ router.post('/sonos/tracklist-settings', (req: Request, res: Response) => {
 
 // GET /admin/templates
 router.get('/templates', (req: Request, res: Response) => {
-  const templatesPath = path.join(__dirname, '..', '..', '..', 'frontend', 'src', 'templates')
-
   try {
-    if (!fs.existsSync(templatesPath)) {
-      return res.json({ templates: ['default'], active: 'default' })
-    }
-
-    const templates = fs.readdirSync(templatesPath).filter((name) => {
-      const templatePath = path.join(templatesPath, name)
-      return fs.statSync(templatePath).isDirectory()
-    })
+    const templates = listTemplates()
 
     const config = loadConfig()
     res.json({ templates, active: config.activeTemplate || 'default' })
@@ -243,22 +269,11 @@ router.get('/templates', (req: Request, res: Response) => {
 router.post('/templates/active', (req: Request, res: Response) => {
   const { template } = req.body as { template?: string }
 
-  if (!template) {
+  if (typeof template !== 'string' || !template) {
     return res.status(400).json({ error: 'template ist erforderlich' })
   }
 
-  const templatesPath = path.join(
-    __dirname,
-    '..',
-    '..',
-    '..',
-    'frontend',
-    'src',
-    'templates',
-    template,
-  )
-
-  if (!fs.existsSync(templatesPath)) {
+  if (!listTemplates().includes(template)) {
     return res.status(404).json({ error: `Template '${template}' nicht gefunden` })
   }
 

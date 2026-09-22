@@ -5,6 +5,8 @@ const fsMock = {
   readFileSync: vi.fn(),
   writeFileSync: vi.fn(),
   mkdirSync: vi.fn(),
+  renameSync: vi.fn(),
+  unlinkSync: vi.fn(),
 }
 
 vi.mock('node:fs', () => ({ default: fsMock, ...fsMock }))
@@ -67,5 +69,20 @@ describe('services/media', () => {
     const items = loadMedia()
     expect(items).toHaveLength(1)
     expect(fsMock.existsSync).toHaveBeenCalledTimes(1) // only the dir check in saveMedia
+    expect(fsMock.renameSync).toHaveBeenCalledOnce()
+  })
+
+  it('keeps the cached library unchanged when an atomic save fails', async () => {
+    fsMock.existsSync.mockReturnValue(true)
+    const { loadMedia, saveMedia } = await import('../../src/services/media')
+    saveMedia(sampleItems as any)
+    const edited = loadMedia()
+    edited[0]!.title = 'Edited'
+    fsMock.renameSync.mockImplementationOnce(() => {
+      throw new Error('disk full')
+    })
+    expect(() => saveMedia(edited)).toThrow('disk full')
+    expect(loadMedia()[0]!.title).toBe('Test Album')
+    expect(fsMock.unlinkSync).toHaveBeenCalledOnce()
   })
 })

@@ -301,14 +301,23 @@ router.post('/apple/album', async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'id, appleAlbumId und title sind erforderlich' })
   }
 
-  const items = loadMedia()
-
-  const existingByApple = items.find((i) => i.appleId === appleAlbumId)
-  const existingById = items.find((i) => i.id === id)
-  const existingAlbum = existingById || existingByApple || null
-
   try {
-    const tracks = await fetchAlbumTracks(appleAlbumId, id)
+    // Finish external work before reading the list we are going to update.
+    // No await is allowed between that read and saveMedia: other requests may
+    // replace the cached list while a lookup is pending.
+    const [tracks, artistImage] = await Promise.all([
+      fetchAlbumTracks(appleAlbumId, id),
+      artist ? resolveArtistImage(artist, loadMedia()) : Promise.resolve(undefined),
+    ])
+    const items = loadMedia()
+    const existingByApple = items.find((i) => i.appleId === appleAlbumId)
+    const existingById = items.find((i) => i.id === id)
+    const existingAlbum = existingById || existingByApple || null
+    const artistImageUrl =
+      items.find(
+        (item) =>
+          artist && item.artist?.toLowerCase() === artist.toLowerCase() && item.artistImageUrl,
+      )?.artistImageUrl || artistImage
 
     if (tracks.length === 0) {
       console.warn(
@@ -338,9 +347,8 @@ router.post('/apple/album', async (req: Request, res: Response) => {
       if (kind) existingAlbum.kind = kind
       existingAlbum.appleId = appleAlbumId
 
-      if (artist && !existingAlbum.artistImageUrl) {
-        const resolved = await resolveArtistImage(artist, items)
-        if (resolved) existingAlbum.artistImageUrl = resolved
+      if (artistImageUrl && !existingAlbum.artistImageUrl) {
+        existingAlbum.artistImageUrl = artistImageUrl
       }
 
       saveMedia(items)
@@ -359,10 +367,7 @@ router.post('/apple/album', async (req: Request, res: Response) => {
       tracks,
     }
 
-    if (artist) {
-      const resolved = await resolveArtistImage(artist, items)
-      if (resolved) newAlbum.artistImageUrl = resolved
-    }
+    if (artistImageUrl) newAlbum.artistImageUrl = artistImageUrl
 
     items.push(newAlbum)
     saveMedia(items)

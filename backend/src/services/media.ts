@@ -1,6 +1,7 @@
 import path from 'node:path'
 import fs from 'node:fs'
 import type { MediaItem } from '../types'
+import { writeJsonAtomically } from './json-store'
 
 export const MEDIA_PATH = path.join(__dirname, '..', '..', '..', 'media-data', 'media.json')
 
@@ -18,24 +19,20 @@ function loadFromDisk(): MediaItem[] {
 let cache: MediaItem[] | null = null
 
 export function loadMedia(): MediaItem[] {
-  if (cache) return cache
+  if (cache) return structuredClone(cache)
   try {
     cache = loadFromDisk()
   } catch (err) {
     console.error('Fehler beim Laden von media.json:', err)
     cache = []
   }
-  return cache
+  return structuredClone(cache)
 }
 
 export function saveMedia(items: MediaItem[]): void {
   try {
-    const dir = path.dirname(MEDIA_PATH)
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true })
-    }
-    fs.writeFileSync(MEDIA_PATH, JSON.stringify(items, null, 2), 'utf-8')
-    cache = items
+    writeJsonAtomically(MEDIA_PATH, items)
+    cache = structuredClone(items)
     console.log(`media.json gespeichert: ${items.length} Einträge`)
   } catch (err) {
     console.error('Fehler beim Speichern von media.json:', err)
