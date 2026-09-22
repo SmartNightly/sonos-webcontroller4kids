@@ -12,5 +12,5 @@ export default function App({ isAdmin }: { isAdmin: boolean }) {
         <Admin isAdmin />
       </Suspense>
     )
-  return <KidsView demo={demo} theme="colorful" />
+  return <KidsView demo={demo} theme="wolkenklang" />
 }

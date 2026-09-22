@@ -1,0 +1,158 @@
+.ui-admin,
+.ui-editor,
+.ui-dialog {
+  color: #fff;
+  font-family: system-ui, sans-serif;
+  color-scheme: dark;
+}
+.ui-admin *,
+.ui-editor *,
+.ui-dialog * {
+  box-sizing: border-box;
+}
+.ui-admin button,
+.ui-editor button,
+.ui-dialog button {
+  min-height: 44px;
+  min-width: 44px;
+  font-size: 1rem !important;
+}
+.ui-admin input:not([type='checkbox']),
+.ui-admin select,
+.ui-editor input:not([type='checkbox']),
+.ui-editor select,
+.ui-dialog input,
+.ui-dialog select {
+  min-height: 44px;
+  font-size: 1rem !important;
+  min-width: 0;
+  max-width: 100%;
+}
+.ui-admin input[type='checkbox'],
+.ui-editor input[type='checkbox'] {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.ui-admin :focus-visible,
+.ui-editor :focus-visible,
+.ui-dialog :focus-visible {
+  outline: 3px solid #a8c9ff;
+  outline-offset: 3px;
+}
+.ui-admin input,
+.ui-editor input,
+.ui-dialog input {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -webkit-touch-callout: default !important;
+}
+.ui-admin {
+  min-width: 0;
+  min-height: 320px;
+}
+.ui-admin h1 {
+  font-size: 1.5rem !important;
+  margin-block: 12px !important;
+}
+.ui-admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.ui-admin-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.ui-admin-form input {
+  flex: 1 1 220px;
+}
+.ui-admin-form select {
+  flex: 1 1 130px;
+}
+.ui-admin-room-lists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.ui-admin-room-lists button {
+  overflow-wrap: anywhere;
+  width: 100%;
+}
+.ui-editor {
+  min-height: 0;
+  box-sizing: border-box;
+}
+.ui-editor-row {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ui-editor-info {
+  min-width: 120px;
+  text-align: left;
+  flex: 1;
+  background: transparent;
+  padding: 8px;
+  color: inherit;
+}
+.ui-editor-info > span {
+  display: block;
+}
+.ui-editor-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+.ui-modal-overlay {
+  position: fixed;
+  inset: 0;
+  padding: 16px;
+  background: #000b;
+  z-index: 4000;
+  display: grid;
+  place-items: center;
+}
+.ui-dialog {
+  background: #222;
+  border: 1px solid #666;
+  border-radius: 16px;
+  width: min(100%, 460px);
+  max-height: calc(100dvh - 32px);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.ui-dialog > * {
+  min-width: 0;
+}
+.ui-dialog-header {
+  flex-shrink: 0;
+}
+.ui-admin-help {
+  font-size: 0.9rem !important;
+  opacity: 1 !important;
+  color: #ccc;
+}
+@media (max-width: 600px) {
+  .ui-admin-room-lists {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ui-editor-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .ui-admin-tabs button {
+    flex: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ui-admin *,
+  .ui-editor *,
+  .ui-dialog * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

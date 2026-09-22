@@ -1,117 +1,77 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
-
-* {
-  font-family: 'Fredoka', sans-serif;
+/* Color belongs to artwork and its frame, never behind low-contrast white labels. */
+.hi-app[data-theme='colorful'] {
+  --hi-bg: #f6f0ff;
+  --hi-surface: #ffffff;
+  --hi-text: #30204a;
+  --hi-muted: #67537b;
+  --hi-accent: #6932a8;
+  --hi-soft: #e9def6;
+  color-scheme: light;
 }
-
-.colorful-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
+.hi-app[data-theme='colorful'] .hi-header {
+  border-bottom: 3px solid #d9c5ee;
+}
+.hi-app[data-theme='colorful'] .hi-brand-icon {
+  border-radius: 14px;
+  background: #6932a8;
+  color: #fff;
+}
+.hi-app[data-theme='colorful'] .hi-grid {
+  gap: 20px;
+}
+.hi-app[data-theme='colorful'] .hi-card {
   padding: 12px;
-}
-
-.colorful-card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 24px;
-  padding: 12px;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  background: #f6d7e8;
+  color: #30204a;
 }
-
-.colorful-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+.hi-app[data-theme='colorful'] .hi-card:nth-child(4n + 2) {
+  background: #d4eefa;
 }
-
-.colorful-cover {
-  border-radius: 16px;
-  border: 4px solid white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.hi-app[data-theme='colorful'] .hi-card:nth-child(4n + 3) {
+  background: #daf0db;
 }
-
-.colorful-title {
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  font-weight: 600;
+.hi-app[data-theme='colorful'] .hi-card:nth-child(4n + 4) {
+  background: #ffebbd;
 }
-
-.rainbow-button {
-  background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
-  background-size: 300% 300%;
-  animation: rainbow 3s ease infinite;
-  border: none;
-  border-radius: 50px;
-  color: white;
-  font-weight: 700;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  transition: transform 0.1s;
+.hi-app[data-theme='colorful'] .hi-card-title {
+  color: #30204a;
 }
-
-.rainbow-button:active {
-  transform: scale(0.95);
+.hi-app[data-theme='colorful'] .hi-card-caption {
+  color: #513f65;
 }
-
-@keyframes rainbow {
-  0% {
-    background-position: 0% 50%;
+.hi-app[data-theme='colorful'] .hi-artwork {
+  border: 3px solid #ffffff;
+}
+.hi-app[data-theme='colorful'] .hi-primary,
+.hi-app[data-theme='colorful'] .hi-play-toggle {
+  background: #6932a8;
+  color: #ffffff;
+}
+.hi-app[data-theme='colorful'] .hi-album-play {
+  border-radius: 28px;
+}
+.hi-app[data-theme='colorful'] .hi-primary:not(:disabled):hover,
+.hi-app[data-theme='colorful'] .hi-play-toggle:not(:disabled):hover {
+  background: #532787;
+  color: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  .hi-app[data-theme='colorful'] {
+    --hi-bg: #241931;
+    --hi-surface: #342443;
+    --hi-text: #faf5ff;
+    --hi-muted: #d0bedf;
+    --hi-accent: #d9b8ff;
+    --hi-soft: #463256;
+    color-scheme: dark;
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+  .hi-app[data-theme='colorful'] .hi-header {
+    border-color: #604574;
   }
 }
-
-.play-button-huge {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  font-size: 48px;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  border: 8px solid white;
-  box-shadow: 0 8px 30px rgba(245, 87, 108, 0.4);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
+@media (prefers-contrast: more) {
+  .hi-app[data-theme='colorful'] {
+    --hi-muted: var(--hi-text);
   }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.color-pink {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-.color-blue {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-}
-.color-green {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-}
-.color-orange {
-  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-}
-.color-purple {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-.color-yellow {
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
 }

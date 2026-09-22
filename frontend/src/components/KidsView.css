@@ -1,0 +1,637 @@
+/* Shared accessible layout; individual themes override only scoped visual styles. */
+body:has(.hi-app) {
+  display: block;
+}
+@media (max-width: 600px) and (max-height: 650px) {
+  .hi-app .hi-main {
+    padding-block: 12px;
+  }
+  .hi-app .hi-heading-row {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .hi-app .hi-main h1 {
+    font-size: 22px;
+  }
+  .hi-app .hi-artists .hi-artwork {
+    width: min(100%, 100px);
+  }
+  .hi-app .hi-artists .hi-card-title {
+    margin-top: 8px;
+    font-size: 16px;
+  }
+}
+#root:has(> .hi-app) {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+.hi-app {
+  --hi-bg: #f3f6fa;
+  --hi-surface: #ffffff;
+  --hi-text: #172b46;
+  --hi-muted: #53647a;
+  --hi-accent: #225bc4;
+  --hi-soft: #e4ecf8;
+  color-scheme: light;
+  color: var(--hi-text);
+  background: var(--hi-bg);
+  font-family: ui-rounded, 'SF Pro Rounded', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  width: 100%;
+  height: 100dvh;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.hi-app *,
+.hi-app *::before,
+.hi-app *::after {
+  box-sizing: border-box;
+}
+.hi-app button,
+.hi-app select {
+  font: inherit;
+  color: inherit;
+}
+.hi-app button {
+  border: 0;
+  border-radius: 14px;
+  background: var(--hi-soft);
+  min-height: 48px;
+  padding: 10px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 150ms ease;
+}
+.hi-app button:not(:disabled):hover {
+  background: color-mix(in srgb, var(--hi-soft), var(--hi-accent) 12%);
+}
+.hi-app button:not(:disabled):active {
+  box-shadow: inset 0 0 0 2px var(--hi-accent);
+}
+.hi-app button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.hi-app :focus-visible {
+  outline: 3px solid var(--hi-accent);
+  outline-offset: 4px;
+}
+.hi-app h1:focus,
+.hi-main:focus {
+  outline: none;
+}
+.hi-app svg {
+  flex-shrink: 0;
+}
+.hi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 32px;
+  padding-top: max(16px, env(safe-area-inset-top));
+  border-bottom: 1px solid var(--hi-soft);
+  flex-shrink: 0;
+}
+.hi-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 750;
+  font-size: 22px;
+  letter-spacing: -0.6px;
+  white-space: nowrap;
+}
+.hi-brand-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  background: var(--hi-accent);
+  color: white;
+  border-radius: 50% 50% 50% 12%;
+}
+.hi-demo {
+  color: var(--hi-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.hi-room {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--hi-muted);
+  min-width: 0;
+}
+.hi-room select {
+  border: 1px solid var(--hi-soft);
+  background: var(--hi-surface);
+  border-radius: 14px;
+  padding: 10px 12px;
+  min-height: 48px;
+  max-width: 260px;
+  color: var(--hi-text);
+}
+.hi-main {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 26px 32px;
+  scrollbar-gutter: stable;
+}
+.hi-heading-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.hi-heading-row > div {
+  min-width: 0;
+}
+.hi-app h1 {
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -0.8px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.hi-subtitle {
+  color: var(--hi-muted);
+  margin: 8px 0 0;
+}
+.hi-app .hi-back {
+  flex-shrink: 0;
+}
+.hi-app .hi-filters {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 18px;
+  background: var(--hi-soft);
+  flex-shrink: 0;
+}
+.hi-app .hi-filters button {
+  font-size: 14px;
+  padding: 8px 12px;
+  background: transparent;
+}
+.hi-app .hi-filters button[aria-pressed='true'] {
+  background: var(--hi-surface);
+  color: var(--hi-accent);
+  box-shadow: 0 2px 5px #172b4610;
+}
+.hi-demo-note {
+  color: var(--hi-muted);
+  font-size: 13px;
+  margin: -12px 0 18px;
+}
+.hi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 28px 24px;
+  align-items: start;
+}
+.hi-app .hi-card {
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  padding: 6px;
+  gap: 0;
+  min-width: 0;
+  border-radius: 20px;
+}
+.hi-artwork {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--hi-soft);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.hi-artwork img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hi-artwork > svg {
+  width: 30%;
+  height: 30%;
+  color: var(--hi-muted);
+}
+.hi-portrait {
+  border-radius: 50%;
+}
+.hi-card-title {
+  color: var(--hi-text);
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 14px;
+  overflow-wrap: anywhere;
+}
+.hi-card-caption {
+  font-size: 14px;
+  color: var(--hi-muted);
+  margin-top: 3px;
+}
+.hi-albums .hi-card {
+  align-items: stretch;
+  text-align: left;
+}
+.hi-albums .hi-card-title {
+  font-size: 17px;
+}
+.hi-detail {
+  display: grid;
+  grid-template-columns: minmax(160px, 280px) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.hi-detail-info {
+  min-width: 0;
+}
+.hi-artist-name {
+  color: var(--hi-muted);
+  margin: 0 0 14px;
+  font-size: 20px;
+}
+.hi-app .hi-primary,
+.hi-app .hi-play-toggle {
+  background: var(--hi-accent);
+  color: #fff;
+}
+.hi-app .hi-primary:not(:disabled):hover,
+.hi-app .hi-play-toggle:not(:disabled):hover {
+  background: color-mix(in srgb, var(--hi-accent), #000 15%);
+}
+.hi-app .hi-album-play {
+  width: 100%;
+  font-size: 22px;
+  font-weight: 700;
+  min-height: 64px;
+}
+.hi-room-hint {
+  font-size: 14px;
+  color: var(--hi-muted);
+}
+.hi-tracks {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+.hi-app .hi-tracks button {
+  width: 100%;
+  text-align: left;
+  justify-content: flex-start;
+  margin-bottom: 6px;
+  background: var(--hi-surface);
+}
+.hi-tracks button > span:nth-child(2) {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+.hi-track-number {
+  color: var(--hi-muted);
+  min-width: 24px;
+}
+.hi-player {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 12px 24px;
+  align-items: center;
+  padding: 16px 32px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  background: var(--hi-surface);
+  border-top: 1px solid var(--hi-soft);
+  flex-shrink: 0;
+}
+.hi-now {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.hi-now-art {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: var(--hi-accent);
+  border-radius: 12px;
+  background: var(--hi-soft);
+}
+.hi-now-art .hi-artwork {
+  border-radius: 12px;
+}
+.hi-now > div:last-child {
+  min-width: 0;
+}
+.hi-now strong,
+.hi-now-artist,
+.hi-playing-label {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hi-now strong {
+  font-size: 16px;
+}
+.hi-playing-label,
+.hi-now-artist {
+  font-size: 13px;
+  color: var(--hi-muted);
+}
+.hi-transport,
+.hi-volume {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hi-app .hi-transport button {
+  width: 48px;
+  padding: 10px;
+  border-radius: 50%;
+}
+.hi-app .hi-transport .hi-play-toggle {
+  width: 60px;
+  height: 60px;
+}
+.hi-app .hi-volume button {
+  width: 48px;
+  padding: 10px;
+}
+.hi-volume > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 58px;
+  justify-content: center;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.hi-volume > span svg {
+  width: 20px;
+}
+.hi-options {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.hi-app .hi-options button {
+  font-size: 14px;
+  min-height: 44px;
+}
+.hi-options button[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 2px var(--hi-accent);
+  color: var(--hi-accent);
+}
+.hi-empty {
+  padding: 36px 12px;
+  text-align: center;
+  color: var(--hi-muted);
+}
+.hi-empty h2 {
+  font-size: 22px;
+  color: var(--hi-text);
+}
+.hi-notice {
+  background: var(--hi-surface);
+  border: 2px solid var(--hi-accent);
+  border-radius: 14px;
+  padding: 14px;
+  margin: 0 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hi-skip {
+  position: fixed;
+  left: 16px;
+  top: -100px;
+  background: var(--hi-surface);
+  color: var(--hi-text);
+  padding: 12px;
+  z-index: 10;
+}
+.hi-skip:focus {
+  top: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  .hi-app {
+    --hi-bg: #161e2b;
+    --hi-surface: #202c3e;
+    --hi-text: #f3f6fc;
+    --hi-muted: #b3c0d3;
+    --hi-accent: #a8c9ff;
+    --hi-soft: #2a3a51;
+    color-scheme: dark;
+  }
+  .hi-app .hi-primary,
+  .hi-app .hi-play-toggle,
+  .hi-brand-icon {
+    color: #172b46;
+  }
+}
+@media (max-width: 900px) {
+  .hi-header {
+    padding: 12px 20px;
+  }
+  .hi-main {
+    padding: 20px;
+  }
+  .hi-player {
+    padding: 12px 20px;
+    gap: 12px;
+  }
+  .hi-heading-row {
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .hi-app .hi-filters {
+    margin-left: 0;
+  }
+  .hi-grid {
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 18px;
+  }
+  .hi-now-art {
+    width: 44px;
+    height: 44px;
+  }
+}
+@media (max-width: 600px) {
+  .hi-heading-row .hi-subtitle {
+    display: none;
+  }
+  .hi-header {
+    padding: 12px 16px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .hi-brand {
+    font-size: 19px;
+  }
+  .hi-brand-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .hi-room {
+    margin-left: auto;
+    max-width: 100%;
+  }
+  .hi-room > span {
+    display: none;
+  }
+  .hi-room select {
+    max-width: 180px;
+    width: 100%;
+    font-size: 14px;
+  }
+  .hi-main {
+    padding: 20px 16px;
+  }
+  .hi-heading-row {
+    gap: 12px;
+  }
+  .hi-heading-row > div:not(.hi-filters) {
+    flex: 1;
+  }
+  .hi-app h1 {
+    font-size: 26px;
+  }
+  .hi-app .hi-filters {
+    width: 100%;
+  }
+  .hi-app .hi-filters button {
+    flex: 1;
+    padding: 8px;
+    font-size: 13px;
+    gap: 5px;
+  }
+  .hi-filters svg {
+    width: 18px;
+    height: 18px;
+  }
+  .hi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 10px;
+  }
+  .hi-card-title {
+    font-size: 18px;
+  }
+  .hi-detail {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .hi-detail > .hi-artwork {
+    width: min(100%, 280px);
+    justify-self: center;
+  }
+  .hi-player {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 12px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    gap: 8px;
+  }
+  .hi-now {
+    grid-column: 1 / -1;
+  }
+  .hi-transport {
+    gap: 2px;
+  }
+  .hi-app .hi-transport .hi-play-toggle {
+    width: 52px;
+    height: 52px;
+  }
+  .hi-volume {
+    justify-content: flex-end;
+    gap: 0;
+  }
+  .hi-volume > span {
+    min-width: 38px;
+  }
+  .hi-volume > span svg {
+    display: none;
+  }
+  .hi-app .hi-volume button {
+    width: 44px;
+    padding: 8px;
+  }
+  .hi-notice {
+    flex-wrap: wrap;
+  }
+}
+@media (max-height: 550px) and (min-width: 601px) {
+  .hi-header {
+    padding-block: 8px;
+  }
+  .hi-main {
+    padding-block: 14px;
+  }
+  .hi-subtitle,
+  .hi-card-caption {
+    display: none;
+  }
+  .hi-heading-row {
+    margin-bottom: 12px;
+  }
+  .hi-app h1 {
+    font-size: 24px;
+  }
+  .hi-grid {
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  }
+  .hi-card-title {
+    margin-top: 8px;
+  }
+  .hi-player {
+    padding-block: 8px;
+  }
+  .hi-detail {
+    grid-template-columns: minmax(120px, 210px) minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hi-app *,
+  .hi-app *::before,
+  .hi-app *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (prefers-contrast: more) {
+  .hi-app {
+    --hi-muted: var(--hi-text);
+  }
+  .hi-app button,
+  .hi-room select {
+    border: 1px solid currentColor;
+  }
+}
+@media (forced-colors: active) {
+  .hi-app button {
+    border: 1px solid ButtonText;
+  }
+  .hi-app button[aria-pressed='true'] {
+    outline: 2px solid Highlight;
+  }
+}

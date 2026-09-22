@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import App from '../App'
+import { createMockFetch } from './helpers/fixtures'
 
 vi.mock('../templates/default/App', () => ({
   default: () => <div>Default template</div>,
@@ -12,9 +13,38 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.unstubAllGlobals()
+  window.history.replaceState({}, '', '/')
 })
 
 describe('App (template loader)', () => {
+  it('loads Classic from the saved template setting', async () => {
+    vi.mocked(fetch).mockImplementation(
+      createMockFetch({
+        config: {
+          activeTemplate: 'classic',
+          rooms: [],
+          enabledRooms: [],
+        },
+      }),
+    )
+    render(<App />)
+    expect(await screen.findByText('The Beatles')).toBeInTheDocument()
+    expect(screen.getByText('v1.1.0-test')).toBeInTheDocument()
+    expect(screen.queryByText('Default template')).not.toBeInTheDocument()
+  })
+
+  it.each(['hoerinsel', 'wolkenklang'])(
+    'opens the isolated %s preview without contacting the backend',
+    async (template) => {
+      window.history.replaceState({}, '', `/?template=${template}&demo=1`)
+      render(<App />)
+      expect(
+        await screen.findByRole('heading', { name: 'Was möchtest du hören?' }),
+      ).toBeInTheDocument()
+      expect(fetch).not.toHaveBeenCalled()
+    },
+  )
+
   it('uses the default template when the configured template is unknown', async () => {
     vi.mocked(fetch).mockResolvedValue({
       ok: true,

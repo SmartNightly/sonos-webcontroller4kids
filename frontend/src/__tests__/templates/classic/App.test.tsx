@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import App from '../../../templates/default/App'
+import App from '../../../templates/classic/App'
 import { createMockFetch, mockConfig } from '../../helpers/fixtures'
 
 const defaultConfig = {
@@ -35,25 +35,46 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.unstubAllGlobals()
+  window.history.replaceState({}, '', '/')
 })
 
-describe('Default Template - App (KidsView)', () => {
+describe('Classic Template - App (KidsView)', () => {
+  it('never sends requests if an unsupported demo is requested', () => {
+    window.history.replaceState({}, '', '/?template=classic&demo=1')
+    render(<App isAdmin={false} />)
+    expect(screen.getByRole('status')).toHaveTextContent('keinen Demo-Modus')
+    expect(fetch).not.toHaveBeenCalled()
+  })
+
+  it('keeps the original artist-to-album navigation and playback', async () => {
+    const user = userEvent.setup()
+    render(<App isAdmin={false} />)
+    await user.click(await screen.findByText('The Beatles'))
+    await user.click(await screen.findByText('Abbey Road'))
+    await user.click(await screen.findByText('Abspielen'))
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringMatching(/\/play$/),
+        expect.objectContaining({ body: JSON.stringify({ id: 'album-1', room: 'Kinderzimmer' }) }),
+      ),
+    )
+  })
+
   it('renders without crashing', async () => {
     render(<App isAdmin={false} />)
     expect(await screen.findByText('The Beatles')).toBeInTheDocument()
   })
 
-  it('keeps playback controls visible and named', async () => {
+  it('shows version badge', async () => {
     render(<App isAdmin={false} />)
-    expect(screen.getByRole('button', { name: 'Wiedergabe fortsetzen' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Leiser' })).toBeInTheDocument()
+    expect(screen.getByText('v1.1.0-test')).toBeInTheDocument()
     await screen.findByText('The Beatles')
   })
 
   it('renders AdminView when isAdmin=true', async () => {
     const user = userEvent.setup()
     render(<App isAdmin={true} />)
-    await user.click(screen.getByRole('button', { name: 'Medien verwalten' }))
+    await user.click(await screen.findByRole('button', { name: 'Medien verwalten' }))
     await screen.findByText('Abbey Road')
   })
 

@@ -1,42 +1,56 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Default retains its dark, cover-first character. */
+.hi-app[data-theme='default'] {
+  --hi-bg: #111111;
+  --hi-surface: #222222;
+  --hi-text: #ffffff;
+  --hi-muted: #c4c4c4;
+  --hi-accent: #87d69a;
+  --hi-soft: #333333;
+  color-scheme: dark;
+  font-family: system-ui, sans-serif;
 }
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.hi-app[data-theme='default'] .hi-primary,
+.hi-app[data-theme='default'] .hi-play-toggle,
+.hi-app[data-theme='default'] .hi-brand-icon {
+  background: #2e7d32;
+  color: #fff;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.hi-app[data-theme='default'] .hi-brand-icon {
+  border-radius: 10px;
 }
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.hi-app[data-theme='default'] .hi-primary:not(:disabled):hover,
+.hi-app[data-theme='default'] .hi-play-toggle:not(:disabled):hover {
+  background: #246529;
+  color: #fff;
 }
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.hi-app[data-theme='default'] .hi-grid {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+.hi-app[data-theme='default'] .hi-card {
+  background: #222;
+  padding: 10px;
+  border-radius: 12px;
+}
+.hi-app[data-theme='default'] .hi-card-caption {
+  color: #c4c4c4;
+}
+.hi-app[data-theme='default'] .hi-card-title {
+  margin-top: 10px;
+  padding-bottom: 4px;
+}
+@media (max-width: 800px) {
+  .hi-app[data-theme='default'] .hi-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
-  to {
-    transform: rotate(360deg);
+}
+@media (max-width: 600px) {
+  .hi-app[data-theme='default'] .hi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (prefers-contrast: more) {
+  .hi-app[data-theme='default'] {
+    --hi-muted: #fff;
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }

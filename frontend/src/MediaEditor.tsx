@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import type { MediaItem, MediaTrack } from './types'
 
 import { API_BASE_URL } from './api'
+import { Dialog } from './components/Dialog'
+import './components/admin.css'
 
 interface EditModalProps {
   item: MediaItem | null
@@ -76,163 +78,189 @@ function EditModal({ item, track, isOpen, onClose, onSave }: EditModalProps) {
   if (!isOpen) return null
 
   return (
-    <div style={styles.modalOverlay}>
-      <div style={styles.modalContent}>
-        <div style={styles.modalHeader}>
-          <h2 style={styles.modalTitle}>Bearbeiten</h2>
-          <button style={styles.modalClose} onClick={onClose} disabled={saving}>
-            ✕
-          </button>
-        </div>
+    <Dialog title="Bearbeiten" onClose={onClose} busy={saving}>
+      <div style={styles.modalHeader}>
+        <h2 style={styles.modalTitle}>Bearbeiten</h2>
+        <button
+          aria-label="Schließen"
+          style={styles.modalClose}
+          onClick={onClose}
+          disabled={saving}
+        >
+          ✕
+        </button>
+      </div>
 
-        <div style={styles.modalBody}>
-          {track ? (
-            <>
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Track-Titel</label>
+      <div style={styles.modalBody}>
+        {track ? (
+          <>
+            <div style={styles.formGroup}>
+              <label htmlFor="edit-title" style={styles.label}>
+                Track-Titel
+              </label>
+              <input
+                style={styles.formInput}
+                id="edit-title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Track-Titel"
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={styles.formGroup}>
+              <label htmlFor="edit-title" style={styles.label}>
+                Titel
+              </label>
+              <input
+                style={styles.formInput}
+                id="edit-title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Titel"
+              />
+            </div>
+            <div style={styles.formGroup}>
+              <label htmlFor="edit-artist" style={styles.label}>
+                Interpret
+              </label>
+              <input
+                style={styles.formInput}
+                id="edit-artist"
+                value={artist}
+                onChange={(e) => setArtist(e.target.value)}
+                placeholder="Interpret"
+              />
+            </div>
+            <div style={styles.formGroup}>
+              <label htmlFor="edit-album" style={styles.label}>
+                Album
+              </label>
+              <input
+                style={styles.formInput}
+                id="edit-album"
+                value={album}
+                onChange={(e) => setAlbum(e.target.value)}
+                placeholder="Album"
+              />
+            </div>
+            <div style={styles.formGroup}>
+              <label htmlFor="edit-cover" style={styles.label}>
+                Cover-URL
+              </label>
+              <input
+                style={styles.formInput}
+                id="edit-cover"
+                value={coverUrl}
+                onChange={(e) => setCoverUrl(e.target.value)}
+                placeholder="https://..."
+              />
+            </div>
+            <div style={styles.formGroup}>
+              <label htmlFor="edit-artist-image" style={styles.label}>
+                Künstlerbild (URL)
+              </label>
+              <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
                 <input
-                  style={styles.formInput}
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Track-Titel"
+                  style={{ ...styles.formInput, flex: 1 }}
+                  id="edit-artist-image"
+                  value={artistImageUrl}
+                  onChange={(e) => setArtistImageUrl(e.target.value)}
+                  placeholder="https://… (optional)"
                 />
-              </div>
-            </>
-          ) : (
-            <>
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Titel</label>
-                <input
-                  style={styles.formInput}
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Titel"
-                />
-              </div>
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Artist</label>
-                <input
-                  style={styles.formInput}
-                  value={artist}
-                  onChange={(e) => setArtist(e.target.value)}
-                  placeholder="Artist"
-                />
-              </div>
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Album</label>
-                <input
-                  style={styles.formInput}
-                  value={album}
-                  onChange={(e) => setAlbum(e.target.value)}
-                  placeholder="Album"
-                />
-              </div>
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Cover-URL</label>
-                <input
-                  style={styles.formInput}
-                  value={coverUrl}
-                  onChange={(e) => setCoverUrl(e.target.value)}
-                  placeholder="https://..."
-                />
-              </div>
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Artist Image</label>
-                <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                  <input
-                    style={{ ...styles.formInput, flex: 1 }}
-                    value={artistImageUrl}
-                    onChange={(e) => setArtistImageUrl(e.target.value)}
-                    placeholder="https://... (leave empty for no artist image)"
+                {artistImageUrl && (
+                  <img
+                    src={artistImageUrl}
+                    alt="Artist"
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      flexShrink: 0,
+                    }}
                   />
-                  {artistImageUrl && (
-                    <img
-                      src={artistImageUrl}
-                      alt="Artist"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: '50%',
-                        objectFit: 'cover',
-                        flexShrink: 0,
-                      }}
-                    />
-                  )}
-                </div>
-                <button
-                  style={{ ...styles.actionButton, marginTop: 6, fontSize: '0.8rem' }}
-                  onClick={handleSearchArtist}
-                  disabled={artistSearching || !artist.trim()}
-                  type="button"
-                >
-                  {artistSearching ? 'Searching…' : `Search artist image for "${artist || '…'}"`}
-                </button>
-                {artistSearchResults.length > 0 && (
-                  <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
-                    {artistSearchResults.map((r) => (
-                      <button
-                        key={r.artistId}
-                        type="button"
-                        title={r.artistName}
-                        onClick={() => {
-                          setArtistImageUrl(r.artistImageUrl)
-                          setArtistSearchResults([])
-                        }}
-                        style={{
-                          background: 'none',
-                          border:
-                            artistImageUrl === r.artistImageUrl
-                              ? '2px solid #0a0'
-                              : '2px solid #555',
-                          borderRadius: '50%',
-                          padding: 0,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <img
-                          src={r.artistImageUrl}
-                          alt={r.artistName}
-                          style={{
-                            width: 52,
-                            height: 52,
-                            borderRadius: '50%',
-                            objectFit: 'cover',
-                            display: 'block',
-                          }}
-                        />
-                      </button>
-                    ))}
-                  </div>
                 )}
               </div>
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Art</label>
-                <select
-                  style={styles.formSelect}
-                  value={kind}
-                  onChange={(e) => setKind(e.target.value)}
-                >
-                  <option value="album">Album</option>
-                  <option value="audiobook">Audiobook</option>
-                  <option value="playlist">Playlist</option>
-                </select>
-              </div>
-            </>
-          )}
+              <button
+                style={{ ...styles.actionButton, marginTop: 6, fontSize: '0.8rem' }}
+                onClick={handleSearchArtist}
+                disabled={artistSearching || !artist.trim()}
+                type="button"
+              >
+                {artistSearching ? 'Suche…' : `Künstlerbild für „${artist || '…'}“ suchen`}
+              </button>
+              {artistSearchResults.length > 0 && (
+                <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
+                  {artistSearchResults.map((r) => (
+                    <button
+                      key={r.artistId}
+                      type="button"
+                      title={r.artistName}
+                      onClick={() => {
+                        setArtistImageUrl(r.artistImageUrl)
+                        setArtistSearchResults([])
+                      }}
+                      style={{
+                        background: 'none',
+                        border:
+                          artistImageUrl === r.artistImageUrl ? '2px solid #0a0' : '2px solid #555',
+                        borderRadius: '50%',
+                        padding: 0,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <img
+                        src={r.artistImageUrl}
+                        alt={r.artistName}
+                        style={{
+                          width: 52,
+                          height: 52,
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                          display: 'block',
+                        }}
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div style={styles.formGroup}>
+              <label htmlFor="edit-kind" style={styles.label}>
+                Art
+              </label>
+              <select
+                style={styles.formSelect}
+                id="edit-kind"
+                value={kind}
+                onChange={(e) => setKind(e.target.value)}
+              >
+                <option value="album">Album</option>
+                <option value="audiobook">Hörbuch</option>
+                <option value="playlist">Playlist</option>
+              </select>
+            </div>
+          </>
+        )}
 
-          {error && <div style={styles.error}>{error}</div>}
-        </div>
-
-        <div style={styles.modalFooter}>
-          <button style={styles.cancelButton} onClick={onClose} disabled={saving}>
-            Abbrechen
-          </button>
-          <button style={styles.saveButton} onClick={handleSave} disabled={saving}>
-            {saving ? 'Speichern…' : 'Speichern'}
-          </button>
-        </div>
+        {error && (
+          <div role="alert" style={styles.error}>
+            {error}
+          </div>
+        )}
       </div>
-    </div>
+
+      <div style={styles.modalFooter}>
+        <button style={styles.cancelButton} onClick={onClose} disabled={saving}>
+          Abbrechen
+        </button>
+        <button style={styles.saveButton} onClick={handleSave} disabled={saving}>
+          {saving ? 'Speichern…' : 'Speichern'}
+        </button>
+      </div>
+    </Dialog>
   )
 }
 
@@ -263,30 +291,37 @@ function DeleteConfirm({ message, isOpen, onCancel, onConfirm }: DeleteConfirmPr
   if (!isOpen) return null
 
   return (
-    <div style={styles.modalOverlay}>
-      <div style={styles.modalContent}>
-        <div style={styles.modalHeader}>
-          <h2 style={styles.modalTitle}>Bestätigung</h2>
-          <button style={styles.modalClose} onClick={onCancel} disabled={deleting}>
-            ✕
-          </button>
-        </div>
-
-        <div style={styles.modalBody}>
-          <div style={styles.deleteMessage}>{message}</div>
-          {error && <div style={styles.error}>{error}</div>}
-        </div>
-
-        <div style={styles.modalFooter}>
-          <button style={styles.cancelButton} onClick={onCancel} disabled={deleting}>
-            Abbrechen
-          </button>
-          <button style={styles.deleteButton} onClick={handleConfirm} disabled={deleting}>
-            {deleting ? 'Lösche…' : 'Löschen'}
-          </button>
-        </div>
+    <Dialog title="Eintrag löschen?" onClose={onCancel} busy={deleting}>
+      <div style={styles.modalHeader}>
+        <h2 style={styles.modalTitle}>Bestätigung</h2>
+        <button
+          aria-label="Schließen"
+          style={styles.modalClose}
+          onClick={onCancel}
+          disabled={deleting}
+        >
+          ✕
+        </button>
       </div>
-    </div>
+
+      <div style={styles.modalBody}>
+        <div style={styles.deleteMessage}>{message}</div>
+        {error && (
+          <div role="alert" style={styles.error}>
+            {error}
+          </div>
+        )}
+      </div>
+
+      <div style={styles.modalFooter}>
+        <button style={styles.cancelButton} onClick={onCancel} disabled={deleting}>
+          Abbrechen
+        </button>
+        <button style={styles.deleteButton} onClick={handleConfirm} disabled={deleting}>
+          {deleting ? 'Lösche…' : 'Löschen'}
+        </button>
+      </div>
+    </Dialog>
   )
 }
 
@@ -574,7 +609,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
 
   if (loading) {
     return (
-      <div style={styles.container}>
+      <div className="ui-editor" style={styles.container}>
         <div style={styles.loadingText}>Lade Medien…</div>
       </div>
     )
@@ -591,7 +626,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>Media-Editor</h1>
+        <h1 style={styles.title}>Medien verwalten</h1>
         {onClose && (
           <button style={styles.closeButton} onClick={onClose}>
             ✕
@@ -606,7 +641,8 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
       <div style={{ marginBottom: '8px' }}>
         <input
           type="text"
-          placeholder="Suche nach Titel, Artist, Album..."
+          placeholder="Suche nach Titel, Interpret, Album..."
+          aria-label="Medien durchsuchen"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           style={styles.searchInput}
@@ -645,18 +681,24 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
         <div style={styles.bulkEditPanel}>
           <h3 style={styles.bulkEditTitle}>Massenbearbeitung ({selectedIds.size} Elemente)</h3>
           <div style={styles.bulkEditRow}>
-            <label style={styles.bulkEditLabel}>Artist:</label>
+            <label htmlFor="bulk-artist" style={styles.bulkEditLabel}>
+              Interpret:
+            </label>
             <input
               type="text"
+              id="bulk-artist"
               value={bulkEditArtist}
               onChange={(e) => setBulkEditArtist(e.target.value)}
-              placeholder="Neuer Artist für ausgewählte Elemente"
+              placeholder="Neuer Interpret für ausgewählte Elemente"
               style={styles.bulkEditInput}
             />
           </div>
           <div style={styles.bulkEditRow}>
-            <label style={styles.bulkEditLabel}>Art:</label>
+            <label htmlFor="bulk-kind" style={styles.bulkEditLabel}>
+              Art:
+            </label>
             <select
+              id="bulk-kind"
               value={bulkEditKind}
               onChange={(e) =>
                 setBulkEditKind(e.target.value as 'album' | 'audiobook' | 'playlist')
@@ -664,7 +706,7 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
               style={styles.bulkEditSelect}
             >
               <option value="album">Album</option>
-              <option value="audiobook">Audiobook</option>
+              <option value="audiobook">Hörbuch</option>
               <option value="playlist">Playlist</option>
             </select>
           </div>
@@ -711,45 +753,46 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
                       : {}),
                   }}
                 >
-                  <div style={styles.itemHeader}>
+                  <div className="ui-editor-row" style={styles.itemHeader}>
                     {/* Checkbox für Multi-Select */}
                     <input
                       type="checkbox"
+                      aria-label={`${item.title} auswählen`}
                       checked={selectedIds.has(item.id)}
                       onChange={() => toggleSelection(item.id)}
                       onClick={(e) => e.stopPropagation()}
                       style={styles.checkbox}
                     />
 
-                    <img
-                      src={item.coverUrl}
-                      alt={item.title}
-                      style={styles.itemCover}
-                      onClick={() =>
-                        setExpandedAlbumId(expandedAlbumId === item.id ? null : item.id)
-                      }
-                    />
-                    <div
-                      style={styles.itemInfo}
+                    <img src={item.coverUrl || undefined} alt="" style={styles.itemCover} />
+                    <button
+                      className="ui-editor-info"
+                      aria-label={`Titel von ${item.title} anzeigen`}
+                      aria-expanded={!!isExpanded}
                       onClick={() =>
                         setExpandedAlbumId(expandedAlbumId === item.id ? null : item.id)
                       }
                     >
-                      <div style={styles.itemTitle}>{item.title}</div>
-                      {item.artist && <div style={styles.itemArtist}>{item.artist}</div>}
-                      <div style={styles.itemMeta}>
-                        {item.kind} • {item.service}
-                        {item.tracks && item.tracks.length > 0
-                          ? ` • ${item.tracks.length} Tracks`
-                          : ''}
-                      </div>
+                      <span style={styles.itemTitle}>{item.title}</span>
+                      {item.artist && <span style={styles.itemArtist}>{item.artist}</span>}
+                      <span style={styles.itemMeta}>
+                        {item.kind === 'audiobook'
+                          ? 'Hörbuch'
+                          : item.kind === 'album'
+                            ? 'Album'
+                            : item.kind === 'playlist'
+                              ? 'Playlist'
+                              : item.kind}{' '}
+                        · {item.service === 'appleMusic' ? 'Apple Music' : item.service}
+                        {!!item.tracks?.length && ` · ${item.tracks.length} Titel`}
+                      </span>
                       {hasNoTracks && (
-                        <div style={styles.warningText}>
-                          ⚠️ Keine Tracks vorhanden (Album ist trotzdem abspielbar)
-                        </div>
+                        <span style={styles.warningText}>
+                          Keine einzelnen Titel verfügbar. Das Album ist abspielbar.
+                        </span>
                       )}
-                    </div>
-                    <div style={styles.itemActions}>
+                    </button>
+                    <div className="ui-editor-actions">
                       <button
                         style={styles.actionButton}
                         onClick={(e) => {
@@ -783,12 +826,14 @@ export function MediaEditor({ onClose }: MediaEditorProps) {
                           <div style={styles.trackActions}>
                             <button
                               style={styles.actionButton}
+                              aria-label={`${track.title} bearbeiten`}
                               onClick={() => handleEditTrack(item, track)}
                             >
                               ✎
                             </button>
                             <button
                               style={styles.deleteActionButton}
+                              aria-label={`${track.title} löschen`}
                               onClick={() => handleDeleteTrack(item.id, track.id)}
                             >
                               🗑
@@ -894,7 +939,6 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
     userSelect: 'none',
     minHeight: '76px',
-    height: '76px',
   },
   itemCover: {
     width: '60px',
@@ -937,7 +981,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '0.75rem',
     borderRadius: '4px',
     border: 'none',
-    backgroundColor: '#c44',
+    backgroundColor: '#a82d36',
     color: '#fff',
     cursor: 'pointer',
     whiteSpace: 'nowrap',
@@ -959,7 +1003,6 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '4px',
     fontSize: '0.85rem',
     minHeight: '32px',
-    height: '32px',
   },
   trackInfo: {
     display: 'flex',
@@ -1072,8 +1115,8 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '8px 16px',
     borderRadius: '6px',
     border: 'none',
-    backgroundColor: '#0a0',
-    color: '#000',
+    backgroundColor: '#2e7d32',
+    color: '#fff',
     cursor: 'pointer',
     fontSize: '0.9rem',
     fontWeight: 'bold',
@@ -1083,7 +1126,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '8px 16px',
     borderRadius: '6px',
     border: 'none',
-    backgroundColor: '#c44',
+    backgroundColor: '#a82d36',
     color: '#fff',
     cursor: 'pointer',
     fontSize: '0.9rem',
@@ -1187,7 +1230,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '10px',
     borderRadius: '6px',
     border: 'none',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#2e7d32',
     color: '#fff',
     cursor: 'pointer',
     fontSize: '0.9rem',

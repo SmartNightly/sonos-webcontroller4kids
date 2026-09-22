@@ -20,11 +20,16 @@ const templates = Object.fromEntries(
 function App() {
   const params = new URLSearchParams(window.location.search)
   const isAdmin = params.get('admin') === '1'
+  // A local preview never changes the installation's active template.
+  const previewTemplate = params.get('template')
+  const demo =
+    !!previewTemplate && Object.hasOwn(templates, previewTemplate) && params.get('demo') === '1'
 
   const [activeTemplate, setActiveTemplate] = useState<string>('default')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (demo) return
     // Aktives Template vom Backend laden
     fetch(`${API_BASE_URL}/admin/sonos`)
       .then((res) => res.json())
@@ -36,11 +41,14 @@ function App() {
         setActiveTemplate('default')
         setLoading(false)
       })
-  }, [])
+  }, [demo])
 
-  const TemplateApp = templates[activeTemplate] ?? defaultTemplate
+  const templateName = previewTemplate ?? activeTemplate
+  const TemplateApp = Object.hasOwn(templates, templateName)
+    ? templates[templateName]
+    : defaultTemplate
 
-  if (loading) {
+  if (loading && !demo) {
     return (
       <div
         style={{
@@ -70,7 +78,7 @@ function App() {
             color: '#666',
           }}
         >
-          Lade {activeTemplate}...
+          Lade {previewTemplate ?? activeTemplate}...
         </div>
       }
     >

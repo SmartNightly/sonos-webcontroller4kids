@@ -1,169 +1,92 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import App from '../../../templates/colorful/App'
-import { mockMediaDefault, createMockFetch } from '../../helpers/fixtures'
+import { createMockFetch } from '../../helpers/fixtures'
 
 beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn().mockImplementation(createMockFetch()))
 })
-
 afterEach(() => {
   vi.unstubAllGlobals()
 })
-
-describe('Colorful Template - App', () => {
-  it('opens an album, returns to its artist, and plays it successfully', async () => {
-    const user = userEvent.setup()
+describe('Colorful Kids', () => {
+  it('plays albums and keeps the player on the detail screen', async () => {
     render(<App isAdmin={false} />)
-    await user.click(await screen.findByText('The Beatles'))
-    await user.click(screen.getByText('Abbey Road'))
-    expect(screen.getByRole('button', { name: /ABSPIELEN/ })).toBeInTheDocument()
-    await user.click(screen.getByText('← Zurück'))
-    expect(screen.queryByRole('button', { name: /ABSPIELEN/ })).not.toBeInTheDocument()
-    expect(screen.getByAltText('Abbey Road')).toBeInTheDocument()
-    await user.click(screen.getByText('Abbey Road'))
-    await user.click(screen.getByRole('button', { name: /ABSPIELEN/ }))
+    const user = userEvent.setup()
+    await user.click(await screen.findByRole('button', { name: /The Beatles/ }))
+    await user.click(screen.getByRole('button', { name: 'Abbey Road' }))
+    await user.click(screen.getByRole('button', { name: 'Abspielen' }))
     expect(fetch).toHaveBeenCalledWith(
       expect.stringMatching(/\/play$/),
-      expect.objectContaining({
-        method: 'POST',
-        body: JSON.stringify({ id: 'album-1', room: 'Kinderzimmer' }),
-      }),
+      expect.objectContaining({ body: JSON.stringify({ id: 'album-1', room: 'Kinderzimmer' }) }),
     )
-    expect(screen.getByText('Michael Jackson')).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: 'Pause' })).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Zurück zu den Alben' }))
+    expect(screen.getByRole('button', { name: 'Pause' })).toBeInTheDocument()
   })
-
-  it('keeps the album open and shows a failed play response', async () => {
-    const mockFetch = createMockFetch()
+  it('reports playback failure and keeps the album ready to retry', async () => {
+    const mock = createMockFetch()
     vi.mocked(fetch).mockImplementation((url) =>
       String(url).endsWith('/play')
-        ? Promise.resolve({
-            ok: false,
-            json: async () => ({ error: 'Sonos nicht erreichbar' }),
-          } as Response)
-        : mockFetch(url),
+        ? Promise.resolve({ ok: false, json: async () => ({ error: 'offline' }) } as Response)
+        : mock(url),
     )
-    const user = userEvent.setup()
     render(<App isAdmin={false} />)
-    await user.click(await screen.findByText('The Beatles'))
-    await user.click(screen.getByText('Abbey Road'))
-    await user.click(screen.getByRole('button', { name: /ABSPIELEN/ }))
-    expect(await screen.findByRole('alert')).toHaveTextContent('Sonos nicht erreichbar')
-    expect(screen.getByRole('button', { name: /ABSPIELEN/ })).toBeInTheDocument()
+    const user = userEvent.setup()
+    await user.click(await screen.findByRole('button', { name: /The Beatles/ }))
+    await user.click(screen.getByRole('button', { name: 'Abbey Road' }))
+    await user.click(screen.getByRole('button', { name: 'Abspielen' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('Prüfe die Verbindung')
+    expect(screen.getByRole('button', { name: 'Abspielen' })).toBeEnabled()
+    expect(screen.queryByRole('button', { name: 'Pause' })).not.toBeInTheDocument()
   })
-
-  it('does not select or poll rooms when all rooms are disabled', async () => {
+  it('never falls back to disabled rooms', async () => {
     vi.mocked(fetch).mockImplementation(
       createMockFetch({ config: { rooms: ['Kinderzimmer'], enabledRooms: [] } }),
     )
-    const user = userEvent.setup()
     render(<App isAdmin={false} />)
-    await user.click(await screen.findByText('The Beatles'))
-    await user.click(screen.getByText('Abbey Road'))
-    expect(screen.getByRole('button', { name: /ABSPIELEN/ })).toBeDisabled()
-    expect(screen.getByText('Kein Raum freigegeben')).toBeInTheDocument()
+    await screen.findByRole('button', { name: /The Beatles/ })
+    expect(screen.getByRole('combobox', { name: 'Raum wählen' })).toBeDisabled()
     expect(vi.mocked(fetch).mock.calls.some(([url]) => String(url).includes('/sonos/status'))).toBe(
       false,
     )
   })
-
-  it('shows admin redirect when isAdmin=true', () => {
-    render(<App isAdmin={true} />)
-    expect(screen.getByText(/Admin-Modus nur im Default-Template/)).toBeInTheDocument()
-    expect(screen.getByText(/Zum Admin wechseln/)).toBeInTheDocument()
+  it('opens the real parent screen without changing the active theme', async () => {
+    render(<App isAdmin />)
+    expect(
+      await screen.findByRole('heading', { name: 'Musik und Geschichten hinzufügen' }),
+    ).toBeInTheDocument()
+    expect(vi.mocked(fetch).mock.calls.some(([, options]) => options?.method === 'POST')).toBe(
+      false,
+    )
   })
-
-  it('shows loading state initially', () => {
-    // Never-resolving fetch → stays in loading state
+  it('labels filters and offers a way out of an empty category', async () => {
+    render(<App isAdmin={false} />)
+    const user = userEvent.setup()
+    await screen.findByRole('button', { name: /The Beatles/ })
+    await user.click(screen.getByRole('button', { name: 'Geschichten' }))
+    expect(screen.getByRole('button', { name: 'Geschichten' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    await user.click(screen.getByRole('button', { name: 'Alles anzeigen' }))
+    expect(screen.getByRole('button', { name: /The Beatles/ })).toBeInTheDocument()
+  })
+  it('preserves real artwork and avoids duplicated accessible names', async () => {
+    render(<App isAdmin={false} />)
+    const card = await screen.findByRole('button', { name: /Michael Jackson/ })
+    expect(card).toHaveAccessibleName(/^Michael Jackson\s*1\s*Album$/)
+    expect(within(card).getByRole('presentation')).toHaveAttribute(
+      'src',
+      'https://example.com/mj-artist.jpg',
+    )
+  })
+  it('shows loading feedback while media is pending', async () => {
     vi.mocked(fetch).mockImplementation(() => new Promise(() => {}))
     render(<App isAdmin={false} />)
-    expect(screen.getByText('Lade Musik...')).toBeInTheDocument()
-  })
-
-  it('renders artist grid after data loads', async () => {
-    render(<App isAdmin={false} />)
-    await waitFor(() => {
-      expect(screen.getByText('The Beatles')).toBeInTheDocument()
-    })
-    expect(screen.getByText('Michael Jackson')).toBeInTheDocument()
-  })
-
-  it('uses circular image style for artist with artistImageUrl', async () => {
-    render(<App isAdmin={false} />)
-    await waitFor(() => {
-      expect(screen.getByText('Michael Jackson')).toBeInTheDocument()
-    })
-
-    // Michael Jackson has artistImageUrl — should use the artist photo
-    const mjImg = screen.getByAltText('Michael Jackson')
-    expect(mjImg).toHaveAttribute('src', 'https://example.com/mj-artist.jpg')
-    // coverCircle style has borderRadius: '50%'
-    expect(mjImg).toHaveStyle({ borderRadius: '50%' })
-  })
-
-  it('falls back to album cover and uses square style when no artistImageUrl', async () => {
-    render(<App isAdmin={false} />)
-    await waitFor(() => {
-      expect(screen.getByText('The Beatles')).toBeInTheDocument()
-    })
-
-    // Beatles has no artistImageUrl — should use album cover (square)
-    const beatlesImg = screen.getByAltText('The Beatles')
-    expect(beatlesImg).toHaveAttribute('src', mockMediaDefault[0].coverUrl)
-    // cover style has borderRadius: '16px'
-    expect(beatlesImg).toHaveStyle({ borderRadius: '16px' })
-  })
-
-  it('navigates to artist albums on artist card click', async () => {
-    const user = userEvent.setup()
-    render(<App isAdmin={false} />)
-    await waitFor(() => {
-      expect(screen.getByText('The Beatles')).toBeInTheDocument()
-    })
-
-    await user.click(screen.getByText('The Beatles'))
-
-    // Should show artist's albums
-    await waitFor(() => {
-      expect(screen.getByText('Abbey Road')).toBeInTheDocument()
-    })
-    // Back button should appear
-    expect(screen.getByText('← Zurück')).toBeInTheDocument()
-  })
-
-  it('navigates back to artist grid from artist albums', async () => {
-    const user = userEvent.setup()
-    render(<App isAdmin={false} />)
-    await waitFor(() => {
-      expect(screen.getByText('The Beatles')).toBeInTheDocument()
-    })
-
-    await user.click(screen.getByText('The Beatles'))
-    await waitFor(() => {
-      expect(screen.getByText('Abbey Road')).toBeInTheDocument()
-    })
-
-    await user.click(screen.getByText('← Zurück'))
-    await waitFor(() => {
-      expect(screen.getByText('The Beatles')).toBeInTheDocument()
-    })
-  })
-
-  it('shows albums for the selected artist', async () => {
-    const user = userEvent.setup()
-    render(<App isAdmin={false} />)
-    await waitFor(() => {
-      expect(screen.getByText('The Beatles')).toBeInTheDocument()
-    })
-
-    await user.click(screen.getByText('The Beatles'))
-    await waitFor(() => {
-      // Artist name appears in the header
-      expect(screen.getAllByText('The Beatles').length).toBeGreaterThan(0)
-    })
-
-    // Abbey Road album card should be visible
-    expect(screen.getByAltText('Abbey Road')).toBeInTheDocument()
+    await waitFor(() =>
+      expect(screen.getByText('Deine Musik und Geschichten werden geladen…')).toBeInTheDocument(),
+    )
   })
 })

@@ -1,104 +1,65 @@
-# Frontend Templates
+# Themes
 
-Dieses Projekt unterstützt mehrere Frontend-Templates, um verschiedene Designs für die Kinder-Ansicht auszuprobieren.
+Die vier modernen Kinderansichten verwenden `components/KidsView` und `hooks/useKidsPlayer`.
+Navigation, Player, Raumfreigaben, Lautstärkelimits und Fehlerbehandlung sind damit
+identisch. Die über `data-theme` begrenzten Styles erhalten ihre eigene Gestaltung:
 
-## Struktur
+- **Default:** dunkler Hintergrund, ruhige Cover-Karten, kontrastreiche grüne Aktionen.
+- **Colorful Kids:** pastellfarbene Karten, violette Aktionen, helle und dunkle Darstellung.
+- **Hörinsel:** luftige Figurenübersicht mit blauen Akzenten, hell und dunkel.
+- **Wolkenklang (Pink & Lila):** pink-lila Cover-Bögen mit Wolken-Musik-Symbol, hell und dunkel.
 
-```
-frontend/src/
-├── App.tsx                    # Template-Loader (lädt dynamisch das aktive Template)
-├── templates/
-│   ├── default/               # Standard-Template
-│   │   ├── App.tsx           # Haupt-Komponente des Templates
-│   │   ├── App.css           # Template-spezifische Styles
-│   │   └── template.config.json  # Template-Metadaten
-│   └── [weitere-templates]/
-```
+Zusätzlich bleibt **Classic (Original)** unter dem Schlüssel `classic` erhalten.
+Es übernimmt die ursprüngliche Default-Kinderansicht aus Commit `73af340` mitsamt
+Navigation, Player, Styles und Versionsanzeige. Der Elternbereich wird gemeinsam
+mit den anderen Themes verwendet. Die unten beschriebenen neuen Layout- und
+Bedienmerkmale gelten nicht für die unverändert erhaltene Classic-Kinderansicht.
 
-## Neues Template erstellen
+`/?template=classic` öffnet Classic mit echten Daten und Sonos-Steuerung, ohne das
+global aktive Theme umzustellen. Classic bietet keinen isolierten Demo-Modus;
+`demo=1` zeigt deshalb nur einen Hinweis und sendet keine Anfragen.
 
-1. **Ordner erstellen**: Erstelle einen neuen Ordner unter `frontend/src/templates/` mit dem Namen deines Templates (z.B. `minimal`, `colorful`, etc.)
+## Sichere lokale Vorschau
 
-2. **App.tsx erstellen**: Kopiere `templates/default/App.tsx` als Basis oder erstelle eine neue Komponente:
+`/?template=default&demo=1`, `/?template=colorful&demo=1` oder
+`/?template=hoerinsel&demo=1` zeigen Beispieldaten ohne Backend-Anfragen,
+Sonos-Befehle oder gespeicherte Änderungen. Cover werden von Apples Bildserver geladen.
+Ohne `demo=1` werden echte Daten und Lautsprecher verwendet. Die URL-Auswahl ändert
+nicht das global aktive Theme. Dauerhafte Auswahl erfolgt im Elternbereich.
 
-   ```tsx
-   interface TemplateAppProps {
-     isAdmin: boolean
-   }
+Auch `/?template=wolkenklang&demo=1` unterstützt die isolierte Vorschau.
 
-   function App({ isAdmin }: TemplateAppProps) {
-     return isAdmin ? <AdminView /> : <KidsView />
-   }
+## Bedienung und Barrierefreiheit
 
-   export default App
-   ```
+Beschriftete native Buttons, Filter mit Auswahlzustand und native Raumauswahl;
+sichtbarer Tastaturfokus, große Touch-Ziele und dauerhaft erreichbarer Player.
+Inhalte scrollen getrennt vom Player, auch auf 800×480 und schmalen Smartphones.
+Reduzierte Bewegung wird berücksichtigt; dekorative Daueranimationen entfallen.
+Raumwechsel bleiben lokal, die freigegebenen Räume und Lautstärkelimits gelten weiter.
 
-3. **template.config.json erstellen**: Erstelle eine Konfigurationsdatei für Metadaten:
+Der gemeinsame Elternbereich bietet responsive Formulare und benannte Dialoge mit
+Fokusbegrenzung, gesperrtem Hintergrund, Escape-Schließen und Fokus-Rückgabe.
+Während einer Speicherung kann Escape den Dialog nicht schließen.
 
-   ```json
-   {
-     "name": "Dein Template Name",
-     "description": "Beschreibung des Templates",
-     "version": "1.0.0",
-     "author": "Dein Name"
-   }
-   ```
+Tests: `npm test`, `npm run lint` und `npm run build` im Ordner `frontend`.
 
-4. **Styles anpassen**: Erstelle optionale `App.css` für template-spezifische Styles
+## Weitere Templates erstellen
 
-## Template aktivieren
+1. Ordner unter `frontend/src/templates/` anlegen. Namen dürfen Kleinbuchstaben,
+   Ziffern und Bindestriche enthalten.
+2. `App.tsx` mit einem Default-Export erstellen. Die Komponente erhält `isAdmin: boolean`
+   und optional `demo: boolean`. Die vorhandenen kleinen Theme-Wrapper dienen als Vorlage.
+3. `template.config.json` mit `name`, `description`, `version` und `author` ergänzen.
+4. Styles in `App.css` auf das eigene `data-theme` begrenzen. Gemeinsame Types liegen
+   in `../../types`, API-Hilfen in `../../api`. Für neue Kinderansichten bevorzugt
+   die bestehende `KidsView` und `useKidsPlayer` erweitern, statt Steuerlogik zu duplizieren.
 
-Es gibt zwei Wege, ein Template zu aktivieren:
+Der Frontend-Build erzeugt `dist/templates.json` aus den Ordnern mit `App.tsx`.
+Das Backend verwendet dieses Manifest zur Auswahl und Validierung im Docker-Image.
+Nach dem Hinzufügen eines Themes muss der Produktionsbuild erneuert werden.
 
-### 1. Admin-Bereich (empfohlen)
-
-- Öffne `http://localhost:3344?admin=1`
-- Gehe zum Tab "Einstellungen"
-- Scrolle zu "Frontend-Template"
-- Klicke auf das gewünschte Template
-- Die Seite lädt automatisch neu
-
-### 2. Manuell in config.json
-
-Bearbeite `media-data/config.json`:
-
-```json
-{
-  "activeTemplate": "default" // Ändere zu deinem Template-Namen
-}
-```
-
-## Template-Anforderungen
-
-- **Export**: Template muss `App` als default export haben
-- **Props**: Muss `isAdmin` boolean als Prop akzeptieren
-- **Types**: Verwende `import type { ... } from '../../types'` für gemeinsame Types
-- **Gemeinsame API**: Importiere `API_BASE_URL` und `requestJson` aus `../../api`.
-- **Status-Polling**: Verwende `useSonosPolling` aus `../../hooks/useSonosPolling`, damit
-  Anfragen nicht überlappen und beim Raumwechsel abgebrochen werden.
-
-Beim Frontend-Build wird `dist/templates.json` aus den Template-Ordnern mit einer
-`App.tsx` erzeugt. Das Backend verwendet dieses Manifest zur Auswahl und Validierung
-der Templates im Docker-Image; Frontend-Quelldateien müssen nicht mitgeliefert werden.
-Nach dem Hinzufügen eines Templates einen vorhandenen Produktionsbuild erneuern.
-Ordnernamen dürfen Kleinbuchstaben, Ziffern und Bindestriche enthalten.
-
-## Verfügbare Templates
-
-- **default**: Das Original-Template mit großen Buttons und kinderfreundlicher Bedienung
-
-## Entwicklung
-
-Beim Entwickeln eines neuen Templates:
-
-1. Starte den Dev-Server: `npm run dev` (im `frontend/` Ordner)
-2. Backend muss laufen: `npm run dev` (im `backend/` Ordner)
-3. Aktiviere dein Template im Admin
-4. Änderungen werden durch Hot-Reload sofort sichtbar
-
-## Tipps
-
-- **Gemeinsame Komponenten**: Verwende `MediaEditor` aus `../../MediaEditor.tsx`
-- **Types**: Alle Types sind in `../../types.ts` definiert
-- **API**: Alle Backend-Endpunkte sind unter `/api`, `/media`, `/admin`, `/sonos`
-- **Responsive**: Templates sollten für Tablet-Größen (ca. 800x480px) optimiert sein
+Im Entwicklungsmodus: `npm run dev` im Frontend starten und eine der Vorschau-URLs
+öffnen. Nur für echte Medien ist zusätzlich das Backend auf Port 3344 nötig.
+Änderungen erscheinen durch Hot Reload. Im Elternbereich (`/?admin=1`) lässt sich
+unter Einstellungen → „Design der Kinderansicht“ das globale Theme ändern.
+Alternativ kann `activeTemplate` in `media-data/config.json` gesetzt werden.
