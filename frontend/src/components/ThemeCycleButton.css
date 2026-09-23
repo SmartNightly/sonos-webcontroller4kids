@@ -19,7 +19,3 @@
   outline: 3px solid currentColor;
   outline-offset: 2px;
 }
-.theme-cycle:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
