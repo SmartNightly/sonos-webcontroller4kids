@@ -6,12 +6,32 @@ Ein kinderfreundlicher Web-Controller für Sonos-Lautsprecher mit Touchscreen-op
 
 - 🎵 **Kinderfreundliche UI** - Optimiert für 5" Touchscreen (800×480px)
 - 🎨 **Raumsymbole** - Emoji-Icons für bessere Orientierung
+- 🖼️ **Fünf Themes** - Kinder wechseln per Klick zwischen den im Admin freigegebenen Designs
+- 🏠 **Home-Button** - Aus jeder Auswahl direkt zurück zur Startansicht, ohne die Wiedergabe zu stoppen
+- 📐 **Einheitliche Albumkacheln** - Zwei reservierte Titelzeilen in allen Themes
 - 📚 **Apple Music Integration** - Alben und Hörbücher direkt hinzufügen
 - 🎯 **Track-Navigation** - Einzelne Tracks aus Alben abspielen
 - 🔀 **Filter** - Nach Musik/Hörbücher filtern
 - 🔄 **Auto-Updates** - Automatisches Docker Image Building via GitHub Actions
 
+## Bedienung der Kinderansicht
+
+- **Home-Symbol oben links:** Öffnet die Startansicht mit allen Figuren und Interpreten und setzt den Medienfilter auf „Alles“ zurück. Raum, Theme und laufende Wiedergabe bleiben erhalten; die Seite wird nicht neu geladen.
+- **Theme-Name neben dem Home-Symbol:** Schaltet mit jedem Klick zum nächsten freigegebenen Theme. Nach dem letzten beginnt die Reihenfolge von vorne, ohne Auswahlliste.
+- **Zurück:** Führt eine Ebene zurück, zum Beispiel vom Album zu den Alben des Interpreten.
+- **Albumtitel:** Jede Albumkachel reserviert zwei Textzeilen, auch bei kurzen Titeln. Längere Titel werden mit „…“ gekürzt. Der vollständige Titel bleibt in der Detailansicht und für Screenreader verfügbar. Die Höhe des Titelbereichs passt sich der Schriftgröße an.
+
+Home-Button und Theme-Wechsel sind auch per Tastatur bedienbar und haben eine sichtbare Fokusmarkierung. Der Theme-Name wird beim Darüberfahren mit der Maus nicht unterstrichen.
+
 ## Themes für Kinder freigeben
+
+| Theme | Kennung in der Konfiguration | Gestaltung |
+| --- | --- | --- |
+| Default | `default` | Überarbeitetes dunkles Theme mit dauerhaftem Player |
+| Classic (Original) | `classic` | Ursprüngliche Default-Kinderansicht |
+| Colorful Kids | `colorful` | Bunte Kinderansicht |
+| Hörinsel | `hoerinsel` | Ruhige, bildorientierte Kinderansicht |
+| Wolkenklang (Pink & Lila) | `wolkenklang` | Pink-lila Kindertheme |
 
 Im Elternbereich (`?admin=1`) unter **Einstellungen → Design der Kinderansicht**:
 
@@ -23,9 +43,16 @@ Kinder tippen oben links auf den Theme-Namen: Jeder Klick wechselt zum nächsten
 freigegebenen Design, nach dem letzten wieder zum ersten – ohne Auswahlliste.
 Die Auswahl wird nur in diesem Browser gespeichert und verändert nicht den globalen
 Standard. Bei nur einem freigegebenen Theme ist der Name nicht klickbar.
-Geänderte Freigaben werden spätestens beim nächsten 30-Sekunden-Abgleich oder beim
-Zurückkehren zum Browserfenster übernommen. Bestehende Installationen behalten
+Geänderte Freigaben werden bei erreichbarem Backend beim nächsten 30-Sekunden-Abgleich oder beim
+Zurückkehren zum Browserfenster übernommen. Eine gespeicherte Auswahl wird nur verwendet,
+solange das Theme noch freigegeben ist. Bestehende Installationen behalten
 zunächst ausschließlich ihr bisheriges Theme; weitere Designs müssen freigegeben werden.
+
+In `media-data/config.json` bezeichnet `activeTemplate` das Standard-Theme und
+`enabledTemplates` die freigegebenen Themes. Änderungen am besten im Admin speichern.
+Fehlt `enabledTemplates` in einer älteren Konfiguration, wird nur das bisherige
+Standard-Theme angeboten. Die persönliche Auswahl der Kinder liegt im Browser,
+nicht in dieser Datei.
 
 ## Quick Start mit Docker
 
@@ -119,7 +146,7 @@ npm run dev  # läuft auf Port 5173
 ```
 
 Backend: `http://localhost:3344`  
-Frontend: `http://localhost:5173` (Proxy zu Backend)
+Frontend: `http://localhost:5173` (API-Aufrufe im Entwicklungsmodus direkt an `http://localhost:3344`)
 
 ### Lokales Docker Build
 
@@ -151,6 +178,7 @@ Die Konfiguration erfolgt über das Admin-Interface unter `http://your-ip:3344?a
 - **Räume:** Verfügbare Sonos-Räume
 - **Raumsymbole:** Emoji-Icons für Räume
 - **Shuffle/Repeat:** Anzeige aktivieren/deaktivieren
+- **Themes:** Standard-Theme und Mehrfachauswahl der für Kinder freigegebenen Designs
 
 Eine leere Liste aktivierter Räume sperrt die Wiedergabe in allen Räumen; das Backend
 prüft diese Freigabe auch bei direkten Steuerungsanfragen. Eine erneute Raumsuche
@@ -167,6 +195,7 @@ und physische Lautsprechertasten werden dadurch nicht eingeschränkt.
 - [Docker Deployment Guide](DEPLOYMENT.md) - Ausführliche Deployment-Anleitung
 - [Docker Setup](DOCKER.md) - Docker-Grundlagen
 - [GitHub Actions Setup](.github/SETUP.md) - CI/CD Konfiguration
+- [Docker-Hub-Beschreibung](DOCKER_HUB_README.md) - Englische Beschreibung; Änderungen müssen separat auf Docker Hub übernommen werden, ein Image-Push aktualisiert den Text nicht
 
 ## Technologie-Stack
 
