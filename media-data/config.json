@@ -2,15 +2,15 @@
   "sonosBaseUrl": "http://192.168.114.21:5005",
   "rooms": [
     "Lounge",
-    "Werkstatt",
-    "Büro",
-    "Wintergarten",
-    "Bad",
+    "Spielzimmer",
+    "Kinderzimmer",
     "Schlafzimmer",
     "Küche",
-    "Kinderzimmer",
     "Wohnzimmer",
-    "Spielzimmer"
+    "Wintergarten",
+    "Bad",
+    "Büro",
+    "Werkstatt"
   ],
   "enabledRooms": [
     "Büro",
@@ -18,29 +18,11 @@
     "Spielzimmer",
     "Wohnzimmer"
   ],
-  "defaultRoom": "Wohnzimmer",
-  "showShuffleRepeat": false,
-  "roomIcons": {
-    "Kinderzimmer": "🛏️ 👦🏼",
-    "Spielzimmer": "🚂 👦🏼",
-    "Schlafzimmer": "🛏️ 👩‍❤️‍👨",
-    "Büro": "🖥️",
-    "Wohnzimmer": "🛋️",
-    "Küche": "👨🏻‍🍳"
-  },
-  "showTracklistAlbums": false,
-  "showTracklistAudiobooks": false,
-  "maxVolume": {
-    "Lounge": 30,
-    "Werkstatt": 30,
-    "Büro": 30,
-    "Wintergarten": 30,
-    "Bad": 30,
-    "Küche": 30,
-    "Kinderzimmer": 30,
-    "Spielzimmer": 30,
-    "Wohnzimmer": 30,
-    "Schlafzimmer": 30
-  },
+  "defaultRoom": "Büro",
+  "showShuffleRepeat": true,
+  "roomIcons": {},
+  "showTracklistAlbums": true,
+  "showTracklistAudiobooks": true,
+  "maxVolume": {},
   "activeTemplate": "default"
 }

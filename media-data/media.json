@@ -2,7 +2,7 @@
   {
     "id": "album_1451412511",
     "title": "Chinder Musig Wält, Vol. 1",
-    "kind": "audiobook",
+    "kind": "album",
     "service": "appleMusic",
     "artist": "Swissmom",
     "album": "Chinder Musig Wält, Vol. 1",
@@ -212,7 +212,8 @@
         "trackNumber": 29,
         "durationMs": 137000
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/0e/76/95/0e769572-c2f9-f77b-fdd6-ad346c3d57f8/artwork.jpg/600x600cc.png"
   },
   {
     "id": "album_1550027424",
@@ -420,7 +421,8 @@
         "trackNumber": 28,
         "durationMs": 58320
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/74/6d/92/746d92e9-d8d8-4873-d7b8-20656b4740a6/pr_source.png/600x600cc.png"
   },
   {
     "id": "album_1548754033",
@@ -670,7 +672,8 @@
         "trackNumber": 34,
         "durationMs": 71613
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/74/6d/92/746d92e9-d8d8-4873-d7b8-20656b4740a6/pr_source.png/600x600cc.png"
   },
   {
     "id": "album_1548753225",
@@ -878,7 +881,8 @@
         "trackNumber": 28,
         "durationMs": 150773
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/74/6d/92/746d92e9-d8d8-4873-d7b8-20656b4740a6/pr_source.png/600x600cc.png"
   },
   {
     "id": "album_1547993206",
@@ -1156,7 +1160,8 @@
         "trackNumber": 38,
         "durationMs": 89467
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/74/6d/92/746d92e9-d8d8-4873-d7b8-20656b4740a6/pr_source.png/600x600cc.png"
   },
   {
     "id": "album_1550985589",
@@ -1364,7 +1369,8 @@
         "trackNumber": 28,
         "durationMs": 120720
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/74/6d/92/746d92e9-d8d8-4873-d7b8-20656b4740a6/pr_source.png/600x600cc.png"
   },
   {
     "id": "album_1551632735",
@@ -1600,7 +1606,8 @@
         "trackNumber": 32,
         "durationMs": 107920
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/74/6d/92/746d92e9-d8d8-4873-d7b8-20656b4740a6/pr_source.png/600x600cc.png"
   },
   {
     "id": "album_1660533804",
@@ -1836,7 +1843,8 @@
         "trackNumber": 32,
         "durationMs": 111453
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/74/6d/92/746d92e9-d8d8-4873-d7b8-20656b4740a6/pr_source.png/600x600cc.png"
   },
   {
     "id": "album_1842943620",
@@ -1946,7 +1954,8 @@
         "trackNumber": 14,
         "durationMs": 188263
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages211/v4/74/52/25/74522505-13b3-4376-71bf-003b702377a6/3d8c4043-59f1-4509-8dea-cae5ef5f5f97_ami-identity-46bf919c3ad9c9e5edbe338e9ec30014-2024-06-21T12-23-17.820Z_cropped.png/600x600cc.png"
   },
   {
     "id": "album_1483669865",
@@ -2154,7 +2163,8 @@
         "trackNumber": 28,
         "durationMs": 141573
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/c8/eb/ac/c8ebac71-c0d0-29cd-1150-6ffe63a5b572/604e9361-5bfb-4d9d-bdb1-1e98751cb22e_ami-identity-334f0ea1162e2b1a9358d95ad057d6d2-2024-02-22T16-46-53.556Z_cropped.png/600x600cc.png"
   },
   {
     "id": "album_1483523950",
@@ -2390,7 +2400,8 @@
         "trackNumber": 32,
         "durationMs": 163627
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/c8/eb/ac/c8ebac71-c0d0-29cd-1150-6ffe63a5b572/604e9361-5bfb-4d9d-bdb1-1e98751cb22e_ami-identity-334f0ea1162e2b1a9358d95ad057d6d2-2024-02-22T16-46-53.556Z_cropped.png/600x600cc.png"
   },
   {
     "id": "album_1483663153",
@@ -2605,7 +2616,8 @@
         "trackNumber": 29,
         "durationMs": 152573
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/c8/eb/ac/c8ebac71-c0d0-29cd-1150-6ffe63a5b572/604e9361-5bfb-4d9d-bdb1-1e98751cb22e_ami-identity-334f0ea1162e2b1a9358d95ad057d6d2-2024-02-22T16-46-53.556Z_cropped.png/600x600cc.png"
   },
   {
     "id": "album_1274154966",
@@ -2616,7 +2628,8 @@
     "album": "De Pingu stellt sich chrank",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/49/df/5c/49df5cb7-a9d6-bc87-d2ca-68509607d1b2/886446547565.jpg/600x600bb.jpg",
     "appleId": "1274154966",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274155246",
@@ -2627,7 +2640,8 @@
     "album": "De Pingu als Chuchichef",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/4e/e3/a9/4ee3a975-e544-541b-711d-3162c347a5e0/886446549293.jpg/600x600bb.jpg",
     "appleId": "1274155246",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274154641",
@@ -2638,7 +2652,8 @@
     "album": "De Pingu a dä Chilbi",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/6d/cb/be/6dcbbee3-fa87-2ca3-64db-45df4afd84af/886446549217.jpg/600x600bb.jpg",
     "appleId": "1274154641",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274150876",
@@ -2649,7 +2664,8 @@
     "album": "De Pingu und Pinga alei deheim",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/be/8f/98/be8f98ed-1b83-2258-72da-bcf2841e813d/886446547510.jpg/600x600bb.jpg",
     "appleId": "1274150876",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274157795",
@@ -2660,7 +2676,8 @@
     "album": "De Pingu striitet mit de Mueter",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/d0/b3/80/d0b380d4-3917-3bec-2305-a8ce10b51797/886446547541.jpg/600x600bb.jpg",
     "appleId": "1274157795",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274153309",
@@ -2671,7 +2688,8 @@
     "album": "Pingu Muess is Bett / Macht Musig",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/bb/5b/89/bb5b8936-5660-b6c9-838b-5d848eb121ea/886446547398.jpg/600x600bb.jpg",
     "appleId": "1274153309",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274158068",
@@ -2682,7 +2700,8 @@
     "album": "De Pingu als Pilot",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/3c/72/cd/3c72cdde-e4ed-502e-3cc9-763413a85027/886446549279.jpg/600x600bb.jpg",
     "appleId": "1274158068",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274155298",
@@ -2693,7 +2712,8 @@
     "album": "De Pingu ärgeret d'Pinga",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/08/0b/19/080b19bc-11bd-0d7b-73c0-e5a482b1fecb/886446547947.jpg/600x600bb.jpg",
     "appleId": "1274155298",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274151493",
@@ -2704,7 +2724,8 @@
     "album": "De Pingu als Babysitter",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/a7/ef/e6/a7efe62a-f3c2-08e5-8be2-163ac4d87f28/886446549286.jpg/600x600bb.jpg",
     "appleId": "1274151493",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274132870",
@@ -2715,7 +2736,8 @@
     "album": "D'Familie Pingu fiiret Wiehnacht",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/f1/1a/c9/f11ac951-00cf-891a-bbf6-fa4553331900/886446547824.jpg/600x600bb.jpg",
     "appleId": "1274132870",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274154093",
@@ -2726,7 +2748,8 @@
     "album": "Pingus Usflug",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/b4/2f/78/b42f7839-ebe0-75fa-d135-12456c54fde0/886446547855.jpg/600x600bb.jpg",
     "appleId": "1274154093",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274150517",
@@ -2737,7 +2760,8 @@
     "album": "De Pingu als Zauberkünschtler",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/ce/e6/c1/cee6c1cb-b569-489d-a224-adc32fac8632/886446549200.jpg/600x600bb.jpg",
     "appleId": "1274150517",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274154816",
@@ -2748,7 +2772,8 @@
     "album": "De Pingu im Paradies",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/75/5b/a3/755ba365-0ff6-41c1-9aac-a88234d2720a/886446549262.jpg/600x600bb.jpg",
     "appleId": "1274154816",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274152889",
@@ -2759,7 +2784,8 @@
     "album": "De Pingu spielt Superman",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/6b/4a/39/6b4a39ea-61c3-2fc7-4b5a-55dcac36a2ad/886446549323.jpg/600x600bb.jpg",
     "appleId": "1274152889",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274140821",
@@ -2770,7 +2796,8 @@
     "album": "De Opa isch chrank",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/d3/ea/cd/d3eacdb6-c238-e41d-783f-9206801c6208/886446547480.jpg/600x600bb.jpg",
     "appleId": "1274140821",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274155858",
@@ -2781,7 +2808,8 @@
     "album": "De Pingu hät frei",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/e8/72/c3/e872c317-470c-f038-f480-16c04e83cd93/886446547862.jpg/600x600bb.jpg",
     "appleId": "1274155858",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274154086",
@@ -2792,7 +2820,8 @@
     "album": "De Pingu baut en Turm",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/6e/7b/f4/6e7bf4b8-85c8-e90f-c5dd-8b6ba304ea75/886446549330.jpg/600x600bb.jpg",
     "appleId": "1274154086",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274155598",
@@ -2803,7 +2832,8 @@
     "album": "En dringende Fall",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/28/2f/a3/282fa317-cc61-fbd6-9a22-a954e1f22f06/886446547473.jpg/600x600bb.jpg",
     "appleId": "1274155598",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274152101",
@@ -2814,7 +2844,8 @@
     "album": "De Pingu und s'Spielzüg",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/06/aa/d5/06aad51f-577d-c9d5-97b1-36c16d1e50d8/886446549347.jpg/600x600bb.jpg",
     "appleId": "1274152101",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274153964",
@@ -2825,7 +2856,8 @@
     "album": "De Pingu gaht go Fische",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/3f/c3/f5/3fc3f56d-8ebb-cca3-9e41-94946cf41b2a/886446547411.jpg/600x600bb.jpg",
     "appleId": "1274153964",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274153234",
@@ -2836,7 +2868,8 @@
     "album": "De Zirkus isch da!",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/e2/bd/05/e2bd05e1-476b-db9e-bee5-45d1bb3518a0/886446547534.jpg/600x600bb.jpg",
     "appleId": "1274153234",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274155937",
@@ -2847,7 +2880,8 @@
     "album": "De Pingu het en Idee",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/92/ed/75/92ed758a-5ad9-e66f-b62d-04a7bad9e566/886446549309.jpg/600x600bb.jpg",
     "appleId": "1274155937",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274154399",
@@ -2858,7 +2892,8 @@
     "album": "De Pingu zeigt was er chan",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/5c/81/50/5c8150fe-6d4e-37bd-93ab-0b790e08fdb6/886446549316.jpg/600x600bb.jpg",
     "appleId": "1274154399",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274156461",
@@ -2869,7 +2904,8 @@
     "album": "De Pingu brucht Hilf",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/71/5c/67/715c677b-c9c7-9d4d-4b5f-a17b633de5a3/886446549224.jpg/600x600bb.jpg",
     "appleId": "1274156461",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274154467",
@@ -2880,7 +2916,8 @@
     "album": "De Pingu als Fotograf",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/e3/9d/83/e39d83f3-b0fd-47d8-705a-824a8f3560d5/886446549354.jpg/600x600bb.jpg",
     "appleId": "1274154467",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274154965",
@@ -2891,7 +2928,8 @@
     "album": "De Pingu rumt Schnee weg",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/0b/f6/13/0bf613ba-565c-f7e2-6fb2-13ed688e9bde/886446547800.jpg/600x600bb.jpg",
     "appleId": "1274154965",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274154059",
@@ -2902,7 +2940,8 @@
     "album": "De Pingu als Maler",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/40/1e/be/401ebe54-f005-e83c-c15b-b46a8216c389/886446547732.jpg/600x600bb.jpg",
     "appleId": "1274154059",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274155014",
@@ -2913,7 +2952,8 @@
     "album": "De Pingu uf Reise",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/a6/5c/48/a65c4816-bb2e-d94c-49a0-d2cc0d46007f/886446547848.jpg/600x600bb.jpg",
     "appleId": "1274155014",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274157838",
@@ -2924,7 +2964,8 @@
     "album": "De Pingu und d'Postkarte",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/cd/7b/8d/cd7b8da7-c555-e4c6-4694-2a1ed431199c/886446547886.jpg/600x600bb.jpg",
     "appleId": "1274157838",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_931579880",
@@ -2935,7 +2976,8 @@
     "album": "Pingu 11 - De Pingu und Sini Streich",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music7/v4/12/b7/5c/12b75c45-5f97-a3d5-14c1-4929c7052f25/886444703628.jpg/600x600bb.jpg",
     "appleId": "931579880",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_981049250",
@@ -2946,7 +2988,8 @@
     "album": "Pingu 16 - De schlaui Pingu",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music5/v4/98/70/4b/98704bcb-0924-a6fb-51f6-ac0b491a7ca4/886444703666.jpg/600x600bb.jpg",
     "appleId": "981049250",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274157658",
@@ -2957,7 +3000,8 @@
     "album": "De Pingu het Geburtstag",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/59/98/ec/5998ec84-f425-7fb7-ac05-cec421666b82/886446547817.jpg/600x600bb.jpg",
     "appleId": "1274157658",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274152011",
@@ -2968,7 +3012,8 @@
     "album": "De Pingu spielt falsch",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/b5/57/15/b55715d3-3ac6-03de-9720-f48ed9972de4/886446547978.jpg/600x600bb.jpg",
     "appleId": "1274152011",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274151366",
@@ -2979,7 +3024,8 @@
     "album": "De Pingu bim Iishockeyschpiil",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/a5/ec/31/a5ec31f5-687f-5907-e629-76ec37993998/886446547435.jpg/600x600bb.jpg",
     "appleId": "1274151366",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274155857",
@@ -2990,7 +3036,8 @@
     "album": "Em Pingu sini Streich",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/f6/32/6a/f6326aa4-3069-6639-7b05-7b5df8a862e2/886446547657.jpg/600x600bb.jpg",
     "appleId": "1274155857",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274157208",
@@ -3001,7 +3048,8 @@
     "album": "De Pingu und d'Vogelmuetter",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/13/e7/00/13e7000b-cac1-ec9c-1f8f-49bdb55db3f5/886446549231.jpg/600x600bb.jpg",
     "appleId": "1274157208",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274152970",
@@ -3012,7 +3060,8 @@
     "album": "De Pingu und s'Ei: Brüten und Geburt - EP",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/00/2f/ad/002fad3a-8087-8c30-57e0-9cb9bbe5af10/886446547374.jpg/600x600bb.jpg",
     "appleId": "1274152970",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1483671596",
@@ -3227,7 +3276,8 @@
         "trackNumber": 29,
         "durationMs": 162893
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/c8/eb/ac/c8ebac71-c0d0-29cd-1150-6ffe63a5b572/604e9361-5bfb-4d9d-bdb1-1e98751cb22e_ami-identity-334f0ea1162e2b1a9358d95ad057d6d2-2024-02-22T16-46-53.556Z_cropped.png/600x600cc.png"
   },
   {
     "id": "album_1483530843",
@@ -3414,7 +3464,8 @@
         "trackNumber": 25,
         "durationMs": 41427
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/c8/eb/ac/c8ebac71-c0d0-29cd-1150-6ffe63a5b572/604e9361-5bfb-4d9d-bdb1-1e98751cb22e_ami-identity-334f0ea1162e2b1a9358d95ad057d6d2-2024-02-22T16-46-53.556Z_cropped.png/600x600cc.png"
   },
   {
     "id": "album_1483530167",
@@ -3657,7 +3708,8 @@
         "trackNumber": 33,
         "durationMs": 137499
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/c8/eb/ac/c8ebac71-c0d0-29cd-1150-6ffe63a5b572/604e9361-5bfb-4d9d-bdb1-1e98751cb22e_ami-identity-334f0ea1162e2b1a9358d95ad057d6d2-2024-02-22T16-46-53.556Z_cropped.png/600x600cc.png"
   },
   {
     "id": "album_1615252210",
@@ -3865,7 +3917,8 @@
         "trackNumber": 28,
         "durationMs": 216438
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/c8/eb/ac/c8ebac71-c0d0-29cd-1150-6ffe63a5b572/604e9361-5bfb-4d9d-bdb1-1e98751cb22e_ami-identity-334f0ea1162e2b1a9358d95ad057d6d2-2024-02-22T16-46-53.556Z_cropped.png/600x600cc.png"
   },
   {
     "id": "album_1483664441",
@@ -4101,7 +4154,8 @@
         "trackNumber": 32,
         "durationMs": 118773
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/c8/eb/ac/c8ebac71-c0d0-29cd-1150-6ffe63a5b572/604e9361-5bfb-4d9d-bdb1-1e98751cb22e_ami-identity-334f0ea1162e2b1a9358d95ad057d6d2-2024-02-22T16-46-53.556Z_cropped.png/600x600cc.png"
   },
   {
     "id": "album_1483672125",
@@ -4323,7 +4377,8 @@
         "trackNumber": 30,
         "durationMs": 90600
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/c8/eb/ac/c8ebac71-c0d0-29cd-1150-6ffe63a5b572/604e9361-5bfb-4d9d-bdb1-1e98751cb22e_ami-identity-334f0ea1162e2b1a9358d95ad057d6d2-2024-02-22T16-46-53.556Z_cropped.png/600x600cc.png"
   },
   {
     "id": "album_1499322060",
@@ -4573,7 +4628,8 @@
         "trackNumber": 34,
         "durationMs": 160339
       }
-    ]
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/c8/eb/ac/c8ebac71-c0d0-29cd-1150-6ffe63a5b572/604e9361-5bfb-4d9d-bdb1-1e98751cb22e_ami-identity-334f0ea1162e2b1a9358d95ad057d6d2-2024-02-22T16-46-53.556Z_cropped.png/600x600cc.png"
   },
   {
     "id": "album_1274151435",
@@ -4584,7 +4640,8 @@
     "album": "De Pingu lauft vo deheim weg",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/07/28/bf/0728bff1-dc7c-9ddb-e9e3-41f7080d4bba/886446547503.jpg/600x600bb.jpg",
     "appleId": "1274151435",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274157720",
@@ -4595,7 +4652,8 @@
     "album": "De Pingu bim Schlitteränne / D'Pinga gaht verloore",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/58/95/98/58959886-0a8a-a7c7-474a-29a98f82c381/886446547459.jpg/600x600bb.jpg",
     "appleId": "1274157720",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274154400",
@@ -4606,7 +4664,8 @@
     "album": "De Pingu versteckt en Brief",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/0a/91/ca/0a91ca3a-21ae-d3d4-206c-7f6b70bf4b73/886446547909.jpg/600x600bb.jpg",
     "appleId": "1274154400",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274153326",
@@ -4617,7 +4676,8 @@
     "album": "De Pingu hilft Poscht Verteile",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/32/f3/37/32f33756-2266-c0b9-5ea2-517603e2eb61/886446547367.jpg/600x600bb.jpg",
     "appleId": "1274153326",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274151695",
@@ -4628,7 +4688,8 @@
     "album": "Em Pingu sini Essensgschicht",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/1c/aa/8c/1caa8c02-4406-28a9-47fd-e6d0db965c4d/886446547916.jpg/600x600bb.jpg",
     "appleId": "1274151695",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274155116",
@@ -4639,7 +4700,8 @@
     "album": "De Pingu und d'Pingi uf em Iis - EP",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/05/65/c6/0565c6c6-04a4-d0b2-58e9-fbcf2eb1ad33/886446547794.jpg/600x600bb.jpg",
     "appleId": "1274155116",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274152040",
@@ -4650,7 +4712,8 @@
     "album": "De Pingu zieht s'grossi Los",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/d1/51/0c/d1510c5f-2606-5ffe-826b-7d14235ba79e/886446549248.jpg/600x600bb.jpg",
     "appleId": "1274152040",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274153235",
@@ -4661,7 +4724,8 @@
     "album": "Schöni Bescherig",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/ca/a6/37/caa63795-fc57-3526-7565-0d0a0b177e82/886446547831.jpg/600x600bb.jpg",
     "appleId": "1274153235",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274151697",
@@ -4672,7 +4736,8 @@
     "album": "De Pingu spielt Curling",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/c7/8e/93/c78e937f-73d0-4bbe-d8fb-58e045dde0f8/886446547770.jpg/600x600bb.jpg",
     "appleId": "1274151697",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274157203",
@@ -4683,7 +4748,8 @@
     "album": "De Pingu und die zerbrochnig Vase",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/b3/88/1e/b3881e18-5069-33dc-1129-636b2ee91c22/886446547558.jpg/600x600bb.jpg",
     "appleId": "1274157203",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274157933",
@@ -4694,7 +4760,8 @@
     "album": "De Pingu und d'Fläscheposcht",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/31/be/08/31be080b-818c-b77b-15f3-0ecccc1bb0f2/886446547589.jpg/600x600bb.jpg",
     "appleId": "1274157933",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274155450",
@@ -4705,7 +4772,8 @@
     "album": "De Pingu fischt um d'Wett",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/b6/d4/d7/b6d4d7d7-f86c-374c-2ef6-cc46c7ad900b/886446547602.jpg/600x600bb.jpg",
     "appleId": "1274155450",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274157585",
@@ -4716,7 +4784,8 @@
     "album": "Em Pingu sin Museumsbsuech",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/1c/25/71/1c2571e8-405b-72b3-da3d-7b5b56e938dc/886446547756.jpg/600x600bb.jpg",
     "appleId": "1274157585",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274154087",
@@ -4727,7 +4796,8 @@
     "album": "De Pingu hilft em Drehorgelmaa",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/7b/75/05/7b75052e-03f6-be7f-a119-13df635c1429/886446547527.jpg/600x600bb.jpg",
     "appleId": "1274154087",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274157119",
@@ -4738,7 +4808,8 @@
     "album": "De Pingu wird gwarnt",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/5d/19/b6/5d19b687-7153-c62f-f885-2c111937170f/886446547961.jpg/600x600bb.jpg",
     "appleId": "1274157119",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_1274151923",
@@ -4749,7 +4820,8 @@
     "album": "De Pingu bout en Schneemaa",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/d8/23/31/d823316f-1553-82b7-a786-1c41790a7f8e/886446547763.jpg/600x600bb.jpg",
     "appleId": "1274151923",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_949843365",
@@ -4760,7 +4832,8 @@
     "album": "Pingu 12 - De Pingu de Frächdachs",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/42/a2/3a/42a23af8-78a8-0225-66dd-6013e607099c/886444703611.jpg/600x600bb.jpg",
     "appleId": "949843365",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_949842362",
@@ -4771,7 +4844,8 @@
     "album": "Pingu 13 - De Pingu unterwägs 1",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/ff/16/c5/ff16c5a9-8911-71f6-d646-575c08e866ce/886444703635.jpg/600x600bb.jpg",
     "appleId": "949842362",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_389374561",
@@ -4782,7 +4856,8 @@
     "album": "Pingu, Folge 1 - Pingu und sini Familie",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/7b/af/0b/7baf0b31-b12d-b879-2ed9-912440a8cae6/mzi.auuvzczh.jpg/600x600bb.jpg",
     "appleId": "389374561",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_389423235",
@@ -4793,7 +4868,8 @@
     "album": "Pingu 4 - Pingu de Schlaumeier",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/c0/41/87/mzi.gawtmucw.jpg/600x600bb.jpg",
     "appleId": "389423235",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_389372353",
@@ -4804,7 +4880,8 @@
     "album": "Pingu 3 - Pingu de Lusbueb",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/df/8f/ce/mzi.eybcpxdt.jpg/600x600bb.jpg",
     "appleId": "389372353",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_389375605",
@@ -4815,7 +4892,8 @@
     "album": "Pingu, Folge 2 - Pingu und sini Fründ",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/dd/61/7f/mzi.cktbalzd.jpg/600x600bb.jpg",
     "appleId": "389375605",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_904891407",
@@ -4826,7 +4904,8 @@
     "album": "Pingu 9 - De Pingu fiiret es Fäscht",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/e3/e3/3d/e3e33d69-2a3e-68aa-6af3-6a7aac036140/886444703598.jpg/600x600bb.jpg",
     "appleId": "904891407",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_904894522",
@@ -4837,7 +4916,8 @@
     "album": "Pingu 8 - De Pingu und s Iis",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/8c/8b/21/8c8b2170-204b-ba35-5cd0-35cd5557940e/886444703574.jpg/600x600bb.jpg",
     "appleId": "904894522",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_931517465",
@@ -4848,7 +4928,8 @@
     "album": "Pingu 10 - De Pingu uf Reise",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music5/v4/af/66/21/af66215f-e285-4877-c7b7-d8af834afb1e/886444703604.jpg/600x600bb.jpg",
     "appleId": "931517465",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_981050444",
@@ -4859,7 +4940,8 @@
     "album": "Pingu 17 - De Pingu spielt",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music3/v4/cf/bc/73/cfbc73b1-cc05-bcc3-cc8e-dd8a2aa1128b/886444703673.jpg/600x600bb.jpg",
     "appleId": "981050444",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_959882404",
@@ -4870,7 +4952,8 @@
     "album": "Pingu 14 - De Pingu unterwägs 2",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music1/v4/52/c8/ed/52c8edc6-2296-333b-7df7-26b3d69c7a29/dj.oztncubz.jpg/600x600bb.jpg",
     "appleId": "959882404",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_389375246",
@@ -4881,7 +4964,8 @@
     "album": "Pingu, Folge 7 - Pingu als Künstler",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/60/85/79/mzi.sfybnchj.jpg/600x600bb.jpg",
     "appleId": "389375246",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_959888225",
@@ -4892,7 +4976,8 @@
     "album": "Pingu 15 - De Pingu hät en Job",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music7/v4/19/8a/f0/198af0c5-693d-04e3-a1c5-f8d011d63c7f/dj.mpsvlecr.jpg/600x600bb.jpg",
     "appleId": "959888225",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_389376299",
@@ -4903,7 +4988,8 @@
     "album": "Pingu, Folge 5 - Pingu und D'Mueter",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/b1/67/fb/mzi.tzfhzxfa.jpg/600x600bb.jpg",
     "appleId": "389376299",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
     "id": "album_389374417",
@@ -4914,18 +5000,216 @@
     "album": "Pingu 6 - Pingu und sini Erläbniss",
     "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/48/bf/00/mzi.ujeijgow.jpg/600x600bb.jpg",
     "appleId": "389374417",
-    "tracks": []
+    "tracks": [],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/94/8e/5d/948e5d2f-8bb0-61bc-34a1-38f84642763a/mzl.zyeigibx.jpg/600x600cc.png"
   },
   {
-    "id": "album_1715528593",
-    "title": "HALO",
-    "kind": "album",
+    "id": "album_1483670660",
+    "title": "Globis Geburtstag",
+    "kind": "audiobook",
     "service": "appleMusic",
-    "artist": "Rea Garvey",
-    "album": "HALO",
-    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/30/d0/3e/30d03e6a-cb50-3a50-f84f-90f447905711/23UM1IM22638.rgb.jpg/600x600bb.jpg",
-    "appleId": "1715528593",
-    "appleArtistId": "13432258",
-    "tracks": []
+    "artist": "Globi",
+    "album": "Globis Geburtstag",
+    "coverUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/28/cc/5f/28cc5f40-7029-46b0-3e99-ff454ffa1568/cover.jpg/600x600bb.jpg",
+    "appleId": "1483670660",
+    "tracks": [
+      {
+        "id": "album_1483670660_track_1483670662",
+        "title": "De Globi verschickt Iiladige",
+        "appleSongId": "1483670662",
+        "trackNumber": 1,
+        "durationMs": 123747
+      },
+      {
+        "id": "album_1483670660_track_1483670846",
+        "title": "S' gaat wiiter mit De Globi verschickt Iiladige",
+        "appleSongId": "1483670846",
+        "trackNumber": 2,
+        "durationMs": 283080
+      },
+      {
+        "id": "album_1483670660_track_1483670851",
+        "title": "Na mee vo De Globi verschickt Iiladige",
+        "appleSongId": "1483670851",
+        "trackNumber": 3,
+        "durationMs": 209387
+      },
+      {
+        "id": "album_1483670660_track_1483670864",
+        "title": "De Globi verwütscht en Täschedieb",
+        "appleSongId": "1483670864",
+        "trackNumber": 4,
+        "durationMs": 43773
+      },
+      {
+        "id": "album_1483670660_track_1483670867",
+        "title": "S' gaat wiiter mit De Globi verwütscht en Täschedieb",
+        "appleSongId": "1483670867",
+        "trackNumber": 5,
+        "durationMs": 141000
+      },
+      {
+        "id": "album_1483670660_track_1483670870",
+        "title": "Na mee vo De Globi verwütscht en Täschedieb",
+        "appleSongId": "1483670870",
+        "trackNumber": 6,
+        "durationMs": 97853
+      },
+      {
+        "id": "album_1483670660_track_1483670871",
+        "title": "Bim Gorilla im Zoo",
+        "appleSongId": "1483670871",
+        "trackNumber": 7,
+        "durationMs": 57467
+      },
+      {
+        "id": "album_1483670660_track_1483670966",
+        "title": "S' gaat wiiter mit Bim Gorilla im Zoo",
+        "appleSongId": "1483670966",
+        "trackNumber": 8,
+        "durationMs": 74427
+      },
+      {
+        "id": "album_1483670660_track_1483670977",
+        "title": "Na mee vo Bim Gorilla im Zoo",
+        "appleSongId": "1483670977",
+        "trackNumber": 9,
+        "durationMs": 48507
+      },
+      {
+        "id": "album_1483670660_track_1483670979",
+        "title": "De Globi planget uf de Geburtstag",
+        "appleSongId": "1483670979",
+        "trackNumber": 10,
+        "durationMs": 33813
+      },
+      {
+        "id": "album_1483670660_track_1483670982",
+        "title": "S' gaat wiiter mit De Globi planget uf de Geburtstag",
+        "appleSongId": "1483670982",
+        "trackNumber": 11,
+        "durationMs": 34280
+      },
+      {
+        "id": "album_1483670660_track_1483670984",
+        "title": "Na mee vo De Globi planget uf de Geburtstag",
+        "appleSongId": "1483670984",
+        "trackNumber": 12,
+        "durationMs": 78133
+      },
+      {
+        "id": "album_1483670660_track_1483670989",
+        "title": "S' Sparsäuli und de Flohmärt",
+        "appleSongId": "1483670989",
+        "trackNumber": 13,
+        "durationMs": 104187
+      },
+      {
+        "id": "album_1483670660_track_1483670991",
+        "title": "S' gaat wiiter mit S' Sparsäuli und de Flohmärt",
+        "appleSongId": "1483670991",
+        "trackNumber": 14,
+        "durationMs": 80067
+      },
+      {
+        "id": "album_1483670660_track_1483670995",
+        "title": "Na mee vo S' Sparsäuli und de Flohmärt",
+        "appleSongId": "1483670995",
+        "trackNumber": 15,
+        "durationMs": 103693
+      },
+      {
+        "id": "album_1483670660_track_1483671118",
+        "title": "De Globi macht Chueche",
+        "appleSongId": "1483671118",
+        "trackNumber": 16,
+        "durationMs": 109400
+      },
+      {
+        "id": "album_1483670660_track_1483671122",
+        "title": "S' gaat wiiter mit De Globi macht Chueche",
+        "appleSongId": "1483671122",
+        "trackNumber": 17,
+        "durationMs": 135547
+      },
+      {
+        "id": "album_1483670660_track_1483671123",
+        "title": "Na mee vo De Globi macht Chueche",
+        "appleSongId": "1483671123",
+        "trackNumber": 18,
+        "durationMs": 209387
+      },
+      {
+        "id": "album_1483670660_track_1483671128",
+        "title": "De Bello und de Malermeister Tüpfli",
+        "appleSongId": "1483671128",
+        "trackNumber": 19,
+        "durationMs": 73640
+      },
+      {
+        "id": "album_1483670660_track_1483671132",
+        "title": "S' gaat wiiter mit De Bello und de Malermeister Tüpfli",
+        "appleSongId": "1483671132",
+        "trackNumber": 20,
+        "durationMs": 100320
+      },
+      {
+        "id": "album_1483670660_track_1483671236",
+        "title": "Na mee vo De Bello und de Malermeister Tüpfli",
+        "appleSongId": "1483671236",
+        "trackNumber": 21,
+        "durationMs": 75413
+      },
+      {
+        "id": "album_1483670660_track_1483671243",
+        "title": "D' Stube voll Chind",
+        "appleSongId": "1483671243",
+        "trackNumber": 22,
+        "durationMs": 38920
+      },
+      {
+        "id": "album_1483670660_track_1483671249",
+        "title": "S' gaat wiiter mit D' Stube voll Chind",
+        "appleSongId": "1483671249",
+        "trackNumber": 23,
+        "durationMs": 38520
+      },
+      {
+        "id": "album_1483670660_track_1483671253",
+        "title": "Na mee vo D' Stube voll Chind",
+        "appleSongId": "1483671253",
+        "trackNumber": 24,
+        "durationMs": 59307
+      },
+      {
+        "id": "album_1483670660_track_1483671254",
+        "title": "Geburtstagsüberraschige",
+        "appleSongId": "1483671254",
+        "trackNumber": 25,
+        "durationMs": 161760
+      },
+      {
+        "id": "album_1483670660_track_1483671258",
+        "title": "S' gaat wiiter mit Geburtstagsüberraschige",
+        "appleSongId": "1483671258",
+        "trackNumber": 26,
+        "durationMs": 175053
+      },
+      {
+        "id": "album_1483670660_track_1483671263",
+        "title": "Na mee vo Geburtstagsüberraschige",
+        "appleSongId": "1483671263",
+        "trackNumber": 27,
+        "durationMs": 191933
+      },
+      {
+        "id": "album_1483670660_track_1483671359",
+        "title": "Mit em Velo um de Geburtstagstisch",
+        "appleSongId": "1483671359",
+        "trackNumber": 28,
+        "durationMs": 84587
+      }
+    ],
+    "artistImageUrl": "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/c8/eb/ac/c8ebac71-c0d0-29cd-1150-6ffe63a5b572/604e9361-5bfb-4d9d-bdb1-1e98751cb22e_ami-identity-334f0ea1162e2b1a9358d95ad057d6d2-2024-02-22T16-46-53.556Z_cropped.png/600x600cc.png"
   }
 ]
