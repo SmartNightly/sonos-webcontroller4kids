@@ -1,0 +1,16 @@
+{
+  "sonosBaseUrl": "http://localhost:5005",
+  "rooms": ["Living Room", "Kitchen"],
+  "enabledRooms": ["Living Room", "Kitchen"],
+  "defaultRoom": "Living Room",
+  "showShuffleRepeat": true,
+  "roomIcons": {},
+  "showTracklistAlbums": true,
+  "showTracklistAudiobooks": true,
+  "maxVolume": {
+    "Living Room": 50,
+    "Kitchen": 40
+  },
+  "activeTemplate": "default",
+  "enabledTemplates": ["default"]
+}

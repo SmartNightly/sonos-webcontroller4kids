@@ -38,3 +38,6 @@ docker-compose.yml
 # Documentation
 README.md
 *.md
+
+# Runtime data — never bake into the image (mock defaults come from media-data.example/)
+media-data

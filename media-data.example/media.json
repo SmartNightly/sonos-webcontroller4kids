@@ -1,0 +1,87 @@
+[
+  {
+    "id": "album_1000000001",
+    "title": "Example Album One",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Example Artist",
+    "album": "Example Album One",
+    "coverUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Crect width='600' height='600' fill='%234f8cc9'/%3E%3C/svg%3E",
+    "appleId": "1000000001",
+    "tracks": [
+      {
+        "id": "album_1000000001_track_10000000011",
+        "title": "First Song",
+        "appleSongId": "10000000011",
+        "trackNumber": 1,
+        "durationMs": 195000
+      },
+      {
+        "id": "album_1000000001_track_10000000012",
+        "title": "Second Song",
+        "appleSongId": "10000000012",
+        "trackNumber": 2,
+        "durationMs": 210000
+      },
+      {
+        "id": "album_1000000001_track_10000000013",
+        "title": "Third Song",
+        "appleSongId": "10000000013",
+        "trackNumber": 3,
+        "durationMs": 225000
+      }
+    ]
+  },
+  {
+    "id": "album_1000000002",
+    "title": "Example Album Two",
+    "kind": "album",
+    "service": "appleMusic",
+    "artist": "Example Artist",
+    "album": "Example Album Two",
+    "coverUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Crect width='600' height='600' fill='%23e0a13a'/%3E%3C/svg%3E",
+    "appleId": "1000000002",
+    "tracks": [
+      {
+        "id": "album_1000000002_track_10000000021",
+        "title": "Opening Song",
+        "appleSongId": "10000000021",
+        "trackNumber": 1,
+        "durationMs": 195000
+      },
+      {
+        "id": "album_1000000002_track_10000000022",
+        "title": "Closing Song",
+        "appleSongId": "10000000022",
+        "trackNumber": 2,
+        "durationMs": 210000
+      }
+    ]
+  },
+  {
+    "id": "album_1000000003",
+    "title": "Example Audiobook",
+    "kind": "audiobook",
+    "service": "appleMusic",
+    "artist": "Example Narrator",
+    "album": "Example Audiobook",
+    "coverUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Crect width='600' height='600' fill='%236bb36b'/%3E%3C/svg%3E",
+    "appleId": "1000000003",
+    "tracks": [
+      {
+        "id": "album_1000000003_track_10000000031",
+        "title": "Chapter 1",
+        "appleSongId": "10000000031",
+        "trackNumber": 1,
+        "durationMs": 195000
+      },
+      {
+        "id": "album_1000000003_track_10000000032",
+        "title": "Chapter 2",
+        "appleSongId": "10000000032",
+        "trackNumber": 2,
+        "durationMs": 210000
+      }
+    ]
+  }
+]

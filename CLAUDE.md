@@ -144,9 +144,12 @@ sonos-webcontroller4kids/
 │       └── templates/          # Pluggable UI templates
 │           ├── default/        # Default template with admin interface
 │           └── colorful/       # Colorful kids template
-├── media-data/                 # Persistent data (Docker volume)
+├── media-data/                 # Real runtime data (Docker volume) — gitignored + dockerignored
 │   ├── config.json             # App configuration
 │   └── media.json              # Media library (albums, audiobooks)
+├── media-data.example/         # Tracked mock data (same schema); image default for /app/media-data
+│   ├── config.json
+│   └── media.json
 ├── .github/
 │   ├── workflows/ci.yml        # CI: lint + test (backend + frontend, parallel) → build
 │   └── workflows/docker-publish.yml  # CD: build + push to Docker Hub
@@ -155,6 +158,11 @@ sonos-webcontroller4kids/
 ```
 
 ## Development
+
+### First-time setup
+```bash
+cp -R media-data.example media-data   # media-data/ is not tracked; start from the mock data
+```
 
 ### Start backend
 ```bash
@@ -208,6 +216,8 @@ docker build -t sonos-webcontroller4kids:latest .
 docker run -p 3344:3344 -v ./media-data:/app/media-data sonos-webcontroller4kids:latest
 ```
 
+The image contains only the mock data (`COPY media-data.example ./media-data`). `media-data/` is listed in `.dockerignore`; a mounted volume replaces the defaults.
+
 ## Key Files
 
 | File | Purpose |
@@ -235,8 +245,9 @@ docker run -p 3344:3344 -v ./media-data:/app/media-data sonos-webcontroller4kids
 | `frontend/src/templates/default/App.tsx` | Full UI including admin interface |
 | `frontend/src/templates/colorful/App.tsx` | Simplified kids UI |
 | `frontend/vite.config.ts` | Vite config — injects `__APP_VERSION__` from root `package.json` |
-| `media-data/config.json` | Runtime config (Sonos URL, rooms, templates) |
-| `media-data/media.json` | Media library |
+| `media-data/config.json` | Runtime config (Sonos URL, rooms, templates) — local only, not tracked |
+| `media-data/media.json` | Media library — local only, not tracked |
+| `media-data.example/` | Tracked mock `config.json` + `media.json`; copied into the Docker image as defaults |
 
 ## Version System
 
@@ -336,6 +347,8 @@ JSON-based, no database setup required:
 - `media-data/config.json`: Sonos URL, rooms, icons, volume limits, active template
 - `media-data/media.json`: List of `MediaItem` objects with nested `MediaTrack[]`
 
+`media-data/` holds real household data and is excluded from Git (`.gitignore`) and from the Docker build context (`.dockerignore`). `media-data.example/` contains neutral mock data with the same schema; it is tracked and shipped in the image as the default `/app/media-data`. If the files are missing, the backend falls back to built-in defaults (empty library).
+
 ## TypeScript Conventions
 
 - Strict mode in both projects (`"strict": true`)
@@ -372,3 +385,4 @@ Two GitHub Actions workflows:
 - Config and media data are cached in memory — no disk read on every request
 - Backend runs without auth → local home network use only
 - `backend/dist/` and `backend/node_modules/` are gitignored — run `npm install` + `npm run build` after cloning
+- **Never commit real runtime data**: `media-data/` is gitignored. Keep mock data in `media-data.example/` free of real IPs, room names, and library content. After cloning, run `cp -R media-data.example media-data`.

@@ -145,6 +145,13 @@ npm install
 npm run dev  # läuft auf Port 5173
 ```
 
+The runtime data folder `media-data/` is not tracked in Git. After a fresh clone, copy the
+bundled mock data once (otherwise the backend starts with empty defaults):
+
+```bash
+cp -R media-data.example media-data
+```
+
 Backend: `http://localhost:3344`  
 Frontend: `http://localhost:5173` (API-Aufrufe im Entwicklungsmodus direkt an `http://localhost:3344`)
 
@@ -157,6 +164,10 @@ docker run -p 3344:3344 -v ./media-data:/app/media-data sonos-webcontroller4kids
 # Mit eigenem Port:
 # PORT=8080 docker run -p 8080:8080 -e PORT=8080 -v ./media-data:/app/media-data sonos-webcontroller4kids:latest
 ```
+
+The image only contains the mock data from `media-data.example/` as defaults under
+`/app/media-data`. The local `media-data/` folder is excluded from the build context;
+a mounted volume replaces the defaults.
 
 ## Konfiguration
 

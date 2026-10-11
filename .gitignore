@@ -22,3 +22,7 @@ backend/vitest.config.js
 backend/vitest.config.d.ts
 backend/vitest.config.js.map
 backend/vitest.config.d.ts.map
+
+# Runtime data (real config and media library) — never commit.
+# Tracked mock data lives in media-data.example/
+media-data/

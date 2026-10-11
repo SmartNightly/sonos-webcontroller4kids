@@ -90,6 +90,10 @@ Mount a `media-data/` directory containing:
 | `config.json` | Sonos API URL, rooms, volume limits, default theme, allowed themes |
 | `media.json` | Media library (albums, audiobooks, tracks) |
 
+The image ships neutral example data (two sample rooms, three sample media items) in
+`/app/media-data`, so a container started without a volume shows a demo library. A mounted
+directory replaces these defaults completely.
+
 An empty directory can be used for initial setup. Use the admin panel to save
 configuration and add media. Back up this directory before replacing an installation.
 

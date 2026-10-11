@@ -43,8 +43,9 @@ COPY --from=builder /app/backend/package*.json ./backend/
 # Copy frontend build
 COPY --from=builder /app/frontend/dist ./frontend/dist
 
-# Copy media-data
-COPY media-data ./media-data
+# Ship neutral mock data as defaults. Real data is never part of the image;
+# mount a volume at /app/media-data to override these defaults.
+COPY media-data.example ./media-data
 
 # Set default port
 ENV PORT=3344
